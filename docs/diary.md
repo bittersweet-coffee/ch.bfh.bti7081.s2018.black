@@ -5,13 +5,13 @@
 
 ### Attendees
 
-* Jan
-* Nicola
+* Aleksander
+* Amin
 * Antonio
 * Cedric
-* Amin
-* Aleksander
+* Jan
 * Michael
+* Nicola
 
 ### Agenda
 
@@ -25,7 +25,7 @@
 
 ### Action Items
 
-* Interview regarding additiction with a doctor
+* Interview regarding addiction with a doctor
 
 # TODO
 
