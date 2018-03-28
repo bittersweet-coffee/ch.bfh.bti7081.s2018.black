@@ -3,7 +3,7 @@
 
 ## 2018-03-16
 
-### Attendees
+### Teilnehmer
 
 * Aleksander
 * Amin
@@ -15,17 +15,17 @@
 
 ### Agenda
 
-* Introduction to PMS project
-* Setup teams
-* Create required git repository and check access
+* Einführung ins PMS Projekt
+* Teambildung und Schwerpunkte definieren
+* Git Repository und Zugänge erstellen
 
-### Decisions
+### Beschlüsse
 
-* Git will be used instead of SVN
+* Git anstelle von SVN wird verwendet
 
 ## 2018-03-23
 
-### Attendees
+### Teilnehmer
 
 * Aleksander
 * Amin
@@ -36,25 +36,49 @@
 
 ### Agenda
 
-* Start with project PMS
-* Make a project scoping 
-* Start first Brainstorming session
-* Elaborate necessary Interview questions
-* Create a research List
+* Projektstart PMS
+* Projekt Scope definieren
+* Brainstorming Session und Clustering erster Ideen
+* Interview Fragen zusammenstellen und verteilen
+* Research Themenliste erstellen
 
-### Decisions
+### Beschlüsse
 
-* Make the interview and split the research tasks among the group 
-* Determine first requirements in next meeting
+* Interviews bis zum nächsten Meeting erledigen und Themen in der Gruppe
+  verteilt
+ * Sucht (Amin & Cedric)
+ * Datenschutz (Nicola)
+ * Behandlung (Jan)
+ * Krankenakte (Aleksandar & Toni)
+* Im nächsten Meeting werden die Requirements gesammelt
+
+## 2018-03-28
+
+### Teilnehmer
+
+* Aleksander
+* Amin
+* Antonio
+* Cedric
+* Jan
+* Michael
+* Nicola
+
+### Agenda
+
+* Status austauschen
+* Interview und Research Themen zusammentragne
+* Functional User Requirements definieren
+
+### Beschlüsse
+
+* 2-3 Storyboards pro Person
+* Dokumentation finalisieren und einheitliches CI verwenden
+* Am nächsten Meeting werden die Prototypes erstellt sowie die Slides für die
+  Präsentation
 
 # TODOs
 
-* Interview regarding addiction with a doctor
-* Gather interview questions and ask doctor about addition (Team)
-
-## Research topics
-
-* Addiction: Amin, Cedric
-* Data security: Nicola
-* Treatment : Jan
-* Report: Aleksandar, Toni
+* Interview mit einem Doktor zum Thema Sucht (Jan)
+* 2-3 Storyboards pro Person (Team)
+* Dokumentation finalisieren (Michael)
