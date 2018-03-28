@@ -77,7 +77,7 @@
 * Am nächsten Meeting werden die Prototypes erstellt sowie die Slides für die
   Präsentation
 
-# TODOs
+## TODOs
 
 * Interview mit einem Doktor zum Thema Sucht (Jan)
 * 2-3 Storyboards pro Person (Team)
