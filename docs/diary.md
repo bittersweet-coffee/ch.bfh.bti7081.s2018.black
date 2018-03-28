@@ -23,16 +23,6 @@
 
 * Git will be used instead of SVN
 
-### Action Items
-
-* Interview regarding addiction with a doctor
-
-# TODO
-
-* Gather interview questions and ask doctor about addition (Team)
-
-
-
 ## 2018-03-23
 
 ### Attendees
@@ -54,12 +44,16 @@
 
 ### Decisions
 
-* make the Interview and split the research Tasks among the group 
-* determine first requirements in next meeting
+* Make the interview and split the research tasks among the group 
+* Determine first requirements in next meeting
 
-# TODO
+# TODOs
+
+* Interview regarding addiction with a doctor
+* Gather interview questions and ask doctor about addition (Team)
 
 ## Research topics
+
 * Addiction: Amin, Cedric
 * Data security: Nicola
 * Treatment : Jan
