@@ -101,6 +101,29 @@
 * Zum Thema Validation wird im nächsten Meeting der letzte feinschliff verpasst
 * Slides der Präsentation fertig machen
 
+## 2018-04-06
+
+### Teilnehmer
+
+* Aleksander
+* Amin
+* Antonio
+* Cedric
+* Jan
+* Michael
+* Nicola
+
+### Agenda
+
+* Storyboards zusammentragen und hochladen
+* Prototypes reviewen und hochladen
+* Präsentation finalisieren
+* Master Dokument erstellen
+
+### Beschlüsse
+
+* Aufteilung der Präsentation
+
 ## TODOs
 
-* Sich Gedanken und Notizen für Validation und Präsentation machen (Team)
+* Präsentation üben und einstudieren (Jan, Nicola & Aleks)
