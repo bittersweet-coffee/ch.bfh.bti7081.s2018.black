@@ -77,12 +77,6 @@
 * Am nächsten Meeting werden die Prototypes erstellt sowie die Slides für die
   Präsentation
 
-## TODOs
-
-* Interview mit einem Doktor zum Thema Sucht (Jan)
-* 2-3 Storyboards pro Person (Team)
-* Dokumentation finalisieren (Michael)
-
 ## 2018-04-04
 
 ### Teilnehmer
@@ -97,7 +91,8 @@
 
 ### Agenda
 
-* Besprechung zu unseren Storyboards und 3 besten Ideen auswählen für die Prototypen
+* Besprechung zu unseren Storyboards und 3 besten Ideen auswählen für die
+  Prototypen
 * Erstellung der ersten Prototypen
 * Vorbereitung Präsentation
 
@@ -106,6 +101,6 @@
 * Zum Thema Validation wird im nächsten Meeting der letzte feinschliff verpasst
 * Slides der Präsentation fertig machen
 
-### TODO
+## TODOs
 
 * Sich Gedanken und Notizen für Validation und Präsentation machen (Team)
