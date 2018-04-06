@@ -82,3 +82,30 @@
 * Interview mit einem Doktor zum Thema Sucht (Jan)
 * 2-3 Storyboards pro Person (Team)
 * Dokumentation finalisieren (Michael)
+
+## 2018-04-04
+
+### Teilnehmer
+
+* Aleksander
+* Amin
+* Antonio
+* Cedric
+* Jan
+* Michael
+* Nicola
+
+### Agenda
+
+* Besprechung zu unseren Storyboards und 3 besten Ideen auswählen für die Prototypen
+* Erstellung der ersten Prototypen
+* Vorbereitung Präsentation
+
+### Beschlüsse
+
+* Zum Thema Validation wird im nächsten Meeting der letzte feinschliff verpasst
+* Slides der Präsentation fertig machen
+
+### TODO
+
+* Sich Gedanken und Notizen für Validation und Präsentation machen (Team)
