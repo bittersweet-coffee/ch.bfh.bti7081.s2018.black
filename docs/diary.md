@@ -127,3 +127,28 @@
 ## TODOs
 
 * Präsentation üben und einstudieren (Jan, Nicola & Aleks)
+
+## 2018-04-09
+
+### Teilnehmer
+
+* Aleksander
+* Amin
+* Antonio
+* Cedric
+* Jan
+* Nicola
+
+### Agenda
+
+* Beginn des Dokuments Software Requirements zu Task 2
+* Arbeiten an den ersten Punkten im Dokument
+
+### Beschlüsse 
+
+* Im nächsten meeting weiter am Dokument arbeiten
+
+## TODO
+
+* Vorbereitungen und Überlegungen zu Software Requirements vornehmen 
+  in bezug zu unserem Projekt und dem Task 2 (Team)
