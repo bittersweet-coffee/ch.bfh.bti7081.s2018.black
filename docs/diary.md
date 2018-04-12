@@ -148,3 +148,31 @@
 
 * Vorbereitungen und Überlegungen zu Software Requirements vornehmen 
   in Bezug zu unserem Projekt und dem Task 2 (Team)
+
+## 2018-04-11
+
+### Teilnehmer
+
+* Aleksander
+* Amin
+* Antonio
+* Cedric
+* Jan
+* Nicola
+
+### Agenda
+
+* Austausch innerhalb der Gruppe zum weiteren Vorgehen der Arbeit
+
+### Beschlüsse
+
+* Aufteilung der Arbeit der einzelnen Punkte im Dokument in der Gruppe
+* Im nächsten meeting Dokument zusammenstellen und Präsentation erstellen
+
+## TODO
+
+* User Requirements (Nicola / Cedric)
+* System architecture models (Jan)
+* System requirements specification ( Amin / Antonio)
+* System evolution (Aleksandar)
+* Testing (Cedric)
