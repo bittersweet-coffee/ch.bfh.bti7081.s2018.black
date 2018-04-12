@@ -124,10 +124,6 @@
 
 * Aufteilung der Präsentation
 
-## TODOs
-
-* Präsentation üben und einstudieren (Jan, Nicola & Aleks)
-
 ## 2018-04-09
 
 ### Teilnehmer
@@ -146,9 +142,9 @@
 
 ### Beschlüsse 
 
-* Im nächsten meeting weiter am Dokument arbeiten
+* Im nächsten Meeting weiter am Dokument arbeiten
 
 ## TODO
 
 * Vorbereitungen und Überlegungen zu Software Requirements vornehmen 
-  in bezug zu unserem Projekt und dem Task 2 (Team)
+  in Bezug zu unserem Projekt und dem Task 2 (Team)
