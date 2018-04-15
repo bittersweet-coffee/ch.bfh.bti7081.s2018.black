@@ -176,3 +176,25 @@
 * System requirements specification ( Amin / Antonio)
 * System evolution (Aleksandar)
 * Testing (Cedric)
+
+## 2018-04-13
+
+### Teilnehmer
+
+* Aleksander
+* Amin
+* Antonio
+* Cedric
+* Jan
+* Michael
+* Nicola
+
+### Agenda
+
+* Zusammenführung und Besprechung der erarbeiteten Dokumentenabschnitte
+* Dokument Vervollständigen
+* Erstellung der Präsentation
+
+### Beschlüsse
+
+* Aufteilung der Präsentation
