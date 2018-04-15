@@ -169,14 +169,6 @@
 * Aufteilung der Arbeit der einzelnen Punkte im Dokument in der Gruppe
 * Im nächsten meeting Dokument zusammenstellen und Präsentation erstellen
 
-## TODO
-
-* User Requirements (Nicola / Cedric)
-* System architecture models (Jan)
-* System requirements specification ( Amin / Antonio)
-* System evolution (Aleksandar)
-* Testing (Cedric)
-
 ## 2018-04-13
 
 ### Teilnehmer
@@ -192,9 +184,14 @@
 ### Agenda
 
 * Zusammenführung und Besprechung der erarbeiteten Dokumentenabschnitte
-* Dokument Vervollständigen
+* Dokument vervollständigen
 * Erstellung der Präsentation
 
 ### Beschlüsse
 
 * Aufteilung der Präsentation
+
+## TODO
+
+* Präsentation vorbereiten (Michael)
+* Requirements Documentation Master erstellen (Michael)
