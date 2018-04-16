@@ -191,7 +191,27 @@
 
 * Aufteilung der Präsentation
 
+## 2018-04-16
+
+### Teilnehmer
+
+* Aleksander
+* Amin
+* Antonio
+* Cedric
+* Jan
+* Michael
+* Nicola
+
+### Agenda
+
+* Präsentation der Ergebnisse von task02
+* Requirements Review der Gruppe White
+
+### Beschlüsse
+
+* Koordination bezgl. Requirements Review
+
 ## TODO
 
-* Präsentation vorbereiten (Michael)
-* Requirements Documentation Master erstellen (Michael)
+* Requirements Review finalisieren und versenden (Michael)
