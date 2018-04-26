@@ -215,3 +215,30 @@
 ## TODO
 
 * Requirements Review finalisieren und versenden (Michael)
+
+## 2018-04-25
+
+### Teilnehmer
+
+* Aleksander
+* Amin
+* Antonio
+* Cedric
+* Jan
+* Michael
+* Nicola
+
+### Agenda
+
+* Besprechung innerhalb der Gruppe über die zwei UML Diagramm Arten
+* Erste erstellung des Domain Modell Diagramms
+
+### Beschlüsse
+
+* Sequenz Diagramm im nächsten meeting zusammen besprechen und fertig stellen
+* Präsentation Slides vorbereiten
+
+## TODO
+
+* Vom Domain Modell Diagramm ein sauberes UML zeichnen (Nicola)
+* grober Entwurf der Sequenz Diagramme (Amin, Toni)
