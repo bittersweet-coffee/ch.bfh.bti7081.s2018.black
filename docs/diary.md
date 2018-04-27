@@ -235,10 +235,10 @@
 
 ### Beschlüsse
 
-* Sequenz Diagramm im nächsten meeting zusammen besprechen und fertig stellen
+* Sequenz Diagramm im nächsten Meeting zusammen besprechen und fertig stellen
 * Präsentation Slides vorbereiten
 
 ## TODO
 
-* Vom Domain Modell Diagramm ein sauberes UML zeichnen (Nicola)
-* grober Entwurf der Sequenz Diagramme (Amin, Toni)
+* Vom Domain Model Diagramm ein sauberes UML zeichnen (Nicola)
+* Grober Entwurf der Sequenz Diagramme (Amin, Toni)
