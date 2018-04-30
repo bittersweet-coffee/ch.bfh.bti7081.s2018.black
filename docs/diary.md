@@ -212,10 +212,6 @@
 
 * Koordination bezgl. Requirements Review
 
-## TODO
-
-* Requirements Review finalisieren und versenden (Michael)
-
 ## 2018-04-25
 
 ### Teilnehmer
@@ -238,11 +234,6 @@
 * Sequenz Diagramm im nächsten Meeting zusammen besprechen und fertig stellen
 * Präsentation Slides vorbereiten
 
-## TODO
-
-* Vom Domain Model Diagramm ein sauberes UML zeichnen (Nicola)
-* Grober Entwurf der Sequenz Diagramme (Amin, Toni)
-
 ## 2018-04-30
 
 ### Teilnehmer
@@ -263,7 +254,8 @@
 
 ### Beschlüsse
 
-* Bis zum nächsten Meeting die aufgeteilten Aufgaben erledigen + Präsentation erstellen
+* Bis zum nächsten Meeting die aufgeteilten Aufgaben erledigen + Präsentation
+  erstellen
 
 ## TODO
 
