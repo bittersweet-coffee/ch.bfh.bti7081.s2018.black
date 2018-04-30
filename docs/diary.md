@@ -242,3 +242,31 @@
 
 * Vom Domain Model Diagramm ein sauberes UML zeichnen (Nicola)
 * Grober Entwurf der Sequenz Diagramme (Amin, Toni)
+
+## 2018-04-30
+
+### Teilnehmer
+
+* Aleksander
+* Amin
+* Antonio
+* Cedric
+* Jan
+* Michael
+* Nicola
+
+### Agenda
+
+* Besprechung in der Gruppe zu den Tasks 5 und 6
+* Erstellung des Komponenten Diagramms
+* Aufteilung der restlichen Aufgaben zu Task 5 & 6
+
+### Beschlüsse
+
+* Bis zum nächsten Meeting die aufgeteilten Aufgaben erledigen + Präsentation erstellen
+
+## TODO
+
+* Deployment Diagramm (Amin, Toni)
+* Klassen Diagramm(Aleks, Cedric)
+* Sprint Planung (Hofer, Jan, Nicolas)
