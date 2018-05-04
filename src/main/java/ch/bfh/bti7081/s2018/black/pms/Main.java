@@ -20,7 +20,7 @@ import com.vaadin.ui.VerticalLayout;
  * overridden to add component to the user interface and initialize non-component functionality.
  */
 @Theme("mytheme")
-public class MyUI extends UI {
+public class Main extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
@@ -40,8 +40,8 @@ public class MyUI extends UI {
         setContent(layout);
     }
 
-    @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
-    @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
-    public static class MyUIServlet extends VaadinServlet {
+    @WebServlet(urlPatterns = "/*", name = "MainServlet", asyncSupported = true)
+    @VaadinServletConfiguration(ui = Main.class, productionMode = false)
+    public static class MainServlet extends VaadinServlet {
     }
 }
