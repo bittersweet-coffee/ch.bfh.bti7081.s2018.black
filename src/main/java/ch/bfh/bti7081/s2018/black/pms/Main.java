@@ -10,7 +10,7 @@ import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-import ch.bfh.bti7081.s2018.black.pms.presentor.*;
+import ch.bfh.bti7081.s2018.black.pms.presenter.*;
 import ch.bfh.bti7081.s2018.black.pms.view.*;
 import ch.bfh.bti7081.s2018.black.pms.model.*;
 
@@ -27,7 +27,7 @@ public class Main extends UI {
     @Override
     protected void init(VaadinRequest vaadinRequest) {
     	MainViewImpl mainView = new MainViewImpl();
-    	new MainPresentor(mainView);
+    	new MainPresenter(mainView);
     	
     	AddictionModel addictionModel = new AddictionModel("Drugs", "Lorem Ipsum");
     	

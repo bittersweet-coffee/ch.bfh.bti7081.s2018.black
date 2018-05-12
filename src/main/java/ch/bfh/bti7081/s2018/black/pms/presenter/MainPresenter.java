@@ -1,11 +1,11 @@
-package ch.bfh.bti7081.s2018.black.pms.presentor;
+package ch.bfh.bti7081.s2018.black.pms.presenter;
 
 import ch.bfh.bti7081.s2018.black.pms.view.MainView;
 
-public class MainPresentor implements MainView.MainViewListener {
+public class MainPresenter implements MainView.MainViewListener {
 	private MainView view;
 	
-	public MainPresentor(MainView view) {
+	public MainPresenter(MainView view) {
 		this.view = view;
 	}
 
