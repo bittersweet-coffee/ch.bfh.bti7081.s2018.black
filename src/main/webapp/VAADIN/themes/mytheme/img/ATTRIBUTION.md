@@ -14,3 +14,4 @@ Attributions
 * clinic.svg by flaticon.com/authors/popcorns-arts
 * drug.svg by flaticon.com/authors/popcorns-arts
 * patient.svg by flaticon.com/authors/popcorns-arts
+* report.svg by flaticon.com/authors/popcorns-arts
