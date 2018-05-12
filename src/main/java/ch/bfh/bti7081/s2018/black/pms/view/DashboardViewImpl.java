@@ -1,26 +1,21 @@
 package ch.bfh.bti7081.s2018.black.pms.view;
 
 import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ThemeResource;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
-import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.MenuBar.MenuItem;
-import com.vaadin.ui.Notification;
 
-public class MainViewImpl extends CustomComponent implements View, MainView {
+public class DashboardViewImpl extends PmsCustomComponent implements View, DashboardView {
 	
 	public static final String NAME = "";
 	
-	public MainViewImpl() {
-        GridLayout tileGrid = new GridLayout(3, 2);
-        tileGrid.addStyleName("main-tile-nav");
-
+	public DashboardViewImpl() {
+		super();
+	}
+	
+	public void enter(ViewChangeEvent event) {
         Image addictionIcon = new Image("", new ThemeResource("img/addiction.svg"));
         addictionIcon.setAlternateText("Addiction");
         addictionIcon.setDescription("Addiction");
@@ -63,50 +58,15 @@ public class MainViewImpl extends CustomComponent implements View, MainView {
         	UI.getCurrent().getNavigator().navigateTo(ReportViewImpl.NAME);
         });
 
+        GridLayout tileGrid = new GridLayout(3, 2);
+        tileGrid.addStyleName("main-tile-nav");
         tileGrid.addComponent(patientIcon, 0, 0);
         tileGrid.addComponent(clinicIcon, 1, 0);
         tileGrid.addComponent(agendaIcon, 2, 0);
         tileGrid.addComponent(drugIcon, 0, 1);
         tileGrid.addComponent(reportIcon, 1, 1);
         tileGrid.addComponent(addictionIcon, 2, 1);
-
-        HorizontalLayout horizontal = new HorizontalLayout();
-        horizontal.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
-        horizontal.addComponent(tileGrid);
-
-        MenuBar.Command pmsCommand = new MenuBar.Command() {
-        	@Override
-			public void menuSelected(MenuItem selectedItem) {
-				UI.getCurrent().getNavigator().navigateTo(MainViewImpl.NAME);
-			}
-		};
-
-        MenuBar.Command logoutCommand = new MenuBar.Command() {
-        	@Override
-			public void menuSelected(MenuItem selectedItem) {
-				Notification.show("kthxbye!");
-			}
-		};
-
-    	MenuBar menuBar = new MenuBar();
-    	menuBar.addStyleName("main-menubar");
-
-    	MenuItem pmsItem = menuBar.addItem("PATIENT MANAGEMENT SYSTEM", new ThemeResource("img/pms_32px.png"), pmsCommand);
-    	pmsItem.setDescription("PMS");
-    	
-    	MenuItem userItem = menuBar.addItem("Anonymous", null, null);
-    	userItem.setEnabled(false);
-    	userItem.setStyleName("main-menubar-user");
-
-    	MenuItem logoutItem = menuBar.addItem("Logout", new ThemeResource("img/poweroff.png"), logoutCommand);
-    	logoutItem.setDescription("Logout");
-    	logoutItem.setStyleName("main-menubar-logout");
-
-		VerticalLayout vertical = new VerticalLayout();
-		vertical.setSizeFull();
-		vertical.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
-		vertical.addComponents(menuBar, horizontal);
         
-        setCompositionRoot(vertical);
+        super.contentPanel.setContent(tileGrid);
 	}
 }

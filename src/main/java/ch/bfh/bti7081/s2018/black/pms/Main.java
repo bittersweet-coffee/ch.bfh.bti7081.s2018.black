@@ -30,12 +30,12 @@ public class Main extends UI {
     	AgendaViewImpl agendaView = new AgendaViewImpl();
     	ClinicViewImpl clinicView = new ClinicViewImpl();
     	DrugViewImpl drugView = new DrugViewImpl();
-    	MainViewImpl mainView = new MainViewImpl();
+    	DashboardViewImpl dashboardView = new DashboardViewImpl();
     	PatientViewImpl patientView = new PatientViewImpl();
     	ReportViewImpl reportView = new ReportViewImpl();
 
     	Navigator navigator = new Navigator(this, this);
-    	navigator.addView(MainViewImpl.NAME, mainView);
+    	navigator.addView(DashboardViewImpl.NAME, dashboardView);
     	navigator.addView(AddictionViewImpl.NAME, addictionView);
     	navigator.addView(AgendaViewImpl.NAME, agendaView);
     	navigator.addView(ClinicViewImpl.NAME, clinicView);
