@@ -3,40 +3,45 @@ package ch.bfh.bti7081.s2018.black.pms;
 import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
+import com.vaadin.navigator.PushStateNavigation;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
-
-import ch.bfh.bti7081.s2018.black.pms.presenter.*;
 import ch.bfh.bti7081.s2018.black.pms.view.*;
-import ch.bfh.bti7081.s2018.black.pms.model.*;
 
-/**
- * This UI is the application entry point. A UI may either represent a browser window 
- * (or tab) or some part of an HTML page where a Vaadin application is embedded.
- * <p>
- * The UI is initialized using {@link #init(VaadinRequest)}. This method is intended to be 
- * overridden to add component to the user interface and initialize non-component functionality.
- */
-@Theme("pms")
+// Load the default mytheme which also includes the Valo theme
+@Theme("mytheme")
+
+// Let Navigator use the HTML5 history API to have nicer URLs and catch backwards navigation
+@PushStateNavigation
+
+// Custom browser tab title
+@Title("PMS")
 public class Main extends UI {
-
+	
     @Override
     protected void init(VaadinRequest vaadinRequest) {
+
+    	// TODO: This should actually create an instance of *View and not *ViewImpl to be independent of VAADIN
+    	AddictionViewImpl addictionView = new AddictionViewImpl();
+    	AgendaViewImpl agendaView = new AgendaViewImpl();
+    	ClinicViewImpl clinicView = new ClinicViewImpl();
+    	DrugViewImpl drugView = new DrugViewImpl();
     	MainViewImpl mainView = new MainViewImpl();
-    	new MainPresenter(mainView);
-    	
-    	AddictionModel addictionModel = new AddictionModel("Drugs", "Lorem Ipsum");
-    	
-        VerticalLayout mainLayout = new VerticalLayout(mainView);
-        mainLayout.setSizeFull();
-        setContent(mainLayout);
+    	PatientViewImpl patientView = new PatientViewImpl();
+    	ReportViewImpl reportView = new ReportViewImpl();
 
     	Navigator navigator = new Navigator(this, this);
-    	navigator.addView("", mainView);
+    	navigator.addView(MainViewImpl.NAME, mainView);
+    	navigator.addView(AddictionViewImpl.NAME, addictionView);
+    	navigator.addView(AgendaViewImpl.NAME, agendaView);
+    	navigator.addView(ClinicViewImpl.NAME, clinicView);
+    	navigator.addView(DrugViewImpl.NAME, drugView);
+    	navigator.addView(PatientViewImpl.NAME, patientView);
+    	navigator.addView(ReportViewImpl.NAME, reportView);
     }
 
     @WebServlet(urlPatterns = "/*", name = "MainServlet", asyncSupported = true)
