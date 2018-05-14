@@ -1,18 +1,26 @@
 package ch.bfh.bti7081.s2018.black.pms.model;
 
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
+@Table(name="addiction")
 public class AddictionModel {
 
 	@Id @GeneratedValue
-	private int Id;
+	private int id;
 
 	private String name;
 
 	private String description;
 	
-	public AddictionModel() {
+	@ManyToMany(mappedBy="addictions")
+	private List<PatientModel> patients;
+	
+	public AddictionModel(String description, List<PatientModel> patients) {
+		this.description = description;
+		this.patients = patients;
 	}
 	
 	public String getName() {
