@@ -47,7 +47,7 @@ public class AgendaModel {
 		this.currentWeek = date.get(tempField);
 		
 		
-		
+		initAgenda();
 	}
 	
 	/*
