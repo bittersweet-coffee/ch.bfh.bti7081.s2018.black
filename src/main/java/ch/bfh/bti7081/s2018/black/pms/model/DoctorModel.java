@@ -9,7 +9,7 @@ import javax.persistence.*;
 public class DoctorModel {
 
 	@ Id
-	@ GeneratedValue
+	@ GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
 	@Column(nullable=false)
@@ -20,6 +20,14 @@ public class DoctorModel {
 	
 	@ManyToMany(mappedBy="doctors")
 	private List<PatientModel> patients;
+	
+	@ManyToMany
+    @JoinTable(name="doctor_appointment",
+        joinColumns=
+            @JoinColumn(name="doctor_id", referencedColumnName="id"),
+        inverseJoinColumns=
+            @JoinColumn(name="appointment_id", referencedColumnName="id"))
+	private List<Appointment> appointments;
 	
 	@OneToOne
 	@JoinColumn(name="user_id", nullable=false)

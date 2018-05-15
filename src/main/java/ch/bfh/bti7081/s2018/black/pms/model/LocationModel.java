@@ -9,7 +9,7 @@ import javax.persistence.*;
 public class LocationModel {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
 	private String name;
@@ -28,6 +28,9 @@ public class LocationModel {
 	
 	@OneToMany(mappedBy = "location")
 	private List<PatientModel> patients;
+	
+	@OneToMany(mappedBy = "location")
+	private List<Appointment> appointments;
 
 	public String getName() {
 		return name;
