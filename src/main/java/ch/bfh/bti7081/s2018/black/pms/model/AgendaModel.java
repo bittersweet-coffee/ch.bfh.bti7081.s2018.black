@@ -40,7 +40,7 @@ public class AgendaModel {
 	
 	public static void main(String [] args) {
 		AgendaModel model = new AgendaModel();
-		Appointment appointmentOne = new Appointment(LocalDate.of(2018, Month.MAY, 20), LocalTime.of(13, 30), LocalTime.of(15, 00), "My first Appointment");
+		//Appointment appointmentOne = new Appointment(LocalDate.of(2018, Month.MAY, 20), LocalTime.of(13, 30), LocalTime.of(15, 00), "My first Appointment");
 		
 		
 		
@@ -50,9 +50,9 @@ public class AgendaModel {
 		System.out.println("Current Year: " + model.currentYear);
 		System.out.println();
 		
-		System.out.println("Appointment Date: " + appointmentOne.getDateString());
-		System.out.println("Appointment StartTime: " + appointmentOne.getStartTimeString());
-		System.out.println("Appointment EndTime: " + appointmentOne.getEndTimeString());
+		//System.out.println("Appointment Date: " + appointmentOne.getDateString());
+		//System.out.println("Appointment StartTime: " + appointmentOne.getStartTimeString());
+		//System.out.println("Appointment EndTime: " + appointmentOne.getEndTimeString());
 		
 	}
 	
