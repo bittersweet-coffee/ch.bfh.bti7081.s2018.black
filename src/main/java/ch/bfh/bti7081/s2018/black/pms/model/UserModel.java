@@ -21,20 +21,6 @@ public class UserModel {
 	
 	@OneToOne(mappedBy="user")
 	private DoctorModel doctor;
-	
-	public UserModel() {}
-	
-	public UserModel(String name, String password, Date expiryDate, DoctorModel doctor) {
-		this.name = name;
-		this.password = password;
-		this.expiryDate = expiryDate;
-		this.doctor = doctor;
-	}
-	
-	public UserModel(String name, String password) {
-		this.name = name;
-		this.password = password;
-	}
 
 	public int getId() {
 		return id;

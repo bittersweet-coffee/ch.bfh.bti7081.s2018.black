@@ -18,11 +18,6 @@ public class AddictionModel {
 	@ManyToMany(mappedBy="addictions")
 	private List<PatientModel> patients;
 	
-	public AddictionModel(String description, List<PatientModel> patients) {
-		this.description = description;
-		this.patients = patients;
-	}
-	
 	public String getName() {
 		return name;
 	}

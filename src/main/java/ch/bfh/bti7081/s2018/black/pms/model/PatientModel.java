@@ -52,18 +52,6 @@ public class PatientModel {
 	@ManyToOne
 	@JoinColumn(name="location_id", nullable=false)
 	private LocationModel location;
-    
-	public PatientModel(String firstname, String lastname, String street, int postCode, String telephone,
-			List<DrugModel> drugs, List<AddictionModel> addictions, List<DoctorModel> doctors) {
-		this.firstname = firstname;
-		this.lastname = lastname;
-		this.street = street;
-		this.postCode = postCode;
-		this.telephone = telephone;
-		this.drugs = drugs;
-		this.addictions = addictions;
-		this.doctors = doctors;
-	}
 
 	public int getId() {
 		return id;

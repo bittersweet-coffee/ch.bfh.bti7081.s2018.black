@@ -25,12 +25,6 @@ public class DoctorModel {
 	@JoinColumn(name="user_id", nullable=false)
 	private UserModel user;
 	
-	public DoctorModel(String firstname, String lastname, List<PatientModel> patients) {
-		this.firstname = firstname;
-		this.lastname = lastname;
-		this.patients = patients;
-	}
-
 	public int getId() {
 		return id;
 	}

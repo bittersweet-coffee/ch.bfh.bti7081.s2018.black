@@ -28,16 +28,6 @@ public class LocationModel {
 	
 	@OneToMany(mappedBy = "location")
 	private List<PatientModel> patients;
-	
-	public LocationModel(String name, String street, int postCode, String place, String telephone, String email, List<PatientModel> patients) {
-		this.name = name;
-		this.street = street;
-		this.postCode = postCode;
-		this.place = place;
-		this.telephone = telephone;
-		this.email = email;
-		this.patients = patients;
-	}
 
 	public String getName() {
 		return name;

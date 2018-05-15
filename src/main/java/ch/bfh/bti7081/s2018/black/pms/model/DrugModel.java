@@ -16,11 +16,6 @@ public class DrugModel {
 	
     @ManyToMany(mappedBy="drugs")
 	private List<PatientModel> patients;
-    
-    public DrugModel(String name, List<PatientModel> patients) {
-    	this.name = name;
-    	this.patients = patients;
-    }
 
 	public int getId() {
 		return id;
