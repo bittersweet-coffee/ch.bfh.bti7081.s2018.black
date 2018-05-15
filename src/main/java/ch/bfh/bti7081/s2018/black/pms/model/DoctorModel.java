@@ -52,5 +52,28 @@ public class DoctorModel {
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
-	
+
+	public List<PatientModel> getPatients() {
+		return patients;
+	}
+
+	public void setPatients(List<PatientModel> patients) {
+		this.patients = patients;
+	}
+
+	public List<Appointment> getAppointments() {
+		return appointments;
+	}
+
+	public void setAppointments(List<Appointment> appointments) {
+		this.appointments = appointments;
+	}
+
+	public UserModel getUser() {
+		return user;
+	}
+
+	public void setUser(UserModel user) {
+		this.user = user;
+	}
 }

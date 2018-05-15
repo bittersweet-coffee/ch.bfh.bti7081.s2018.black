@@ -25,6 +25,8 @@ public class PatientModel {
 	
 	private String telephone;
 	
+	private String notice;
+	
 	@ManyToMany
     @JoinTable(name="patient_drug",
         joinColumns=
@@ -97,6 +99,14 @@ public class PatientModel {
 		this.postCode = postCode;
 	}
 
+	public String getNotice() {
+		return notice;
+	}
+
+	public void setNotice(String notice) {
+		this.notice = notice;
+	}
+
 	public String getTelephone() {
 		return telephone;
 	}
@@ -104,5 +114,44 @@ public class PatientModel {
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
 	}
-		
+
+	public List<DrugModel> getDrugs() {
+		return drugs;
+	}
+
+	public void setDrugs(List<DrugModel> drugs) {
+		this.drugs = drugs;
+	}
+
+	public List<AddictionModel> getAddictions() {
+		return addictions;
+	}
+
+	public void setAddictions(List<AddictionModel> addictions) {
+		this.addictions = addictions;
+	}
+
+	public List<DoctorModel> getDoctors() {
+		return doctors;
+	}
+
+	public void setDoctors(List<DoctorModel> doctors) {
+		this.doctors = doctors;
+	}
+
+	public List<Appointment> getAppointments() {
+		return appointments;
+	}
+
+	public void setAppointments(List<Appointment> appointments) {
+		this.appointments = appointments;
+	}
+
+	public LocationModel getLocation() {
+		return location;
+	}
+
+	public void setLocation(LocationModel location) {
+		this.location = location;
+	}
 }

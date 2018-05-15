@@ -29,4 +29,11 @@ public class DrugModel {
 		this.name = name;
 	}
 
+	public List<PatientModel> getPatients() {
+		return patients;
+	}
+
+	public void setPatients(List<PatientModel> patients) {
+		this.patients = patients;
+	}
 }

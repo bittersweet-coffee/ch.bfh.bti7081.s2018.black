@@ -23,7 +23,7 @@ public class LocationModel {
 	
 	private String telephone;
 	
-	@Column(name="`email`")
+	@Column
 	private String email;
 	
 	@OneToMany(mappedBy = "location")
@@ -31,6 +31,10 @@ public class LocationModel {
 	
 	@OneToMany(mappedBy = "location")
 	private List<Appointment> appointments;
+	
+	public int getId() {
+		return id;
+	}
 
 	public String getName() {
 		return name;
@@ -80,7 +84,19 @@ public class LocationModel {
 		this.email = email;
 	}
 
-	public int getId() {
-		return id;
+	public List<PatientModel> getPatients() {
+		return patients;
+	}
+
+	public void setPatients(List<PatientModel> patients) {
+		this.patients = patients;
+	}
+
+	public List<Appointment> getAppointments() {
+		return appointments;
+	}
+
+	public void setAppointments(List<Appointment> appointments) {
+		this.appointments = appointments;
 	}
 }

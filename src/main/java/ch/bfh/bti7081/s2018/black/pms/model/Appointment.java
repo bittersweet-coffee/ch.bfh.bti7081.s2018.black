@@ -27,6 +27,8 @@ public class Appointment {
 	@Column(name="end_time")
 	private LocalTime endTime;
 	
+	private String period;
+	
 	@Transient
 	private DateTimeFormatter dateFormatter;
 	@Transient
@@ -53,11 +55,23 @@ public class Appointment {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public String getDescription() {
+		return this.description;
+	}	
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
 	public LocalDate getDate() {
 		return this.date;
 	}
 	
+	public void setDate(LocalDate date) {
+		this.date = date;
+	}
+
 	public String getDateString() {
 		return dateFormatter.format(this.date);
 		
@@ -67,23 +81,56 @@ public class Appointment {
 		return timeFormatter.format(this.startTime);
 	}
 	
+	public void setStartTime(LocalTime startTime) {
+		this.startTime = startTime;
+	}
+
 	public String getEndTimeString() {
 		return timeFormatter.format(this.endTime);
 	}
 	
+	public void setEndTime(LocalTime endTime) {
+		this.endTime = endTime;
+	}
 	
 	public LocalTime getStartTime() {
 		return this.startTime;
 	}
 
-
 	public LocalTime getEndTime() {
 		return this.endTime;
 	}
 
+	public String getPeriod() {
+		return period;
+	}
 
-	public String getDescription() {
-		return this.description;
+	public void setPeriod(String period) {
+		this.period = period;
+	}
+
+	public List<PatientModel> getPatients() {
+		return patients;
+	}
+
+	public void setPatients(List<PatientModel> patients) {
+		this.patients = patients;
+	}
+
+	public List<DoctorModel> getDoctors() {
+		return doctors;
+	}
+
+	public void setDoctors(List<DoctorModel> doctors) {
+		this.doctors = doctors;
+	}
+
+	public LocationModel getLocation() {
+		return location;
+	}
+
+	public void setLocation(LocationModel location) {
+		this.location = location;
 	}
 	
 }

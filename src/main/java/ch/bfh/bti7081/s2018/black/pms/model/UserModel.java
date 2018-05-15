@@ -49,4 +49,12 @@ public class UserModel {
 	public void setExpiryDate(Date expiryDate) {
 		this.expiryDate = expiryDate;
 	}
+
+	public DoctorModel getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(DoctorModel doctor) {
+		this.doctor = doctor;
+	}
 }

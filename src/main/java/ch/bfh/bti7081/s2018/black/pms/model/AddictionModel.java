@@ -8,7 +8,8 @@ import javax.persistence.*;
 @Table(name="addiction")
 public class AddictionModel {
 
-	@Id @GeneratedValue
+	@Id 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
 	private String name;
@@ -17,7 +18,11 @@ public class AddictionModel {
 	
 	@ManyToMany(mappedBy="addictions")
 	private List<PatientModel> patients;
-	
+
+	public int getId() {
+		return id;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -32,5 +37,13 @@ public class AddictionModel {
 
 	public String getDescription() {
 		return description;
+	}
+	
+	public List<PatientModel> getPatients() {
+		return patients;
+	}
+
+	public void setPatients(List<PatientModel> patients) {
+		this.patients = patients;
 	}
 }
