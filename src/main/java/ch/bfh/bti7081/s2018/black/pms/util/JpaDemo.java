@@ -10,18 +10,18 @@ public class JpaDemo {
 		EntityManager entityManager = JpaUtility.getEntityManager();	
 		entityManager.getTransaction().begin();
 		UserModel user = new UserModel();
-		user.setName("toni");
-		user.setPassword("test");
-		//entityManager.persist(user);
-		//entityManager.getTransaction().commit();
-		//entityManager.close();
+		user.setName("toni3");
+		user.setPassword("test3");
+		entityManager.persist(user);
+		entityManager.getTransaction().commit();
+		entityManager.close();
 		//JpaUtility.close();		
 		//System.out.println("Entity saved.");
 		
 		entityManager = JpaUtility.getEntityManager();	
-		UserModel user_test = entityManager.find(UserModel.class, new Integer(2));
+		UserModel user_test = entityManager.find(UserModel.class, new Integer(3));
 		System.out.println("Name:"+ user_test.getName()+", Password:"+ user_test.getPassword());
-		JpaUtility.close();		
+		entityManager.close();		
 		System.out.println("Done");
 	}
 
