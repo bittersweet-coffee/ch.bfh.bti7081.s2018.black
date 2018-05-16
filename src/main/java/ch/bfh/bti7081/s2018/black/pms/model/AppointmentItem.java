@@ -1,24 +1,29 @@
 package ch.bfh.bti7081.s2018.black.pms.model;
 
 
-import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 import org.vaadin.addon.calendar.item.BasicItem;
+
+import com.vaadin.icons.VaadinIcons;
 
 public class AppointmentItem extends BasicItem {
 
 	private final Appointment appointment;
 	
-	
-	
-	
 	public AppointmentItem(Appointment appointment) {
-        super(appointment.getTitle(), appointment.getDescription(), appointment.getStart(), appointment.getEnd());
+        super();
         this.appointment = appointment;
+        if (appointment.getTitle() != null) {
+        	setCaption(appointment.getTitle());
+        }
+        if (appointment.getDescription() != null) {
+        	setCaption(appointment.getDescription());
+        }
+        setStart(ZonedDateTime.of(appointment.getStart(), ZoneId.systemDefault()));
+        setEnd(ZonedDateTime.of(appointment.getEnd(), ZoneId.systemDefault()));
 	}
-	
-	
 	
 	
 	
@@ -57,17 +62,36 @@ public class AppointmentItem extends BasicItem {
 	}
 	
 	
-	   @Override
-		public void setEnd(ZonedDateTime end) {
-		   this.appointment.setEndTime(LocalTime.of(end.getHour(), end.getMinute(), end.getSecond()));
-		   super.setEnd(end);
-		}
+	@Override
+	public void setEnd(ZonedDateTime end) {
+		appointment.setEnd(end.toLocalDateTime());
+		super.setEnd(end);
+	}
 
-		@Override
-		public void setStart(ZonedDateTime start) {
-			this.appointment.setStartTime(LocalTime.of(start.getHour(), start.getMinute(), start.getSecond()));
-			super.setStart(start);
-		}
+	@Override
+	public void setStart(ZonedDateTime start) {
+		appointment.setStart(start.toLocalDateTime());
+		super.setStart(start);
+	}
+	
+	@Override
+    public String getDateCaptionFormat() {
+        //return CalendarItem.RANGE_TIME;
+        return VaadinIcons.CLOCK.getHtml()+" %s<br>" +
+               VaadinIcons.ARROW_CIRCLE_RIGHT_O.getHtml()+" %s";
+	}
+	
+	@Override
+	public void setCaption(String caption) {
+		appointment.setTitle(caption);
+		super.setCaption(caption);
+	}
+	
+	@Override
+	public void setDescription(String description) {
+		appointment.setDescription(description);
+		super.setDescription(description);
+	}
 	
 	
 }
