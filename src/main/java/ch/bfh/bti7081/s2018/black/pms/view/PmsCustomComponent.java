@@ -46,6 +46,7 @@ public class PmsCustomComponent extends CustomComponent {
     	logoutItem.setStyleName("main-menubar-logout");
     	
     	HorizontalLayout contentBody = new HorizontalLayout();
+    	contentBody.setSizeFull();
         contentBody.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
         contentBody.addComponent(contentPanel);
 

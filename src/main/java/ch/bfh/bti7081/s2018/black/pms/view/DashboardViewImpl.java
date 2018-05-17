@@ -73,6 +73,7 @@ public class DashboardViewImpl extends PmsCustomComponent implements View, Dashb
         tileGrid.addComponent(reportIcon, 1, 1);
         tileGrid.addComponent(addictionIcon, 2, 1);
         
+        super.contentPanel.setSizeUndefined();
         super.contentPanel.setContent(tileGrid);
         
         //EntityManagerFactory entityManagerFactory;

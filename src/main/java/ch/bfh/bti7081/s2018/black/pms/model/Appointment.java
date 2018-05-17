@@ -1,10 +1,8 @@
 package ch.bfh.bti7081.s2018.black.pms.model;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,7 +12,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
 
 @Entity
 @Table(name="appointment")
@@ -28,13 +25,9 @@ public class Appointment {
 
 	private String description;
 
-	private LocalDate date;
-	
-	@Column(name="start_time")
-	private LocalTime startTime; 
-	
-	@Column(name="end_time")
-	private LocalTime endTime;
+	private LocalDateTime start;
+
+	private LocalDateTime end;
 	
 	private String period;
 	
@@ -52,6 +45,14 @@ public class Appointment {
 	@ManyToOne
 	@JoinColumn(name="location_id", nullable=false)
 	private LocationModel location;
+
+	public Appointment() {
+	}
+	
+	public Appointment(LocalDateTime start, LocalDateTime end) {
+		this.start = start;
+		this.end = end;
+	}
 	
 	public int getId() {
 		return id;
@@ -73,41 +74,20 @@ public class Appointment {
 		this.description = description;
 	}
 
-	public LocalDate getDate() {
-		return this.date;
-	}
-	
-	public void setDate(LocalDate date) {
-		this.date = date;
+	public LocalDateTime getStart() {
+		return start;
 	}
 
-	public String getDateString() {
-		return dateFormatter.format(this.date);
-		
+	public void setStart(LocalDateTime start) {
+		this.start = start;
 	}
 
-	public String getStartTimeString() {
-		return timeFormatter.format(this.startTime);
-	}
-	
-	public void setStartTime(LocalTime startTime) {
-		this.startTime = startTime;
+	public LocalDateTime getEnd() {
+		return end;
 	}
 
-	public String getEndTimeString() {
-		return timeFormatter.format(this.endTime);
-	}
-	
-	public void setEndTime(LocalTime endTime) {
-		this.endTime = endTime;
-	}
-	
-	public LocalTime getStartTime() {
-		return this.startTime;
-	}
-
-	public LocalTime getEndTime() {
-		return this.endTime;
+	public void setEnd(LocalDateTime end) {
+		this.end = end;
 	}
 
 	public String getPeriod() {
@@ -141,5 +121,4 @@ public class Appointment {
 	public void setLocation(LocationModel location) {
 		this.location = location;
 	}
-	
 }

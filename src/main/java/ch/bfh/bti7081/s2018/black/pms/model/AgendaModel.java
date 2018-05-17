@@ -2,14 +2,17 @@ package ch.bfh.bti7081.s2018.black.pms.model;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.Month;
 import java.time.temporal.TemporalField;
 import java.time.temporal.WeekFields;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class AgendaModel {
 	
+	private List<Appointment> appointments = new ArrayList<Appointment>();
+	private AppointmentDataProvider eventProvider = new AppointmentDataProvider();
+
 	private final DayOfWeek firstDayOfWeek;
 	private final WeekFields weekFields;
 	private final Locale germanyLocale;
@@ -20,7 +23,6 @@ public class AgendaModel {
 	private int currentWeek;
 	private int currentMonth;
 	private int currentYear;
-	
 	
 	public AgendaModel() {
 		this.germanyLocale = Locale.GERMANY;
@@ -33,45 +35,31 @@ public class AgendaModel {
 		this.currentYear = date.getYear();
 		this.currentMonth = date.getMonthValue();
 		this.currentWeek = date.get(tempField);
-		
-		
-		
 	}
-	
-	public static void main(String [] args) {
-		AgendaModel model = new AgendaModel();
-		//Appointment appointmentOne = new Appointment(LocalDate.of(2018, Month.MAY, 20), LocalTime.of(13, 30), LocalTime.of(15, 00), "My first Appointment");
-		
-		
-		
-		System.out.println("FirstDayOfWeek: " + model.firstDayOfWeek);
-		System.out.println("Current Week: " + model.currentWeek);
-		System.out.println("Current Month: " + model.currentMonth);
-		System.out.println("Current Year: " + model.currentYear);
-		System.out.println();
-		
-		//System.out.println("Appointment Date: " + appointmentOne.getDateString());
-		//System.out.println("Appointment StartTime: " + appointmentOne.getStartTimeString());
-		//System.out.println("Appointment EndTime: " + appointmentOne.getEndTimeString());
-		
-	}
-	
 	
 	public void nextWeek() {
 		this.currentWeek ++;
 	}
 	
-	public void prevWeek() {
-		this.currentWeek --;
+	public List<Appointment> getAppointments() {
+		return appointments;
 	}
-	
-	public void nextMonth() {
-		this.currentMonth++;
-	}
-	
-	public void prevMonth() {
-		this.currentMonth --;
-	}
-	
 
+	public void setAppointments(List<Appointment> appointments) {
+		this.appointments = appointments;
+	}
+
+	public void addAppointment(AppointmentItem appointmentItem) {
+		if(!eventProvider.containsEvent(appointmentItem)) {
+			eventProvider.addItem(appointmentItem);
+		}
+	}
+
+	public AppointmentDataProvider getEventProvider() {
+		return eventProvider;
+	}
+
+	public void setEventProvider(AppointmentDataProvider eventProvider) {
+		this.eventProvider = eventProvider;
+	}
 }

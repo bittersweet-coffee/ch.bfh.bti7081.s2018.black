@@ -10,6 +10,9 @@ import com.vaadin.navigator.PushStateNavigation;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
+
+import ch.bfh.bti7081.s2018.black.pms.model.AgendaModel;
+import ch.bfh.bti7081.s2018.black.pms.presenter.AgendaPresenter;
 import ch.bfh.bti7081.s2018.black.pms.view.*;
 
 // Load the default mytheme which also includes the Valo theme
@@ -33,6 +36,10 @@ public class Main extends UI {
     	DashboardViewImpl dashboardView = new DashboardViewImpl();
     	PatientViewImpl patientView = new PatientViewImpl();
     	ReportViewImpl reportView = new ReportViewImpl();
+    	
+    	AgendaModel agendaModel = new AgendaModel();
+    	
+    	new AgendaPresenter(agendaView, agendaModel);
 
     	Navigator navigator = new Navigator(this, this);
     	navigator.addView(DashboardViewImpl.NAME, dashboardView);
