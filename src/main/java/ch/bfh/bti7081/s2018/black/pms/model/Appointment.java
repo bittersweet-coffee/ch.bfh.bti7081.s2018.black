@@ -1,24 +1,77 @@
 package ch.bfh.bti7081.s2018.black.pms.model;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
-import org.vaadin.addon.calendar.item.BasicItem;
-
+@Entity
+@Table(name="appointment")
 public class Appointment {
 
-	private LocalDateTime start;
-	private LocalDateTime end;
-	private String title;
-	private String description;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 	
+	private String name;
+
+	private String description;
+
+	private LocalDateTime start;
+
+	private LocalDateTime end;
+	
+	private String period;
+	
+	@Transient
+	private DateTimeFormatter dateFormatter;
+	@Transient
+	private DateTimeFormatter timeFormatter;
+	
+	@ManyToMany(mappedBy="appointments")
+	private List<PatientModel> patients;
+	
+	@ManyToMany(mappedBy="appointments")
+	private List<DoctorModel> doctors;
+	
+	@ManyToOne
+	@JoinColumn(name="location_id", nullable=false)
+	private LocationModel location;
+
 	public Appointment() {
-		
 	}
 	
 	public Appointment(LocalDateTime start, LocalDateTime end) {
 		this.start = start;
 		this.end = end;
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getDescription() {
+		return this.description;
+	}	
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public LocalDateTime getStart() {
@@ -37,21 +90,35 @@ public class Appointment {
 		this.end = end;
 	}
 
-	public String getTitle() {
-		return title;
+	public String getPeriod() {
+		return period;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setPeriod(String period) {
+		this.period = period;
 	}
 
-	public String getDescription() {
-		return description;
+	public List<PatientModel> getPatients() {
+		return patients;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setPatients(List<PatientModel> patients) {
+		this.patients = patients;
 	}
-	
-	
+
+	public List<DoctorModel> getDoctors() {
+		return doctors;
+	}
+
+	public void setDoctors(List<DoctorModel> doctors) {
+		this.doctors = doctors;
+	}
+
+	public LocationModel getLocation() {
+		return location;
+	}
+
+	public void setLocation(LocationModel location) {
+		this.location = location;
+	}
 }

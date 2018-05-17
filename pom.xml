@@ -17,6 +17,9 @@
 		<vaadin.version>8.4.0</vaadin.version>
 		<vaadin.plugin.version>8.4.0</vaadin.plugin.version>
 		<jetty.plugin.version>9.3.9.v20160517</jetty.plugin.version>
+		<hibernate.core.version>5.2.17.Final</hibernate.core.version>
+		<!-- Starting with version 1.4.197 H2 includes multi java version builds, which breaks a lot of stuff! -->
+		<h2.db.version>1.4.196</h2.db.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -26,8 +29,8 @@
 
 	<repositories>
 		<repository>
-			<id>vaadin-addons</id>
 			<url>http://maven.vaadin.com/vaadin-addons</url>
+			<id>vaadin-addons</id>
 		</repository>
 	</repositories>
 
@@ -70,6 +73,16 @@
 			<groupId>org.vaadin.blackbluegl</groupId>
   			<artifactId>calendar-component</artifactId>
   			<version>2.0-BETA3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>${h2.db.version}</version>
 		</dependency>
 	</dependencies>
 

@@ -1,11 +1,17 @@
 package ch.bfh.bti7081.s2018.black.pms.view;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.UI;
+
+import ch.bfh.bti7081.s2018.black.pms.util.JpaDemo;
+import ch.bfh.bti7081.s2018.black.pms.util.JpaUtility;
 
 public class DashboardViewImpl extends PmsCustomComponent implements View, DashboardView {
 	
@@ -69,5 +75,9 @@ public class DashboardViewImpl extends PmsCustomComponent implements View, Dashb
         
         super.contentPanel.setSizeUndefined();
         super.contentPanel.setContent(tileGrid);
+        
+        //EntityManagerFactory entityManagerFactory;
+		//entityManagerFactory = Persistence.createEntityManagerFactory("PMS");
+		JpaDemo.test();
 	}
 }
