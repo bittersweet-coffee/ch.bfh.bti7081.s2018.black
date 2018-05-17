@@ -10,18 +10,16 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name="addiction")
-public class AddictionModel {
-
-	@Id 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-
-	private String name;
-
-	private String description;
+@Table(name="drug")
+public class DrugModel {
 	
-	@ManyToMany(mappedBy="addictions")
+	@ Id
+	@ GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+	
+	private String name;
+	
+    @ManyToMany(mappedBy="drugs")
 	private List<PatientModel> patients;
 
 	public int getId() {
@@ -31,19 +29,11 @@ public class AddictionModel {
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-	
 	public List<PatientModel> getPatients() {
 		return patients;
 	}
