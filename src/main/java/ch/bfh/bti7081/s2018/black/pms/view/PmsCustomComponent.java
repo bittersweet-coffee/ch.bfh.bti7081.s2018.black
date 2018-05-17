@@ -2,6 +2,7 @@ package ch.bfh.bti7081.s2018.black.pms.view;
 
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.MenuBar;
@@ -45,6 +46,10 @@ public class PmsCustomComponent extends CustomComponent {
     	logoutItem.setDescription("Logout");
     	logoutItem.setStyleName("main-menubar-logout");
     	
+    	//Make BreadCrumb Object and add it to the Vertical Layout content
+    	BreadCrumbs bC = new BreadCrumbs();
+    	Component breadCrumb = bC.getContent();
+    	
     	HorizontalLayout contentBody = new HorizontalLayout();
         contentBody.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
         contentBody.addComponent(contentPanel);
@@ -52,7 +57,7 @@ public class PmsCustomComponent extends CustomComponent {
         VerticalLayout content = new VerticalLayout();
 		content.setSizeFull();
 		content.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
-		content.addComponents(menuBar, contentBody);
+		content.addComponents(menuBar,breadCrumb , contentBody);
 		
 		setCompositionRoot(content);
 	}

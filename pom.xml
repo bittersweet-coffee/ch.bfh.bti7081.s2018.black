@@ -5,7 +5,6 @@
 
 	<groupId>ch.bfh.bti7081.s2018.black</groupId>
 	<artifactId>pms</artifactId>
-	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>pms</name>
 
@@ -65,6 +64,11 @@
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-themes</artifactId>
+		</dependency>
+		<dependency>
+   			<groupId>com.vaadin.addon</groupId>
+   			<artifactId>breadcrumb</artifactId>
+   			<version>2.0.0</version>
 		</dependency>
 	</dependencies>
 
@@ -170,4 +174,5 @@
 		</profile>
 	</profiles>
 
+	<packaging>war</packaging>
 </project>
