@@ -51,4 +51,11 @@ public class AddictionModel {
 	public void setPatients(List<PatientModel> patients) {
 		this.patients = patients;
 	}
+
+	@Override
+	public String toString() {
+		return this.getName();
+	}
+	
+	
 }
