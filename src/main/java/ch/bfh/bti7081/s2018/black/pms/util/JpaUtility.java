@@ -37,19 +37,20 @@ public class JpaUtility {
 	// Source: http://www.copypasteisforword.com/notes/lambda-expressions-in-java
 	// Author: enrique
 	// Date: 16.05.2018
-	public static <T> void persist(T object) {
+	public <T> T execute(ABlockOfCode<T> aBlockOfCode) {
 		EntityManager entityManager = JpaUtility.getEntityManager();	
 		EntityTransaction transaction = null;
 		try {
 			transaction = entityManager.getTransaction();
 			transaction.begin();
-			entityManager.persist(object);
+			T returnValue = aBlockOfCode.execute(entityManager);
 			transaction.commit();
-		
+			return returnValue;
 		} catch (Exception e) {
 			if (transaction != null) {
 				transaction.rollback();
 			}
+		    throw new RuntimeException(e);
 		} finally {
 			entityManager.close();
 		}

@@ -23,7 +23,7 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
         
         UserModel user = new UserModel();
         user.setName("Test generic");
-        JpaUtility.persist(user);
+        //JpaUtility.persist(user);
         JpaDemo.testUser();
 	}
 }

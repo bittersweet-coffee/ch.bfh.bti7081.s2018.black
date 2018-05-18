@@ -7,7 +7,7 @@ import ch.bfh.bti7081.s2018.black.pms.model.UserModel;
 
 public class JpaDemo {
 	
-	public static void test() {
+	/*public static void test() {
 		EntityManager entityManager = JpaUtility.getEntityManager();	
 		entityManager.getTransaction().begin();
 		UserModel user = new UserModel();
@@ -24,7 +24,7 @@ public class JpaDemo {
 		System.out.println("Name:"+ user_test.getName()+", Password:"+ user_test.getPassword());
 		entityManager.close();		
 		System.out.println("Done");
-	}
+	}*/
 	
 	public static void testUser() {	
 		EntityManager entityManager = JpaUtility.getEntityManager();	
@@ -39,7 +39,7 @@ public class JpaDemo {
 		AddictionModel addiction = entityManager.find(AddictionModel.class, new Integer(1));
 		System.out.println("Name: "+ addiction.getName() + " " + "Descritpion: " + addiction.getDescription());
 		entityManager.close();		
-		System.out.println("Done");
+		//System.out.println("Done");
 	}
 
 	public static void main(String[] args) {

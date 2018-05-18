@@ -3,9 +3,6 @@ package ch.bfh.bti7081.s2018.black.pms.model;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -15,12 +12,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="doctor")
-public class DoctorModel {
+public class DoctorModel extends EntityModel {
 
-	@ Id
-	@ GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	
 	@Column(nullable=false)
 	private String firstname;
 	
@@ -42,10 +35,6 @@ public class DoctorModel {
 	@JoinColumn(name="user_id", nullable=false)
 	private UserModel user;
 	
-	public int getId() {
-		return id;
-	}
-
 	public String getFirstname() {
 		return firstname;
 	}

@@ -75,9 +75,5 @@ public class DashboardViewImpl extends PmsCustomComponent implements View, Dashb
         
         super.contentPanel.setSizeUndefined();
         super.contentPanel.setContent(tileGrid);
-        
-        //EntityManagerFactory entityManagerFactory;
-		//entityManagerFactory = Persistence.createEntityManagerFactory("PMS");
-		JpaDemo.test();
 	}
 }

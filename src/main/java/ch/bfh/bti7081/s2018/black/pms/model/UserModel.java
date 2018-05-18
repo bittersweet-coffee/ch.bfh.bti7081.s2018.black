@@ -3,19 +3,12 @@ package ch.bfh.bti7081.s2018.black.pms.model;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="user")
-public class UserModel {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+public class UserModel extends EntityModel {
 	
 	private String name;
 	
@@ -26,10 +19,6 @@ public class UserModel {
 	
 	@OneToOne(mappedBy="user")
 	private DoctorModel doctor;
-
-	public int getId() {
-		return id;
-	}
 
 	public String getName() {
 		return name;
