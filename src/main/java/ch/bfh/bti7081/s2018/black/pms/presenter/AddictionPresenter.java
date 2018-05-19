@@ -49,16 +49,26 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 		
 		
         AddictionModel addictAlc = new AddictionModel();
-        addictAlc.setName("Alcohol Addiction");
+        addictAlc.setName("Alcoholism");
         addictAlc.setDescription("Alcoholism, also known as alcohol use disorder (AUD), is a broad term for any drinking of alcohol that results in mental or physical health problems. The disorder was previously divided into two types: alcohol abuse and alcohol dependence. In a medical context, alcoholism is said to exist when two or more of the following conditions is present: a person drinks large amounts over a long time period, has difficulty cutting down, acquiring and drinking alcohol takes up a great deal of time, alcohol is strongly desired, usage results in not fulfilling responsibilities, usage results in social problems, usage results in health problems, usage results in risky situations, withdrawal occurs when stopping, and alcohol tolerance has occurred with use.");
         
+        List<String> additionals = new LinkedList<>();
+        additionals.add("- Drinks large amounts over a long period");
+        additionals.add("- difficulty cutting down");
+        additionals.add("- acquiring and drinking alcohol takes up a lot of time");
+        additionals.add("- usage results in problems");
+        additionals.add("- withdrawal occurs when stopping");
+        additionals.add("- alcohol tolerance has occurred");
+        
+        addictAlc.setSymptoms(additionals);
+        
         AddictionModel addictCocaine = new AddictionModel();
-        addictCocaine.setName("Cocaine Addiction");
-        addictCocaine.setDescription("Massive Cocaine Consumption");
+        addictCocaine.setName("Cocaine Dependence");
+        addictCocaine.setDescription("Cocaine dependence is a psychological desire to use cocaine regularly. Cocaine overdose may result in cardiovascular and brain damage, such as: constricting blood vessels in the brain, causing strokes and constricting arteries in the heart; causing heart attacks. The use of cocaine creates euphoria and high amounts of energy. If taken in large, unsafe doses, it is possible to cause mood swings, paranoia, insomnia, psychosis, high blood pressure, a fast heart rate, panic attacks, cognitive impairments and drastic changes in personality.");
         
         AddictionModel addictNicotine = new AddictionModel();
-        addictNicotine.setName("Nicotine Addiction");
-        addictNicotine.setDescription("Massive Cigarette Consumption");
+        addictNicotine.setName("Nicotine Dependence");
+        addictNicotine.setDescription("Nicotine dependence, or tobacco use disorder, is a state of dependence upon nicotine. There are different ways of measuring nicotine dependence.");
         
         this.addictList.add(addictAlc);
         this.addictList.add(addictCocaine);
@@ -72,14 +82,13 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 	@Override
 	public void selectListChanged(String addictionName) {
 		
-		Optional<String> optionalDesc = this.addictList.stream()
+		Optional<AddictionModel> optionalAddict = this.addictList.stream()
 			.filter(addict -> addict.getName().equals(addictionName))
-			.map(AddictionModel::getDescription)
 			.findFirst();
 			
-		if(optionalDesc.isPresent()) {
-			String desc = optionalDesc.get();
-			this.view.setListDesc(desc);
+		if(optionalAddict.isPresent()) {
+			this.view.setListDesc(optionalAddict.get().getDescription());
+			this.view.setListSymptoms(optionalAddict.get().getSymptomsAsString());
 		}
 		
 		

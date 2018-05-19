@@ -15,4 +15,5 @@ public interface AddictionView {
 	public void addListener(AddictionViewListener listener);
 	public void setMockListNames(List<String> mockListNames);
 	public void setListDesc(String desc);
+	public void setListSymptoms(String symptoms);
 }

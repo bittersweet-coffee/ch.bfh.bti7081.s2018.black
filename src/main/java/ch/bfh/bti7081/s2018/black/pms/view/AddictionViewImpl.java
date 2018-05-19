@@ -27,9 +27,9 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 	
 	private List<String> mockListNames = new LinkedList<>();
 	
-	private Label lblAddictNameTitle, lblAddictDescTitle, lblAddictName;
+	private Label lblAddictNameTitle, lblAddictDescTitle, lblAddictName, lblSymptoms;
 	
-	private TextArea txtAddictDesc;
+	private TextArea txtAddictDesc, txtSymptoms;
 
 	public AddictionViewImpl() {
 		super();
@@ -42,7 +42,6 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         HorizontalLayout searchLayout = new HorizontalLayout();
         searchLayout.addComponents(txtSearch, btnSearch);
         searchLayout.setComponentAlignment(btnSearch, Alignment.BOTTOM_CENTER);
-        searchLayout.setMargin(new MarginInfo(false, false, true, false));
         
         HorizontalLayout hLayout = new HorizontalLayout();
         
@@ -54,12 +53,25 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         this.lblAddictNameTitle = new Label("Name:");
         this.lblAddictDescTitle = new Label("Description:");
         this.lblAddictName = new Label("Test");
+        this.lblSymptoms = new Label("Symptoms:");
+        
         this.txtAddictDesc = new TextArea();
-        addictDetails.addComponents(lblAddictNameTitle, lblAddictName, lblAddictDescTitle, txtAddictDesc);
+        this.txtAddictDesc.setWidth("100%");
+        this.txtAddictDesc.setReadOnly(true);
+        
+        this.txtSymptoms = new TextArea();
+        this.txtSymptoms.setWidth("100%");
+        this.txtSymptoms.setReadOnly(true);
+        
+        addictDetails.addComponents(lblAddictNameTitle, lblAddictName, lblAddictDescTitle, txtAddictDesc, lblSymptoms, txtSymptoms);
         
         Button btnAddTo = new Button("Add To");
+        btnAddTo.setEnabled(false);
         
         hLayout.addComponents(addictList, addictDetails, btnAddTo);
+        hLayout.setWidth("100%");
+        hLayout.setComponentAlignment(btnAddTo, Alignment.BOTTOM_RIGHT);
+        hLayout.setComponentAlignment(addictList, Alignment.MIDDLE_LEFT);
         
         VerticalLayout vLayout = new VerticalLayout();
         vLayout.addComponents(searchLayout, hLayout);
@@ -84,6 +96,7 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         		listener.selectListChanged(addictList.getSelectedItems().iterator().next());
 			
 			lblAddictName.setValue(selected.getValue().iterator().next());
+			btnAddTo.setEnabled(true);
 		});
 		
         //JpaUtility.persist(addiction);
@@ -103,6 +116,11 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 	@Override
 	public void setListDesc(String desc) {
 		this.txtAddictDesc.setValue(desc);
+	}
+
+	@Override
+	public void setListSymptoms(String symptoms) {
+		this.txtSymptoms.setValue(symptoms);
 	}
 
 	

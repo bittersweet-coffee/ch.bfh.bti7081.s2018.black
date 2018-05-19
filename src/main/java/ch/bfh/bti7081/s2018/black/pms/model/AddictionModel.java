@@ -1,5 +1,6 @@
 package ch.bfh.bti7081.s2018.black.pms.model;
 
+import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,11 +22,11 @@ public class AddictionModel {
 
 	private String description;
 	
-	private List<String> symptoms;
+	private List<String> symptoms = new LinkedList<>();
 	
-	private List<String> treatments;
+	private List<String> treatments = new LinkedList<>();;
 	
-	private List<String> clinics;
+	private List<String> clinics = new LinkedList<>();;
 	
 	@ManyToMany(mappedBy="addictions")
 	private List<PatientModel> patients;
@@ -62,12 +63,32 @@ public class AddictionModel {
 		return this.symptoms;
 	}
 	
+	public String getSymptomsAsString() {
+		String symptomString = "";
+		for (String symptom : this.symptoms) {
+			symptomString = symptomString.concat(symptom + "\n\n");
+		}
+		return symptomString.substring(0, symptomString.length()-2);
+	}
+	
+	public void setSymptoms(List<String> symptoms) {
+		this.symptoms = symptoms;
+	}
+	
 	public List<String> getTreatments() {
 		return this.treatments;
 	}
 	
+	public void setTreatments(List<String> treatments) {
+		this.treatments = treatments;
+	}
+	
 	public List<String> getClinics() {
 		return this.clinics;
+	}
+	
+	public void setClinics(List<String> clinics) {
+		this.clinics = clinics;
 	}
 
 	@Override
