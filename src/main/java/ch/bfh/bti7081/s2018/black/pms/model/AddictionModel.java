@@ -21,6 +21,12 @@ public class AddictionModel {
 
 	private String description;
 	
+	private List<String> symptoms;
+	
+	private List<String> treatments;
+	
+	private List<String> clinics;
+	
 	@ManyToMany(mappedBy="addictions")
 	private List<PatientModel> patients;
 
@@ -50,6 +56,18 @@ public class AddictionModel {
 
 	public void setPatients(List<PatientModel> patients) {
 		this.patients = patients;
+	}
+	
+	public List<String> getSymptoms() {
+		return this.symptoms;
+	}
+	
+	public List<String> getTreatments() {
+		return this.treatments;
+	}
+	
+	public List<String> getClinics() {
+		return this.clinics;
 	}
 
 	@Override
