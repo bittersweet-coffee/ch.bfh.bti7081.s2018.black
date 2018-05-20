@@ -7,13 +7,15 @@ public interface AddictionView {
 	
 	public interface AddictionViewListener {
 		void searchButtonClicked(String searchTerm);
-		void addToButtonClicked(String addictionName);
+		void addToButtonClicked();
+		void allocateButtonClicked(String addictionName, String patientName);
 		void selectListChanged(String addictionName);
 		
 	}
 	
 	public void addListener(AddictionViewListener listener);
-	public void setupNativeList(List<String> mockListNames);
+	public void setupAddictList(List<String> addictionList);
 	public void setListDesc(String desc);
 	public void setListSymptoms(String symptoms);
+	public void setupPatientList(List<String> patientList);
 }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.vaadin.event.ShortcutAction;
+import com.vaadin.event.ShortcutListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.MarginInfo;
@@ -23,7 +25,9 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 	
 	private List<AddictionViewListener> listeners = new ArrayList<AddictionViewListener>();
 	
-	private List<String> mockListNames = new LinkedList<>();
+	private List<String> addictionList = new LinkedList<>();
+	
+	private List<String> patientList = new LinkedList<>();
 	
 	private Label lblAddictNameTitle, lblAddictDescTitle, lblAddictName, lblSymptoms;
 	
@@ -113,27 +117,54 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         
         
         btnSearch.addClickListener(click -> {
+        	if(this.nativeAddict.getSelectedItem().isPresent()) this.nativeAddict.setSelectedItem(null);
+        	btnAddTo.setEnabled(false);
+        	this.lblAddictName.setValue("");
+        	this.txtAddictDesc.setValue("");
+        	this.txtSymptoms.setValue("");
         	for (AddictionViewListener listener: listeners)
         		listener.searchButtonClicked(txtSearch.getValue());
+        	
         });
         
         btnAddTo.addClickListener(click -> {
-        	for (AddictionViewListener listener: listeners)
-        		listener.addToButtonClicked(nativeAddict.getSelectedItem().get());
+			for (AddictionViewListener listener: listeners)
+        		listener.addToButtonClicked();
         	
         	super.contentPanel.getUI().getUI().addWindow(windowPatient);
-        	lblSelectedAddict.setValue("Selected Addiction: " + nativeAddict.getSelectedItem().get());
+        	lblSelectedAddict.setValue("Selected Addiction: " + this.nativeAddict.getSelectedItem().get());
+        	nativePatient.setItems(this.patientList);
         	
         });
     
-		nativeAddict.addValueChangeListener(selected -> {
-			for (AddictionViewListener listener: listeners)
-        		listener.selectListChanged(nativeAddict.getSelectedItem().get());
+		this.nativeAddict.addValueChangeListener(selected -> {
+			for (AddictionViewListener listener: listeners) {
+        		if(this.nativeAddict.getSelectedItem().isPresent()) {
+        			listener.selectListChanged(this.nativeAddict.getSelectedItem().get());
+        			this.lblAddictName.setValue(selected.getValue());
+        		}
+			}	
 			
-			lblAddictName.setValue(selected.getValue());
+			
 			btnAddTo.setEnabled(true);
 		});
+		
+		btnPatient.addClickListener(click -> {
+			for (AddictionViewListener listener: listeners)
+        		listener.allocateButtonClicked(nativeAddict.getSelectedItem().get(), nativePatient.getSelectedItem().get());
+		});
+		
+		ShortcutListener enterSearchListener = new ShortcutListener("Enter Search Listener", ShortcutAction.KeyCode.ENTER, null) {
+			@Override
+			public void handleAction(Object sender, Object target) {
+				btnSearch.click();
+			}
+		};
+		
+		txtSearch.addShortcutListener(enterSearchListener);
+		btnSearch.addShortcutListener(enterSearchListener);
 	}
+	
 
 	@Override
 	public void addListener(AddictionViewListener listener) {
@@ -141,8 +172,8 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 	}
 
 	@Override
-	public void setupNativeList(List<String> mockListNames) {
-		this.nativeAddict.setItems(mockListNames);
+	public void setupAddictList(List<String> addictionList) {
+		this.nativeAddict.setItems(addictionList);
 	}
 
 	@Override
@@ -153,6 +184,12 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 	@Override
 	public void setListSymptoms(String symptoms) {
 		this.txtSymptoms.setValue(symptoms);
+	}
+
+	@Override
+	public void setupPatientList(List<String> patientList) {
+		this.patientList = patientList;
+		
 	}
 
 	

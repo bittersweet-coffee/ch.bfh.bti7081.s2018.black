@@ -21,7 +21,7 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 		this.addictList = new LinkedList<>();
 		view.addListener(this);
 		this.setupMockList();
-		this.view.setupNativeList(mockListNames);
+		this.view.setupAddictList(mockListNames);
 	}
 
 
@@ -29,30 +29,46 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 	public void searchButtonClicked(String searchTerm) {
 		
 		List<String> optionalAddict = this.addictList.stream()
-				.filter(addict -> addict.getName().contains(searchTerm))
+				.filter(addict -> addict.getName().toLowerCase().contains(searchTerm.toLowerCase()))
 				.map(AddictionModel::getName)
 				.collect(Collectors.toList());
 				
-		this.view.setupNativeList(optionalAddict);
+		this.view.setupAddictList(optionalAddict);
 		
 	}
 
 
 	@Override
-	public void addToButtonClicked(String addictionName) {
+	public void addToButtonClicked() {
+		
+		List<String> patientList = new LinkedList<>();
+		patientList.add("Toni Donato");
+		patientList.add("Nico Schlup");
+		patientList.add("Cederik Bielmann");
+		patientList.add("Michi Hofer");
+		patientList.add("Jan Henzi");
+		
+		this.view.setupPatientList(patientList);
+		
+	}
+	
+	@Override
+	public void allocateButtonClicked(String addictionName, String patientName) {
 		
 		Optional<AddictionModel> optionalAddict = this.addictList.stream()
 				.filter(addict -> addict.getName().equals(addictionName))
 				.findFirst();
-				
-			if(optionalAddict.isPresent()) {
-				optionalAddict.get();		//    this is your AddictionModel :)
-				//
-				//
-				// Put Logic in here (
-				//
-				//
-			}
+		
+		
+		if(optionalAddict.isPresent()) {
+			optionalAddict.get();		//		this is your AddictionModel :)
+			System.out.println("Allocation: " + patientName + " suffers from " + optionalAddict.get().getName());
+			//
+			//
+			// Put Logic in here (
+			//
+			//
+		}
 		
 	}
 	
@@ -64,7 +80,21 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 		return this.addictList;
 	}
 	
-	public void setupMockList() {
+	@Override
+	public void selectListChanged(String addictionName) {
+		
+		Optional<AddictionModel> optionalAddict = this.addictList.stream()
+			.filter(addict -> addict.getName().equals(addictionName))
+			.findFirst();
+			
+		if(optionalAddict.isPresent()) {
+			this.view.setListDesc(optionalAddict.get().getDescription());
+			this.view.setListSymptoms(optionalAddict.get().getSymptomsAsString());
+		}
+		
+	}
+	
+public void setupMockList() {
 		
         AddictionModel addictAlc = new AddictionModel();
         addictAlc.setName("Alcoholism");
@@ -134,18 +164,5 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 	}
 
 
-	@Override
-	public void selectListChanged(String addictionName) {
-		
-		Optional<AddictionModel> optionalAddict = this.addictList.stream()
-			.filter(addict -> addict.getName().equals(addictionName))
-			.findFirst();
-			
-		if(optionalAddict.isPresent()) {
-			this.view.setListDesc(optionalAddict.get().getDescription());
-			this.view.setListSymptoms(optionalAddict.get().getSymptomsAsString());
-		}
-		
-	}
 	
 }
