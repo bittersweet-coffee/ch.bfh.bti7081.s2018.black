@@ -15,6 +15,7 @@ import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 
 public class AddictionViewImpl extends PmsCustomComponent implements View, AddictionView {
 
@@ -27,6 +28,8 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 	private Label lblAddictNameTitle, lblAddictDescTitle, lblAddictName, lblSymptoms;
 	
 	private TextArea txtAddictDesc, txtSymptoms;
+	
+	private NativeSelect<String> nativeAddict = new NativeSelect<>();;
 
 	public AddictionViewImpl() {
 		super();
@@ -44,11 +47,10 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         HorizontalLayout hLayout = new HorizontalLayout();
         
         
-        NativeSelect<String> addictList = new NativeSelect<>();
-        addictList.setVisibleItemCount(10);
-        addictList.setEmptySelectionAllowed(false);
+        this.nativeAddict.setVisibleItemCount(10);
+        this.nativeAddict.setEmptySelectionAllowed(false);
         
-        addictList.setWidth(300, UNITS_PIXELS);
+        this.nativeAddict.setWidth(300, Unit.PIXELS);
         
         VerticalLayout addictDetails = new VerticalLayout();
         this.lblAddictNameTitle = new Label("Name:");
@@ -69,33 +71,64 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         Button btnAddTo = new Button("Add To");
         btnAddTo.setEnabled(false);
         
-        hLayout.addComponents(addictList, addictDetails, btnAddTo);
+        hLayout.addComponents(nativeAddict, addictDetails, btnAddTo);
         hLayout.setWidth("100%");
         hLayout.setComponentAlignment(btnAddTo, Alignment.BOTTOM_RIGHT);
-        hLayout.setComponentAlignment(addictList, Alignment.TOP_LEFT);
+        hLayout.setComponentAlignment(nativeAddict, Alignment.TOP_LEFT);
         hLayout.setComponentAlignment(addictDetails, Alignment.TOP_CENTER);
         
         VerticalLayout vLayout = new VerticalLayout();
         vLayout.addComponents(searchLayout, hLayout);
         
+        VerticalLayout allocateContent = new VerticalLayout();
+        VerticalLayout marginLayout = new VerticalLayout();
+        HorizontalLayout patientLayout = new HorizontalLayout();
+        
+        Label lblPatient = new Label("Patient: ");
+        Label lblSelectedAddict = new Label();
+        
+        
+        NativeSelect<String> nativePatient = new NativeSelect<>();
+        nativePatient.setWidth(300.0f, Unit.PIXELS);
+        nativePatient.setEmptySelectionAllowed(false);
+        
+        patientLayout.addComponents(lblPatient, nativePatient);
+        patientLayout.setMargin(new MarginInfo(true, false, true, false));
+        
+        Button btnPatient = new Button("Allocate");
+        
+        marginLayout.addComponents(lblSelectedAddict, patientLayout, btnPatient);
+        marginLayout.setMargin(true);
+        
+        allocateContent.addComponent(marginLayout);
+        allocateContent.setMargin(true);
+        
+        final Window windowPatient = new Window("Allocate to Patient");
+        windowPatient.setWidth(600.0f, Unit.PIXELS);
+        windowPatient.setContent(allocateContent);
+        windowPatient.setModal(true);
+        
         
         super.contentPanel.setContent(vLayout);
         
-        addictList.setItems(this.mockListNames);
         
         btnSearch.addClickListener(click -> {
         	for (AddictionViewListener listener: listeners)
-        		listener.searchButtonClicked(txtSearch.getCaption());
+        		listener.searchButtonClicked(txtSearch.getValue());
         });
         
         btnAddTo.addClickListener(click -> {
         	for (AddictionViewListener listener: listeners)
-        		listener.addToButtonClicked(addictList.getSelectedItem().get());
+        		listener.addToButtonClicked(nativeAddict.getSelectedItem().get());
+        	
+        	super.contentPanel.getUI().getUI().addWindow(windowPatient);
+        	lblSelectedAddict.setValue("Selected Addiction: " + nativeAddict.getSelectedItem().get());
+        	
         });
     
-		addictList.addValueChangeListener(selected -> {
+		nativeAddict.addValueChangeListener(selected -> {
 			for (AddictionViewListener listener: listeners)
-        		listener.selectListChanged(addictList.getSelectedItem().get());
+        		listener.selectListChanged(nativeAddict.getSelectedItem().get());
 			
 			lblAddictName.setValue(selected.getValue());
 			btnAddTo.setEnabled(true);
@@ -108,8 +141,8 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 	}
 
 	@Override
-	public void setMockListNames(List<String> mockListNames) {
-		this.mockListNames = mockListNames;
+	public void setupNativeList(List<String> mockListNames) {
+		this.nativeAddict.setItems(mockListNames);
 	}
 
 	@Override

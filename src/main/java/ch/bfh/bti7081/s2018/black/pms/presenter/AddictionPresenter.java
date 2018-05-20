@@ -21,21 +21,38 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 		this.addictList = new LinkedList<>();
 		view.addListener(this);
 		this.setupMockList();
-		this.view.setMockListNames(mockListNames);
+		this.view.setupNativeList(mockListNames);
 	}
 
 
 	@Override
 	public void searchButtonClicked(String searchTerm) {
-		// fetch Database
+		
+		List<String> optionalAddict = this.addictList.stream()
+				.filter(addict -> addict.getName().contains(searchTerm))
+				.map(AddictionModel::getName)
+				.collect(Collectors.toList());
+				
+		this.view.setupNativeList(optionalAddict);
 		
 	}
 
 
 	@Override
 	public void addToButtonClicked(String addictionName) {
-		System.out.println(addictionName);
 		
+		Optional<AddictionModel> optionalAddict = this.addictList.stream()
+				.filter(addict -> addict.getName().equals(addictionName))
+				.findFirst();
+				
+			if(optionalAddict.isPresent()) {
+				optionalAddict.get();		//    this is your AddictionModel :)
+				//
+				//
+				// Put Logic in here (
+				//
+				//
+			}
 		
 	}
 	
