@@ -63,16 +63,20 @@ public class AddictionModel {
 		return this.symptoms;
 	}
 	
+	public void setSymptoms(List<String> symptoms) {
+		this.symptoms = symptoms;
+	}
+	
 	public String getSymptomsAsString() {
 		String symptomString = "";
 		for (String symptom : this.symptoms) {
 			symptomString = symptomString.concat(symptom + "\n\n");
 		}
-		return symptomString.substring(0, symptomString.length()-2);
-	}
-	
-	public void setSymptoms(List<String> symptoms) {
-		this.symptoms = symptoms;
+		
+		if(symptomString.length() > 2) // cut the ending line feeds
+			return symptomString.substring(0, symptomString.length()-2);
+		else 
+			return symptomString;
 	}
 	
 	public List<String> getTreatments() {

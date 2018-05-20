@@ -11,13 +11,10 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.ListSelect;
+import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-
-import ch.bfh.bti7081.s2018.black.pms.util.JpaDemo;
-import ch.bfh.bti7081.s2018.black.pms.util.JpaUtility;
 
 public class AddictionViewImpl extends PmsCustomComponent implements View, AddictionView {
 
@@ -42,17 +39,21 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         HorizontalLayout searchLayout = new HorizontalLayout();
         searchLayout.addComponents(txtSearch, btnSearch);
         searchLayout.setComponentAlignment(btnSearch, Alignment.BOTTOM_CENTER);
+        searchLayout.setMargin(new MarginInfo(false, false, true, false));
         
         HorizontalLayout hLayout = new HorizontalLayout();
         
         
-        ListSelect<String> addictList = new ListSelect<>();
+        NativeSelect<String> addictList = new NativeSelect<>();
+        addictList.setVisibleItemCount(10);
+        addictList.setEmptySelectionAllowed(false);
+        
         addictList.setWidth(300, UNITS_PIXELS);
         
         VerticalLayout addictDetails = new VerticalLayout();
         this.lblAddictNameTitle = new Label("Name:");
         this.lblAddictDescTitle = new Label("Description:");
-        this.lblAddictName = new Label("Test");
+        this.lblAddictName = new Label("");
         this.lblSymptoms = new Label("Symptoms:");
         
         this.txtAddictDesc = new TextArea();
@@ -71,7 +72,8 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         hLayout.addComponents(addictList, addictDetails, btnAddTo);
         hLayout.setWidth("100%");
         hLayout.setComponentAlignment(btnAddTo, Alignment.BOTTOM_RIGHT);
-        hLayout.setComponentAlignment(addictList, Alignment.MIDDLE_LEFT);
+        hLayout.setComponentAlignment(addictList, Alignment.TOP_LEFT);
+        hLayout.setComponentAlignment(addictDetails, Alignment.TOP_CENTER);
         
         VerticalLayout vLayout = new VerticalLayout();
         vLayout.addComponents(searchLayout, hLayout);
@@ -79,7 +81,7 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         
         super.contentPanel.setContent(vLayout);
         
-        addictList.setItems(mockListNames);
+        addictList.setItems(this.mockListNames);
         
         btnSearch.addClickListener(click -> {
         	for (AddictionViewListener listener: listeners)
@@ -88,19 +90,16 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         
         btnAddTo.addClickListener(click -> {
         	for (AddictionViewListener listener: listeners)
-        		listener.addToButtonClicked(addictList.getSelectedItems().iterator().next());
+        		listener.addToButtonClicked(addictList.getSelectedItem().get());
         });
     
 		addictList.addValueChangeListener(selected -> {
 			for (AddictionViewListener listener: listeners)
-        		listener.selectListChanged(addictList.getSelectedItems().iterator().next());
+        		listener.selectListChanged(addictList.getSelectedItem().get());
 			
-			lblAddictName.setValue(selected.getValue().iterator().next());
+			lblAddictName.setValue(selected.getValue());
 			btnAddTo.setEnabled(true);
 		});
-		
-        //JpaUtility.persist(addiction);
-        //JpaDemo.testAddiction();
 	}
 
 	@Override
