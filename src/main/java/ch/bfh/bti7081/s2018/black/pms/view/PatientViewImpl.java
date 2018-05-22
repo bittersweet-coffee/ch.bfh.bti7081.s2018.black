@@ -21,9 +21,6 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 		Label test = new Label("Patient here");
         super.contentPanel.setContent(test);
         
-        UserModel user = new UserModel();
-        user.setName("Test generic");
-        //JpaUtility.persist(user);
-        JpaDemo.testUser();
+
 	}
 }

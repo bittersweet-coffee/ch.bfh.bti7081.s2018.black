@@ -23,7 +23,7 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 		this.addictList = new LinkedList<>();
 		view.addListener(this);
 		//this.setupMockList();
-		this.getAddictionModel();
+		this.fillAddictionList();
 		this.view.setupAddictList(mockListNames);
 	}
 
@@ -97,11 +97,14 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 		
 	}
 	
-	public void getAddictionModel() {
+	public void fillAddictionList() {
 		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject object = new JpaDataAccessObject(transaction);
-		addictList = object.findAll("ch.bfh.bti7081.s2018.black.pms.model.AddictionModel");
-     	for (AddictionModel addict : this.addictList) mockListNames.add(addict.getName());
+		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
+		addictList = objects.findAll(AddictionModel.class);
+     	
+		for (AddictionModel addict : this.addictList) {
+     		mockListNames.add(addict.getName());
+     	}
 	}
 	
 public void setupMockList() {

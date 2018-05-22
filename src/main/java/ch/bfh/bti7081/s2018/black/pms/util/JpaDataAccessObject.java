@@ -36,12 +36,12 @@ public class JpaDataAccessObject {
 	      });
 	  }
 	  
-	  public <T> List<T> findAll(String entityName) {
+	  public <T> List<T> findAll(Class<T> entityClass) {
 		  return transaction.execute(
-			(entityManager) -> { //System.out.println(entityManager.createQuery(
-								//"Select p FROM " + entityName + " p").getResultList()); 
+			(entityManager) -> { 
 				return entityManager.createQuery(
-								"Select p FROM " + entityName + " p").getResultList();				
+					"Select objects FROM " + entityClass.getName() + " objects", entityClass)
+					.getResultList();				
 			});
 	  }
 	}
