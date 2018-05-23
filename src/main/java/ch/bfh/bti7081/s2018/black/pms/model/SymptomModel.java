@@ -9,14 +9,14 @@ import javax.persistence.Table;
 @Table(name="symptom")
 public class SymptomModel extends EntityModel {
 	
-	String description;
+	private String description;
 
 	@ManyToOne
 	@JoinColumn(name="addiction_id", nullable=false)
 	private AddictionModel addiction;
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {

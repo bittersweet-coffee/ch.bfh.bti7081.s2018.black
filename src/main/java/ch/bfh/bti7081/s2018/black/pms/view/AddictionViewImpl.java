@@ -25,8 +25,6 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 	
 	private List<AddictionViewListener> listeners = new ArrayList<AddictionViewListener>();
 	
-	private List<String> addictionList = new LinkedList<>();
-	
 	private List<String> patientList = new LinkedList<>();
 	
 	private Label lblAddictNameTitle, lblAddictDescTitle, lblAddictName, lblSymptoms;
@@ -50,10 +48,8 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         
         HorizontalLayout hLayout = new HorizontalLayout();
         
-        
         this.nativeAddict.setVisibleItemCount(10);
         this.nativeAddict.setEmptySelectionAllowed(false);
-        
         this.nativeAddict.setWidth(300, Unit.PIXELS);
         
         VerticalLayout addictDetails = new VerticalLayout();
