@@ -5,8 +5,10 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -14,6 +16,9 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name="addiction")
+@NamedEntityGraph(name = "AddictionModel.symptoms",
+				attributeNodes = @NamedAttributeNode(value = "symptoms", subgraph = "symptoms"),
+				subgraphs = @NamedSubgraph(name = "symptoms", attributeNodes = @NamedAttributeNode("addiction")))
 public class AddictionModel extends EntityModel {
 
 	private String name;
@@ -21,9 +26,9 @@ public class AddictionModel extends EntityModel {
 	@Column(length=1000)
 	private String description;
 	
-	@OneToMany(fetch = FetchType.EAGER,mappedBy = "addiction")
+	@OneToMany(mappedBy = "addiction")
 	private List<SymptomModel> symptoms;
-	
+
 	@Transient
 	private List<String> treatments = new LinkedList<>();;
 	
