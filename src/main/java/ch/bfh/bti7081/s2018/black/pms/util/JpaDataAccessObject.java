@@ -43,8 +43,9 @@ public class JpaDataAccessObject {
 	  public <T> List<T> findAll(Class<T> entityClass) {
 		  return transaction.execute(
 			(entityManager) -> { 
-				EntityGraph<?> entityGraph = 
-						entityManager.getEntityGraph(entityClass.getAnnotation(NamedEntityGraph.class).name());			
+				EntityGraph<?> entityGraph = entityManager.getEntityGraph(
+					entityClass.getAnnotation(NamedEntityGraph.class).name());			
+				
 				return entityManager.createQuery(
 					"Select objects FROM " + entityClass.getName() + " objects", entityClass)
 					.setHint(JAVAX_PERSISTENCE_FETCHGRAPH, entityGraph)
