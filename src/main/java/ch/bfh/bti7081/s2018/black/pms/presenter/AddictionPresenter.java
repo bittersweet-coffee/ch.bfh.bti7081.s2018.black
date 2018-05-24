@@ -22,7 +22,6 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 		this.addictModelList = new LinkedList<>();
 		view.addListener(this);
 		this.fillAddictionList();
-		this.view.setupAddictList(addictNameList);
 	}
 
 
@@ -110,6 +109,13 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 		for (AddictionModel addict : this.addictModelList) {
      		this.addictNameList.add(addict.getName());
      	}
+	}
+
+
+	@Override
+	public void setupAddictList() {
+		this.view.setupAddictList(this.addictNameList);
+		
 	}
 	
 }

@@ -14,6 +14,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.NativeSelect;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -25,19 +26,25 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 	
 	private List<AddictionViewListener> listeners = new ArrayList<AddictionViewListener>();
 	
-	private List<String> patientList = new LinkedList<>();
+	private List<String> patientList;
+	
+	private NativeSelect<String> nativeAddict;
 	
 	private Label lblAddictNameTitle, lblAddictDescTitle, lblAddictName, lblSymptoms;
 	
 	private TextArea txtAddictDesc, txtSymptoms;
-	
-	private NativeSelect<String> nativeAddict = new NativeSelect<>();;
 
 	public AddictionViewImpl() {
 		super();
 	}
 	
 	public void enter(ViewChangeEvent event) {
+		this.nativeAddict = new NativeSelect<>();
+		this.patientList = new LinkedList<>();
+		
+		for (AddictionViewListener listener: listeners)
+    		listener.setupAddictList();;
+		
 
         TextField txtSearch = new TextField("Filter:");
         Button btnSearch = new Button("Search");
@@ -50,7 +57,8 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         
         this.nativeAddict.setVisibleItemCount(10);
         this.nativeAddict.setEmptySelectionAllowed(false);
-        this.nativeAddict.setWidth(300, Unit.PIXELS);
+        this.nativeAddict.setWidth("80%");
+        this.nativeAddict.setHeight("100%");
         
         VerticalLayout addictDetails = new VerticalLayout();
         this.lblAddictNameTitle = new Label("Name:");
@@ -67,12 +75,14 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         this.txtSymptoms.setReadOnly(true);
         
         addictDetails.addComponents(lblAddictNameTitle, lblAddictName, lblAddictDescTitle, txtAddictDesc, lblSymptoms, txtSymptoms);
+        addictDetails.setMargin(false);
         
         Button btnAddTo = new Button("Add To");
         btnAddTo.setEnabled(false);
         
         hLayout.addComponents(nativeAddict, addictDetails, btnAddTo);
         hLayout.setWidth("100%");
+        hLayout.setMargin(new MarginInfo(false, false, true, false));
         hLayout.setComponentAlignment(btnAddTo, Alignment.BOTTOM_RIGHT);
         hLayout.setComponentAlignment(nativeAddict, Alignment.TOP_LEFT);
         hLayout.setComponentAlignment(addictDetails, Alignment.TOP_CENTER);
@@ -141,13 +151,17 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         		}
 			}	
 			
-			
 			btnAddTo.setEnabled(true);
 		});
 		
 		btnPatient.addClickListener(click -> {
-			for (AddictionViewListener listener: listeners)
-        		listener.allocateButtonClicked(nativeAddict.getSelectedItem().get(), nativePatient.getSelectedItem().get());
+			if(nativePatient.getSelectedItem().isPresent()) {
+				for (AddictionViewListener listener: listeners)
+	        		listener.allocateButtonClicked(nativeAddict.getSelectedItem().get(), nativePatient.getSelectedItem().get());
+			} else {
+				Notification.show("Input Data Incomplete");
+			}
+			
 		});
 		
 		ShortcutListener enterSearchListener = new ShortcutListener("Enter Search Listener", ShortcutAction.KeyCode.ENTER, null) {
@@ -159,6 +173,7 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 		
 		txtSearch.addShortcutListener(enterSearchListener);
 		btnSearch.addShortcutListener(enterSearchListener);
+
 	}
 	
 
@@ -167,10 +182,12 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 		this.listeners.add(listener);
 	}
 
+	
 	@Override
 	public void setupAddictList(List<String> addictionList) {
 		this.nativeAddict.setItems(addictionList);
 	}
+	
 
 	@Override
 	public void setListDesc(String desc) {

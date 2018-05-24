@@ -10,6 +10,7 @@ public interface AddictionView {
 		void addToButtonClicked();
 		void allocateButtonClicked(String addictionName, String patientName);
 		void selectListChanged(String addictionName);
+		void setupAddictList();
 		
 	}
 	
