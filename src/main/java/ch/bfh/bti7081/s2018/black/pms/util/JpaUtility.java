@@ -12,13 +12,13 @@ import ch.bfh.bti7081.s2018.black.pms.model.UserModel;
  */
 public class JpaUtility {
 	
-	private static EntityManagerFactory entityManagerFactory;
+	private static EntityManagerFactory emf;
 	
 	static {
 		// Singleton
-		if (entityManagerFactory == null) {
+		if (emf == null) {
 			try {
-				entityManagerFactory = Persistence.createEntityManagerFactory("PMS");
+				emf = Persistence.createEntityManagerFactory("PMS");
 			} catch (Exception e){
 				throw e;
 			}
@@ -26,11 +26,11 @@ public class JpaUtility {
 	}
 	
 	public static EntityManager getEntityManager(){
-		return entityManagerFactory.createEntityManager();
+		return emf.createEntityManager();
 	}
 	
 	public static void close(){
-		entityManagerFactory.close();
+		emf.close();
 	}
 	
 	// TODO: Write generic method which accepts all kinds of EntityManager transactions
@@ -51,24 +51,6 @@ public class JpaUtility {
 				transaction.rollback();
 			}
 		    throw new RuntimeException(e);
-		} finally {
-			entityManager.close();
-		}
-	}
-	
-	public static <T> void remove(T object) {
-		EntityManager entityManager = JpaUtility.getEntityManager();	
-		EntityTransaction transaction = null;
-		try {
-			transaction = entityManager.getTransaction();
-			transaction.begin();
-			entityManager.remove(object);
-			transaction.commit();
-		
-		} catch (Exception e) {
-			if (transaction != null) {
-				transaction.rollback();
-			}
 		} finally {
 			entityManager.close();
 		}

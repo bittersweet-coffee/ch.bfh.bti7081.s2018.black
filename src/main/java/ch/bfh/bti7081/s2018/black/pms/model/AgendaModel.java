@@ -10,7 +10,7 @@ import java.util.Locale;
 
 public class AgendaModel {
 	
-	private List<Appointment> appointments = new ArrayList<Appointment>();
+	private List<AppointmentModel> appointments = new ArrayList<AppointmentModel>();
 	private AppointmentDataProvider eventProvider = new AppointmentDataProvider();
 
 	private final DayOfWeek firstDayOfWeek;
@@ -41,11 +41,11 @@ public class AgendaModel {
 		this.currentWeek ++;
 	}
 	
-	public List<Appointment> getAppointments() {
+	public List<AppointmentModel> getAppointments() {
 		return appointments;
 	}
 
-	public void setAppointments(List<Appointment> appointments) {
+	public void setAppointments(List<AppointmentModel> appointments) {
 		this.appointments = appointments;
 	}
 

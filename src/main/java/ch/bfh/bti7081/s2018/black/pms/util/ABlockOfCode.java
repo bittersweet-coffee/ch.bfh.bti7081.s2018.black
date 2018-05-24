@@ -7,4 +7,4 @@ import javax.persistence.EntityManager;
 //Date: 16.05.2018
 public interface ABlockOfCode<T> {
 	  T execute(EntityManager em);
-	}
+}

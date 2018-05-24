@@ -87,7 +87,7 @@ public class AgendaModel_Amin {
 
     	AppointmentItem appItem = (AppointmentItem) event.getCalendarItem();
 
-        final Appointment appointment = appItem.getAppointment();
+        final AppointmentModel appointment = appItem.getAppointment();
 
         //Notification.show(appointment.getTitle(), appointment.getDescription(), Type.HUMANIZED_MESSAGE);
     }
@@ -95,7 +95,7 @@ public class AgendaModel_Amin {
     
     private void onAgendaRangeSelect(CalendarComponentEvents.RangeSelectEvent event) {
 
-    	Appointment appointment = new Appointment();
+    	AppointmentModel appointment = new AppointmentModel();
 
         //appointment.setStart(event.getStart());
         //appointment.setEnd(event.getEnd());

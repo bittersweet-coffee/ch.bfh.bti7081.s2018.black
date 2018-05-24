@@ -7,7 +7,7 @@ import java.util.List;
 import com.vaadin.ui.Notification;
 
 import ch.bfh.bti7081.s2018.black.pms.model.AgendaModel;
-import ch.bfh.bti7081.s2018.black.pms.model.Appointment;
+import ch.bfh.bti7081.s2018.black.pms.model.AppointmentModel;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
 import ch.bfh.bti7081.s2018.black.pms.view.AgendaView;
 import ch.bfh.bti7081.s2018.black.pms.view.DashboardView;

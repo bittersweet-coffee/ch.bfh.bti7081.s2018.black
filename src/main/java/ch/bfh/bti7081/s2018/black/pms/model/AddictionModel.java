@@ -13,7 +13,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-
+/**
+ * Addiction class
+ * @author musaa1
+ * version 0.5
+ * NamedEntityGraphs are the solution of the LazyInitializationException problem
+ * This way can we access the entities in the database with the fetch type lazy
+ */
 @Entity
 @Table(name="addiction")
 @NamedEntityGraph(name = "AddictionModel.symptoms",
@@ -21,55 +27,99 @@ import javax.persistence.Transient;
 				subgraphs = @NamedSubgraph(name = "symptoms", attributeNodes = @NamedAttributeNode("addiction")))
 public class AddictionModel extends EntityModel {
 
+	// name of the addiction
 	private String name;
 
+	// description of the addiction. size is set to 1000 characters
 	@Column(length=1000)
 	private String description;
 	
+	// list of symptoms of the addiction.
+	// is mapped with the variable addiction in the class SymptomModel
 	@OneToMany(mappedBy = "addiction")
 	private List<SymptomModel> symptoms;
 
+	// hibernate ignores this variable. I think we don't need this variable
 	@Transient
 	private List<String> treatments = new LinkedList<>();;
 	
+	// hibernate ignores this variable. TODO: Do we have to rename our LocationModel class to ClinicModel?
 	@Transient
 	private List<String> clinics = new LinkedList<>();;
 	
+	// list of patients with the same addiction
+	// is mapped with the variable addictions in the class PatientModel
 	@ManyToMany(mappedBy="addictions")
 	private List<PatientModel> patients;
 
+	/**
+	 * Getter for name
+	 * @return the name of the addiction
+	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 	
+	/**
+	 * setter for name
+	 * @param name of the addiction
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * setter for description
+	 * @param description of the addiction
+	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
+	/**
+	 * getter for description
+	 * @return the description of the addiction
+	 */
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 	
+	/**
+	 * getter for patients
+	 * @return a list of patients with the addiction
+	 */
 	public List<PatientModel> getPatients() {
-		return patients;
+		return this.patients;
 	}
 
+	/**
+	 * setter for patients
+	 * @param patients with the addiction
+	 */
 	public void setPatients(List<PatientModel> patients) {
 		this.patients = patients;
 	}
 	
+	/**
+	 * getter for symptioms
+	 * @return a list with the symptoms of the addiction
+	 */
 	public List<SymptomModel> getSymptoms() {
 		return this.symptoms;
 	}
 	
+	/**
+	 * setter for symptoms
+	 * @param symptoms of the addiction
+	 */
 	public void setSymptoms(List<SymptomModel> symptoms) {
 		this.symptoms = symptoms;
 	}
 	
+	/**
+	 * getter of the String of a symptom
+	 * @return name of the symptom as String
+	 */
 	public String getSymptomsAsString() {
 		String symptomString = "";
 		for (SymptomModel symptom : this.symptoms) {
@@ -82,26 +132,35 @@ public class AddictionModel extends EntityModel {
 			return symptomString;
 	}
 	
+	// the variable treatments may be deleted
 	public List<String> getTreatments() {
 		return this.treatments;
 	}
 	
+	// the variable treatments may be deleted
 	public void setTreatments(List<String> treatments) {
 		this.treatments = treatments;
 	}
 	
+	/**
+	 * getter of the clinics
+	 * @return List of clinics where the addiciton can be cured
+	 */
 	public List<String> getClinics() {
 		return this.clinics;
 	}
 	
+	/**
+	 * setter of clinics
+	 * @param clinics where the addiction can be cured
+	 */
 	public void setClinics(List<String> clinics) {
 		this.clinics = clinics;
 	}
 
+	// do we need this?
 	@Override
 	public String toString() {
 		return this.getName();
 	}
-	
-	
 }
