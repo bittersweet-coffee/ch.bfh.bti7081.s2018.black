@@ -32,6 +32,7 @@ public class PmsCustomComponent extends CustomComponent {
 		};
 
     	MenuBar menuBar = new MenuBar();
+    	menuBar.setWidth("1200px");
     	menuBar.addStyleName("main-menubar");
 
     	MenuItem pmsItem = menuBar.addItem("PATIENT MANAGEMENT SYSTEM", new ThemeResource("img/pms_32px.png"), pmsCommand);
@@ -51,7 +52,6 @@ public class PmsCustomComponent extends CustomComponent {
         contentBody.addComponent(contentPanel);
 
         VerticalLayout content = new VerticalLayout();
-		content.setSizeFull();
 		content.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 		content.addComponents(menuBar, contentBody);
 		

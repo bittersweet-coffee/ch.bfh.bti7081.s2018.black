@@ -15669,3 +15669,9 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-transform: scale(1.1);
 	transform: scale(1.1);
 }
+
+.mytheme .patient-view-positions {
+	margin-left: 40px;
+	margin-right: 40px;
+	margin-bottom: 20px;
+}
