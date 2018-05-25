@@ -157,10 +157,5 @@ public class AddictionModel extends EntityModel {
 	public void setClinics(List<String> clinics) {
 		this.clinics = clinics;
 	}
-
-	// do we need this?
-	@Override
-	public String toString() {
-		return this.getName();
-	}
+	
 }

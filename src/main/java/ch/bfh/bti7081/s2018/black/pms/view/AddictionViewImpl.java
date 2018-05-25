@@ -30,9 +30,9 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 	
 	private NativeSelect<String> nativeAddict;
 	
-	private Label lblAddictNameTitle, lblAddictDescTitle, lblAddictName, lblSymptoms;
+	private Label lblAddictNameTitle, lblAddictDescTitle, lblSymptoms;
 	
-	private TextArea txtAddictDesc, txtSymptoms;
+	private TextArea txtAddictName, txtAddictDesc, txtSymptoms;
 
 	public AddictionViewImpl() {
 		super();
@@ -63,7 +63,10 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         VerticalLayout addictDetails = new VerticalLayout();
         this.lblAddictNameTitle = new Label("Name:");
         this.lblAddictDescTitle = new Label("Description:");
-        this.lblAddictName = new Label("");
+        this.txtAddictName = new TextArea();
+        this.txtAddictName.setReadOnly(true);
+        this.txtAddictName.setRows(1);
+        this.txtAddictName.setWidth("100%");
         this.lblSymptoms = new Label("Symptoms:");
         
         this.txtAddictDesc = new TextArea();
@@ -74,7 +77,7 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         this.txtSymptoms.setWidth("100%");
         this.txtSymptoms.setReadOnly(true);
         
-        addictDetails.addComponents(lblAddictNameTitle, lblAddictName, lblAddictDescTitle, txtAddictDesc, lblSymptoms, txtSymptoms);
+        addictDetails.addComponents(lblAddictNameTitle, txtAddictName, lblAddictDescTitle, txtAddictDesc, lblSymptoms, txtSymptoms);
         addictDetails.setMargin(false);
         
         Button btnAddTo = new Button("Add To");
@@ -94,7 +97,7 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         VerticalLayout marginLayout = new VerticalLayout();
         HorizontalLayout patientLayout = new HorizontalLayout();
         
-        Label lblPatient = new Label("Patient: ");
+        Label lblPatient = new Label("Patient:");
         Label lblSelectedAddict = new Label();
         
         
@@ -125,7 +128,7 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         btnSearch.addClickListener(click -> {
         	if(this.nativeAddict.getSelectedItem().isPresent()) this.nativeAddict.setSelectedItem(null);
         	btnAddTo.setEnabled(false);
-        	this.lblAddictName.setValue("");
+        	this.txtAddictName.setValue("");
         	this.txtAddictDesc.setValue("");
         	this.txtSymptoms.setValue("");
         	for (AddictionViewListener listener: listeners)
@@ -147,7 +150,7 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 			for (AddictionViewListener listener: listeners) {
         		if(this.nativeAddict.getSelectedItem().isPresent()) {
         			listener.selectListChanged(this.nativeAddict.getSelectedItem().get());
-        			this.lblAddictName.setValue(selected.getValue());
+        			this.txtAddictName.setValue(selected.getValue());
         		}
 			}	
 			
