@@ -47,7 +47,10 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 		
 
         TextField txtSearch = new TextField("Filter:");
+        txtSearch.setTabIndex(1);
+        txtSearch.focus();
         Button btnSearch = new Button("Search");
+        btnSearch.setTabIndex(2);
         HorizontalLayout searchLayout = new HorizontalLayout();
         searchLayout.addComponents(txtSearch, btnSearch);
         searchLayout.setComponentAlignment(btnSearch, Alignment.BOTTOM_CENTER);
@@ -55,6 +58,7 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         
         HorizontalLayout hLayout = new HorizontalLayout();
         
+        this.nativeAddict.setTabIndex(3);
         this.nativeAddict.setVisibleItemCount(10);
         this.nativeAddict.setEmptySelectionAllowed(false);
         this.nativeAddict.setWidth("80%");
@@ -126,7 +130,8 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         
         
         btnSearch.addClickListener(click -> {
-        	if(this.nativeAddict.getSelectedItem().isPresent()) this.nativeAddict.setSelectedItem(null);
+        	
+        	if(this.nativeAddict.getSelectedItem().isPresent() || !txtSearch.isEmpty()) this.nativeAddict.setSelectedItem(null);
         	btnAddTo.setEnabled(false);
         	this.txtAddictName.setValue("");
         	this.txtAddictDesc.setValue("");
@@ -176,7 +181,7 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 		
 		txtSearch.addShortcutListener(enterSearchListener);
 		btnSearch.addShortcutListener(enterSearchListener);
-
+		
 	}
 	
 
