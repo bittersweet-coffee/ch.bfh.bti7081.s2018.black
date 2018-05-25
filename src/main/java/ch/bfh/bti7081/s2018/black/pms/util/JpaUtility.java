@@ -40,7 +40,6 @@ public class JpaUtility {
 		return emf.createEntityManager();
 	}
 	
-
 	/**
 	 * Source: http://www.copypasteisforword.com/notes/lambda-expressions-in-java
 	 * Author: enrique

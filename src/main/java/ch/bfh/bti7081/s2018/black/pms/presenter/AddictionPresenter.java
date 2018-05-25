@@ -16,7 +16,6 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 	private List<AddictionModel> addictModelList;
 	private List<String> addictNameList = new LinkedList<>();
 	
-	
 	public AddictionPresenter(AddictionView view) {
 		this.view = view;
 		this.addictModelList = new LinkedList<>();
@@ -24,19 +23,15 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 		this.fillAddictionList();
 	}
 
-
 	@Override
 	public void searchButtonClicked(String searchTerm) {
-		
 		List<String> optionalAddict = this.addictModelList.stream()
 				.filter(addict -> addict.getName().toLowerCase().contains(searchTerm.toLowerCase()))
 				.map(AddictionModel::getName)
 				.collect(Collectors.toList());
 				
 		this.view.setupAddictList(optionalAddict);
-		
 	}
-
 
 	@Override
 	public void addToButtonClicked() {
@@ -56,16 +51,13 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 		//
 		
 		this.view.setupPatientList(patientList);
-		
 	}
 	
 	@Override
 	public void allocateButtonClicked(String addictionName, String patientName) {
-		
 		Optional<AddictionModel> optionalAddict = this.addictModelList.stream()
 				.filter(addict -> addict.getName().equals(addictionName))
 				.findFirst();
-		
 		
 		if(optionalAddict.isPresent()) {
 			optionalAddict.get();		//		this is your AddictionModel :)
@@ -76,7 +68,6 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 			//
 			//
 		}
-		
 	}
 	
 	public void addAddiction(AddictionModel addiction) {
@@ -89,7 +80,6 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 	
 	@Override
 	public void selectListChanged(String addictionName) {
-		
 		Optional<AddictionModel> optionalAddict = this.addictModelList.stream()
 			.filter(addict -> addict.getName().equals(addictionName))
 			.findFirst();
@@ -98,7 +88,6 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 			this.view.setListDesc(optionalAddict.get().getDescription());
 			this.view.setListSymptoms(optionalAddict.get().getSymptomsAsString());
 		}
-		
 	}
 	
 	public void fillAddictionList() {
@@ -111,11 +100,8 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
      	}
 	}
 
-
 	@Override
 	public void setupAddictList() {
 		this.view.setupAddictList(this.addictNameList);
-		
 	}
-	
 }
