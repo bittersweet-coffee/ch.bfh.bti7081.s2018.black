@@ -14,7 +14,7 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.Window;
 
-import ch.bfh.bti7081.s2018.black.pms.model.Appointment;
+import ch.bfh.bti7081.s2018.black.pms.model.AppointmentModel;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
 
 public class AppointmentWindow extends Window {

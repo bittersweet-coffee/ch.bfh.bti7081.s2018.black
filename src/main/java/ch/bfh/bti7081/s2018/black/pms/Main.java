@@ -12,6 +12,7 @@ import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
 
 import ch.bfh.bti7081.s2018.black.pms.model.AgendaModel;
+import ch.bfh.bti7081.s2018.black.pms.presenter.AddictionPresenter;
 import ch.bfh.bti7081.s2018.black.pms.presenter.AgendaPresenter;
 import ch.bfh.bti7081.s2018.black.pms.view.*;
 
@@ -40,6 +41,7 @@ public class Main extends UI {
     	AgendaModel agendaModel = new AgendaModel();
     	
     	new AgendaPresenter(agendaView, agendaModel);
+    	new AddictionPresenter(addictionView);
 
     	Navigator navigator = new Navigator(this, this);
     	navigator.addView(DashboardViewImpl.NAME, dashboardView);
