@@ -43,7 +43,7 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 		this.patientList = new LinkedList<>();
 		
 		for (AddictionViewListener listener: listeners) {
-    		listener.setupAddictList();;
+    		listener.setupAddictList();
 		}
 		
         TextField txtSearch = new TextField("Filter:");

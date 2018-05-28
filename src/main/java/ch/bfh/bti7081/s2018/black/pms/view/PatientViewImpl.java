@@ -1,6 +1,7 @@
 package ch.bfh.bti7081.s2018.black.pms.view;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -13,6 +14,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.ListSelect;
+import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
@@ -26,12 +28,20 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 	public static final String NAME = "patient";
 	
 	private List<PatientViewListener> listeners = new ArrayList<PatientViewListener>();
+	
+	private List<String> patientList;
 
 	public PatientViewImpl() {
 		super();
 	}
 	
 	public void enter(ViewChangeEvent event) {
+		
+		this.patientList = new LinkedList<>();
+		
+		for (PatientViewListener listener: listeners) {
+    		listener.setupPatientList();
+		}
 		
 		Label lblFilter = new Label("<h4>Filter: </h4>", ContentMode.HTML);
 		lblFilter.setStyleName("patient-view-positions");
@@ -46,9 +56,10 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 		
         List<String> data = IntStream.range(0, 10).mapToObj(i -> "Option " + i).collect(Collectors.toList());
         
-        ListSelect lsPatient = new ListSelect<>("", data);
-        lsPatient.setRows(10);
-        lsPatient.select(data.get(0));
+        NativeSelect<String> lsPatient = new NativeSelect();
+        lsPatient.setVisibleItemCount(10);
+        lsPatient.setItems(this.patientList);
+        //lsPatient.select(data.get(0));
         lsPatient.setStyleName("patient-view-positions");
         lsPatient.setWidth("1120px");
         //lsPatient.setWidth(100.0f, Unit.PERCENTAGE);
@@ -144,4 +155,11 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 
 	public void save(PatientItem newPatient) {
 	}
+
+	@Override
+	public void setupPatientList(List<String> patientList) {
+		this.patientList = patientList;
+		
+	}
+
 }
