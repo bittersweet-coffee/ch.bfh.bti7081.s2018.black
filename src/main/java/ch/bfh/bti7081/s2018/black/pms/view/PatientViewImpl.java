@@ -143,5 +143,8 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 	}
 
 	public void save(PatientItem newPatient) {
+		for (PatientViewListener listener : listeners) {
+			listener.saveButtonClick(newPatient);
+		}
 	}
 }
