@@ -38,9 +38,7 @@ public class Main extends UI {
     	PatientViewImpl patientView = new PatientViewImpl();
     	ReportViewImpl reportView = new ReportViewImpl();
     	
-    	AgendaModel agendaModel = new AgendaModel();
-    	
-    	new AgendaPresenter(agendaView, agendaModel);
+    	new AgendaPresenter(agendaView);
     	new AddictionPresenter(addictionView);
 
     	Navigator navigator = new Navigator(this, this);

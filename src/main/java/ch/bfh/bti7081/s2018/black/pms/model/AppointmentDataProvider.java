@@ -8,7 +8,6 @@ public class AppointmentDataProvider extends BasicItemProvider<AppointmentItem>{
 	
 	@Override
 	public void itemChanged(ItemChangedEvent event) {
-		System.out.println(event.getCalendarEvent().getCaption());
 		fireItemSetChanged();
 	}
 	

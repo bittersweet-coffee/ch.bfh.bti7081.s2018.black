@@ -26,3 +26,4 @@ INSERT INTO symptom (description, addiction_id) VALUES ('Gambling when feeling d
 INSERT INTO symptom (description, addiction_id) VALUES ('Lying to conceal the extent of involvement with gambling', 3)
 INSERT INTO symptom (description, addiction_id) VALUES ('Jeopardize or loss a significant relationship, job, education or career opportunity because of gambling', 3)
 INSERT INTO symptom (description, addiction_id) VALUES ('Relying on others to provide money to relieve desperate financial situations caused by gambling', 3)
+INSERT INTO appointment (name, description, start, end) VALUES ('test','test','2008-01-01 00:00:01','2008-01-01 00:00:01')

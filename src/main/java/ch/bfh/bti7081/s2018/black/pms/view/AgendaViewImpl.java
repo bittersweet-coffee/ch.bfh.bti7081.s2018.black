@@ -3,12 +3,20 @@ package ch.bfh.bti7081.s2018.black.pms.view;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.WindowConstants;
+
 import org.vaadin.addon.calendar.Calendar;
+import org.vaadin.addon.calendar.handler.BasicDateClickHandler;
+import org.vaadin.addon.calendar.handler.BasicItemMoveHandler;
+import org.vaadin.addon.calendar.handler.BasicItemResizeHandler;
 import org.vaadin.addon.calendar.ui.CalendarComponentEvents;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import ch.bfh.bti7081.s2018.black.pms.model.AppointmentModel;
+import com.vaadin.ui.Window.CloseEvent;
+import com.vaadin.ui.Window.CloseListener;
+
+import ch.bfh.bti7081.s2018.black.pms.model.Appointment;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentDataProvider;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
 
@@ -26,29 +34,54 @@ public class AgendaViewImpl extends PmsCustomComponent implements View, AgendaVi
 	public void enter(ViewChangeEvent event) {
 		cal.setWidth(super.contentPanel.getWidth(), super.contentPanel.getWidthUnits());
 		addCalendarEventListeners();
+		changeCalendarRange();
 		super.contentPanel.setContent(cal);
 	}
 	
 	private void onCalendarRangeSelect(CalendarComponentEvents.RangeSelectEvent event) {
-		//final AppointmentWindow window = new AppointmentWindow(this, event.getStart().toLocalDateTime(), event.getEnd().toLocalDateTime());  
-		AppointmentItem appointmentItem = new AppointmentItem(new AppointmentModel(event.getStart().toLocalDateTime(), event.getEnd().toLocalDateTime()));
-		final AppointmentWindow window = new AppointmentWindow(this, appointmentItem);  
+		AppointmentItem appointmentItem = new AppointmentItem(new Appointment(event.getStart().toLocalDateTime(), event.getEnd().toLocalDateTime()));
+		final AppointmentWindow window = new AppointmentWindow(this, appointmentItem); 
 		super.getUI().getUI().addWindow(window);
     }
 	
 	private void onCalendarItemClick(CalendarComponentEvents.ItemClickEvent event) {
-		//final AppointmentWindow window = new AppointmentWindow(this, event.getCalendarItem().getStart().toLocalDateTime(), event.getCalendarItem().getEnd().toLocalDateTime(), event.getCalendarItem().getCaption(), event.getCalendarItem().getDescription());
 		final AppointmentWindow window = new AppointmentWindow(this, (AppointmentItem) event.getCalendarItem());
 		super.getUI().getUI().addWindow(window);;
 	}
+	
+	private void onDateClick(CalendarComponentEvents.DateClickEvent event) {
+		BasicDateClickHandler basicDateClickHandler = new BasicDateClickHandler();
+		basicDateClickHandler.dateClick(event);
+		changeCalendarRange();
+	}
+	private void onItemResize(CalendarComponentEvents.ItemResizeEvent event) {
+		BasicItemResizeHandler basicItemResizeHandler = new BasicItemResizeHandler();
+		basicItemResizeHandler.itemResize(event);
+		saveAppointment((AppointmentItem)event.getCalendarItem());
+	}
+	
+	private void onItemMove(CalendarComponentEvents.ItemMoveEvent event) {
+		BasicItemMoveHandler basicItemMoveHandler = new BasicItemMoveHandler();
+		basicItemMoveHandler.itemMove(event);
+		saveAppointment((AppointmentItem)event.getCalendarItem());
+	}
+	
 	private void addCalendarEventListeners() {
         cal.setHandler(this::onCalendarRangeSelect);
         cal.setHandler(this::onCalendarItemClick);
+        cal.setHandler(this::onDateClick);
+        cal.setHandler(this::onItemResize);
+        cal.setHandler(this::onItemMove);
     }
 	
-	public void save(AppointmentItem appointmentItem) {
+	public void saveAppointment(AppointmentItem appointmentItem) {
 		for (AgendaViewListener listener: listeners)
-			listener.saveButtonClick(appointmentItem);
+			listener.saveAppointment(appointmentItem);
+	}
+	
+	public void deleteAppointment(AppointmentItem appointmentItem) {
+		for (AgendaViewListener listener: listeners)
+			listener.deleteAppointment(appointmentItem);
 	}
 
 	@Override
@@ -59,5 +92,9 @@ public class AgendaViewImpl extends PmsCustomComponent implements View, AgendaVi
 	@Override
 	public void addEventProvider(AppointmentDataProvider eventProvider) {
 		cal.setDataProvider(eventProvider);
+	}
+	
+	public void changeCalendarRange() {
+		
 	}
 }
