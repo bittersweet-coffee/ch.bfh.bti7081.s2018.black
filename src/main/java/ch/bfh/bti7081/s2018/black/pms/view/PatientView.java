@@ -15,5 +15,6 @@ public interface PatientView {
 		
 	}
 	
+	public void addListener(PatientViewListener listener);
 	public void setupPatientList(List<String> patientList);
 }

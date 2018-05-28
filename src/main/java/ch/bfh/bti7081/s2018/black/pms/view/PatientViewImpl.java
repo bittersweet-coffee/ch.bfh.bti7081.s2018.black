@@ -30,14 +30,22 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 	private List<PatientViewListener> listeners = new ArrayList<PatientViewListener>();
 	
 	private List<String> patientList;
+	
+	NativeSelect<String> nativePatient;
 
 	public PatientViewImpl() {
 		super();
 	}
 	
 	public void enter(ViewChangeEvent event) {
-		
+		this.nativePatient = new NativeSelect<>();
 		this.patientList = new LinkedList<>();
+        
+        this.nativePatient.setVisibleItemCount(10);
+        this.nativePatient.setItems(this.patientList);
+        this.nativePatient.setEmptySelectionAllowed(false);
+        this.nativePatient.setStyleName("patient-view-positions");
+        this.nativePatient.setWidth("100%");
 		
 		for (PatientViewListener listener: listeners) {
     		listener.setupPatientList();
@@ -56,15 +64,7 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 		
         //List<String> data = IntStream.range(0, 10).mapToObj(i -> "Option " + i).collect(Collectors.toList());
         
-        NativeSelect<String> nativePatient = new NativeSelect();
-        nativePatient.setVisibleItemCount(10);
-        nativePatient.setItems(this.patientList);
-        nativePatient.setEmptySelectionAllowed(false);
-        nativePatient.setStyleName("patient-view-positions");
-        nativePatient.setWidth("120%");
-        //lsPatient.setWidth(100.0f, Unit.PERCENTAGE);
-        
-        //lsPatient.addValueChangeListener(event -> System.out.println("Value changed"));
+
         
         Button btnOpen = new Button("Open");
         btnOpen.setEnabled(false);
@@ -85,8 +85,8 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 			}
 		});
 		
-		nativePatient.addValueChangeListener(selected -> {
-			if(nativePatient.getSelectedItem().isPresent()) {
+		this.nativePatient.addValueChangeListener(selected -> {
+			if(this.nativePatient.getSelectedItem().isPresent()) {
 				btnOpen.setEnabled(true);
 			} else {
 				btnOpen.setEnabled(false);
@@ -95,7 +95,7 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 		});
 		
 		HorizontalLayout hBoxBottom = new HorizontalLayout();
-		hBoxBottom.setStyleName("patient-view-positions");
+		//hBoxBottom.setStyleName("patient-view-positions");
 		hBoxBottom.addComponents(btnNewPatient, btnOpen);
 				
 		/*
@@ -128,7 +128,7 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 		tileGridTop.addComponent(btnSearch, 1, 1);
 		
 		GridLayout tileGridMiddle = new GridLayout(1,1);
-		tileGridMiddle.addComponent(nativePatient, 0, 0);
+		tileGridMiddle.addComponent(this.nativePatient, 0, 0);
 		
 		GridLayout tileGridBottom = new GridLayout(1,1);
 		tileGridBottom.addComponent(hBoxBottom, 0, 0);
@@ -147,8 +147,9 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
         
 		
         btnSearch.addClickListener(click -> {
-        	if(nativePatient.getSelectedItem().isPresent() || !txtSearch.isEmpty()) {
-        		nativePatient.setSelectedItem(null);
+        	System.out.println("ViewImpl: " + txtSearch.getValue());
+        	if(this.nativePatient.getSelectedItem().isPresent() || !txtSearch.isEmpty()) {
+        		this.nativePatient.setSelectedItem(null);
         	}
         	btnOpen.setEnabled(false);
         	for (PatientViewListener listener: listeners) {
@@ -175,8 +176,13 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 
 	@Override
 	public void setupPatientList(List<String> patientList) {
-		this.patientList = patientList;
+		this.nativePatient.setItems(patientList);
 		
+	}
+
+	@Override
+	public void addListener(PatientViewListener listener) {
+		this.listeners.add(listener);
 	}
 	
 	

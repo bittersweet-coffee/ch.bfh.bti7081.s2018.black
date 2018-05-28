@@ -2,11 +2,9 @@ package ch.bfh.bti7081.s2018.black.pms.presenter;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.util.JpaDataAccessObject;
@@ -24,6 +22,7 @@ public class PatientPresenter implements PatientView.PatientViewListener{
 	public PatientPresenter(PatientView view, PatientModel model) {
 		this.view = view;
 		this.model = model;
+		view.addListener(this);
 		this.fillPatientList();
 	}
 	
@@ -61,6 +60,7 @@ public class PatientPresenter implements PatientView.PatientViewListener{
 				.collect(Collectors.toList());
 				
 		this.view.setupPatientList(optionalPatient);
+		System.out.println("Hellooo");
 	}
 	
 	/*
