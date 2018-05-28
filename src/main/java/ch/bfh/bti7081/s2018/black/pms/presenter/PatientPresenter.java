@@ -3,7 +3,10 @@ package ch.bfh.bti7081.s2018.black.pms.presenter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.util.JpaDataAccessObject;
@@ -23,6 +26,8 @@ public class PatientPresenter implements PatientView.PatientViewListener{
 		this.model = model;
 		this.fillPatientList();
 	}
+	
+	
 
 	@Override
 	public void saveButtonClick(PatientItem patient) {
@@ -44,6 +49,18 @@ public class PatientPresenter implements PatientView.PatientViewListener{
 	public void setupPatientList() {
 		//this.view.setupAddictList(this.addictNameList);
 		this.view.setupPatientList(this.patientNameListList);
+	}
+
+
+
+	@Override
+	public void searchButtonClicked(String searchTerm) {
+		List<String> optionalPatient = this.patientModelList.stream()
+				.filter(patient -> patient.getFirstname().toLowerCase().contains(searchTerm.toLowerCase()) || patient.getLastname().toLowerCase().contains(searchTerm.toLowerCase()))
+				.flatMap(patient -> Stream.of(patient.getFirstname(), patient.getLastname()))
+				.collect(Collectors.toList());
+				
+		this.view.setupPatientList(optionalPatient);
 	}
 	
 	/*

@@ -9,6 +9,7 @@ public interface PatientView {
 	public interface PatientViewListener {
 		
 		void saveButtonClick(PatientItem patient);
+		void searchButtonClicked(String searchterm);
 
 		void setupPatientList();
 		
