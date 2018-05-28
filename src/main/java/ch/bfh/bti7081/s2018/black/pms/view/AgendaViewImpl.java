@@ -8,6 +8,8 @@ import org.vaadin.addon.calendar.ui.CalendarComponentEvents;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.ui.Panel;
+
 import ch.bfh.bti7081.s2018.black.pms.model.Appointment;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentDataProvider;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
@@ -24,8 +26,10 @@ public class AgendaViewImpl extends PmsCustomComponent implements View, AgendaVi
 	}
 	
 	public void enter(ViewChangeEvent event) {
-		cal.setWidth(super.contentPanel.getWidth(), super.contentPanel.getWidthUnits());
+		//cal.setWidth(super.contentPanel.getWidth(), super.contentPanel.getWidthUnits());
+		cal.setWidth("1200px");
 		addCalendarEventListeners();
+		super.contentPanel.setSizeUndefined();
 		super.contentPanel.setContent(cal);
 	}
 	

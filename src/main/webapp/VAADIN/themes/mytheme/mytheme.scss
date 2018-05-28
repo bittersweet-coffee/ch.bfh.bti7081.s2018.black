@@ -88,4 +88,30 @@
   margin-right: 40px;
   margin-bottom: 20px;
   }
+  
+  .patient-record-view{
+  margin-bottom: 20px;
+  margin-top: 20px;
+  }
+  
+  .patient-record-view-lbl{
+  margin-left: 20px;
+  }
+  
+  select.v-select-select {
+	background: transparent; 
+	border: none;
+	margin: 0px;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	-ms-appearance: none;
+	height: auto;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	padding: 0 20px 0 0;
+	line-height: 28px;
+	}
 }
