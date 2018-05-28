@@ -7,6 +7,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.Table;
 
 /**
@@ -16,6 +19,9 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="patient")
+@NamedEntityGraph(name = "PatientModel.location",
+attributeNodes = @NamedAttributeNode(value = "location", subgraph = "location"),
+subgraphs = @NamedSubgraph(name = "location", attributeNodes = @NamedAttributeNode("patients")))
 public class PatientModel extends EntityModel {
 	
 	// firstname of the patient. Can not be null
