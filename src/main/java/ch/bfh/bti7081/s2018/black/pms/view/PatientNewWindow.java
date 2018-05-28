@@ -1,15 +1,8 @@
 package ch.bfh.bti7081.s2018.black.pms.view;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-
-import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.DateTimeField;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.TwinColSelect;
@@ -19,23 +12,19 @@ import com.vaadin.ui.Button.ClickListener;
 
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 
-public class PatientWindow extends Window {
+public class PatientNewWindow extends Window {
 	
 	PatientViewImpl view;
-	
 	PatientItem newPatient = new PatientItem();
 	
-	public PatientWindow(PatientViewImpl view) {
+	public PatientNewWindow(PatientViewImpl view) {
 		super("New Patient");
 		this.view = view;
 		buildWindow();
-		
 	}
 	
 	private void buildWindow() {
 		
-		setWidth(500.0f, Unit.PIXELS);
-
 		Label lblfirstName = new Label("First Name: ");
 		Label lblLastName = new Label("Last Name: ");
 		Label lblNotes = new Label("Notes: ");
@@ -43,7 +32,6 @@ public class PatientWindow extends Window {
 		TwinColSelect<String> addictionselect = new TwinColSelect<>("Addictions:");
 		addictionselect.setItems("Addiction 1", "Addiction 2", "Addiction 3", "Addiction 4", "Addiction 5", "Addiction 6");
 		addictionselect.setRows(5);
-		
 		
 		TextField firstNameField = new TextField();
 		TextField lastNameField = new TextField();
@@ -64,7 +52,6 @@ public class PatientWindow extends Window {
 		
 		tileGrid.setMargin(true);
 		
-        setContent(tileGrid);
         tileGrid.addComponent(lblfirstName, 0, 0);
         tileGrid.addComponent(firstNameField, 1, 0);
         tileGrid.addComponent(lblLastName, 0, 1);
@@ -74,6 +61,7 @@ public class PatientWindow extends Window {
         tileGrid.addComponent(descriptionField, 0, 4);
         tileGrid.addComponent(btnSave, 0, 5); 
 		tileGrid.addComponent(btnCancel, 1, 5); 
-	}
 
+        setContent(tileGrid);
+	}
 }

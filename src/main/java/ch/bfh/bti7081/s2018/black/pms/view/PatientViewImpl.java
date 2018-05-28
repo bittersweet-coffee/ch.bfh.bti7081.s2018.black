@@ -55,20 +55,27 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
         
         //lsPatient.addValueChangeListener(event -> System.out.println("Value changed"));
         
-        Button btnOpen = new Button("Open");
+        Button btnOpenPatient = new Button("Open");
+		btnOpenPatient.addClickListener(new ClickListener() {
+			
+			@Override
+			public void buttonClick(ClickEvent event) {
+				patientOpenWindow();
+			}
+		});
 		
 		Button btnNewPatient = new Button("New Patient");
 		btnNewPatient.addClickListener(new ClickListener() {
 			
 			@Override
 			public void buttonClick(ClickEvent event) {
-				patientWindow();
+				patientNewWindow();
 			}
 		});
 		
 		HorizontalLayout hBoxBottom = new HorizontalLayout();
 		hBoxBottom.setStyleName("patient-view-positions");
-		hBoxBottom.addComponents(btnNewPatient, btnOpen);
+		hBoxBottom.addComponents(btnNewPatient, btnOpenPatient);
 				
 		/*
 		HorizontalLayout hBox = new HorizontalLayout();
@@ -123,14 +130,18 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
         //JpaDemo.testUser();
 	}
 
-	protected void patientWindow() {
-		final PatientWindow window = new PatientWindow(this);   
+	protected void patientNewWindow() {
+		final PatientNewWindow window = new PatientNewWindow(this);   
+		window.setModal(true);
 		super.getUI().getUI().addWindow(window);
-		
+	}
+
+	protected void patientOpenWindow() {
+		final PatientOpenWindow window = new PatientOpenWindow(this);   
+		window.setModal(true);
+		super.getUI().getUI().addWindow(window);
 	}
 
 	public void save(PatientItem newPatient) {
-		
-		
 	}
 }
