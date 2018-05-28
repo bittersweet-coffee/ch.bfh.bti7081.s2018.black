@@ -1,7 +1,9 @@
 package ch.bfh.bti7081.s2018.black.pms.presenter;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -14,14 +16,12 @@ import ch.bfh.bti7081.s2018.black.pms.view.PatientView;
 public class PatientPresenter implements PatientView.PatientViewListener{
 	
 	private PatientView view;
-	private PatientModel model;
 	private List<PatientModel> patientModelList;
-	private List<String> patientNameListList = new LinkedList<>();
+	private Map<Integer, String> patientNameList = new HashMap<>();
 
 
 	public PatientPresenter(PatientView view) {
 		this.view = view;
-		this.model = model;
 		view.addListener(this);
 		this.fillPatientList();
 	}
@@ -39,8 +39,8 @@ public class PatientPresenter implements PatientView.PatientViewListener{
 		this.patientModelList = objects.findAll(PatientModel.class);
      	
 		for (PatientModel patient : this.patientModelList) {
-     		this.patientNameListList.add(patient.getFirstname() + ", " + patient.getLastname());
-     		//this.patientLastnameList.add(patient.getLastname());
+			this.patientNameList.put(patient.getId(), patient.getFirstname() + ", " + patient.getLastname());
+     		//this.patientNameList.add(patient.getFirstname() + ", " + patient.getLastname());
      		System.out.println(patient.getFirstname() + " " + patient.getLastname());
      	}
 	}
@@ -48,20 +48,20 @@ public class PatientPresenter implements PatientView.PatientViewListener{
 	@Override
 	public void setupPatientList() {
 		//this.view.setupAddictList(this.addictNameList);
-		this.view.setupPatientList(this.patientNameListList);
+		this.view.setupPatientList(this.patientNameList);
 	}
 
 
 
 	@Override
 	public void searchButtonClicked(String searchTerm) {
-		List<String> optionalPatient = this.patientModelList.stream()
+		Map<Integer, String> optionalPatient = this.patientModelList.stream()
 				.filter(patient -> patient.getFirstname().toLowerCase().contains(searchTerm.toLowerCase()) || patient.getLastname().toLowerCase().contains(searchTerm.toLowerCase()))
-				.flatMap(patient -> Stream.of(patient.getFirstname(), patient.getLastname()))
-				.collect(Collectors.toList());
-				
+				//.flatMap(patient -> Stream.of(patient.getId(), patient.getFirstname() + ", " + patient.getLastname()))
+				.collect(Collectors.toMap(PatientModel::getId, patient -> patient.getFirstname() + ", " + patient.getLastname()));
+		
+		System.out.println(optionalPatient.toString());
 		this.view.setupPatientList(optionalPatient);
-		System.out.println("Hellooo");
 	}
 	
 	/*

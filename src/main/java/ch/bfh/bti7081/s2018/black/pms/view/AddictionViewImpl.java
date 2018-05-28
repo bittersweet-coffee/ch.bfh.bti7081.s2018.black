@@ -54,7 +54,7 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         HorizontalLayout searchLayout = new HorizontalLayout();
         searchLayout.addComponents(txtSearch, btnSearch);
         searchLayout.setComponentAlignment(btnSearch, Alignment.BOTTOM_CENTER);
-        searchLayout.setMargin(new MarginInfo(false, false, true, false));
+        searchLayout.setMargin(new MarginInfo(false, false, true, true));
         
         HorizontalLayout hLayout = new HorizontalLayout();
         
@@ -94,9 +94,13 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         Button btnAddTo = new Button("Add To");
         btnAddTo.setEnabled(false);
         
-        hLayout.addComponents(nativeAddict, addictDetails, btnAddTo);
+        hLayout.addComponents(
+        		nativeAddict, 
+        		addictDetails, 
+        		btnAddTo);
+        
         hLayout.setWidth("100%");
-        hLayout.setMargin(new MarginInfo(false, false, true, false));
+        hLayout.setMargin(new MarginInfo(false, true, true, true));
         hLayout.setComponentAlignment(btnAddTo, Alignment.BOTTOM_RIGHT);
         hLayout.setComponentAlignment(nativeAddict, Alignment.TOP_LEFT);
         hLayout.setComponentAlignment(addictDetails, Alignment.TOP_CENTER);

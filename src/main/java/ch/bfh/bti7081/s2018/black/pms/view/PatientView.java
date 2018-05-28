@@ -1,6 +1,6 @@
 package ch.bfh.bti7081.s2018.black.pms.view;
 
-import java.util.List;
+import java.util.Map;
 
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 
@@ -16,5 +16,5 @@ public interface PatientView {
 	}
 	
 	public void addListener(PatientViewListener listener);
-	public void setupPatientList(List<String> patientList);
+	public void setupPatientList(Map<Integer, String> patientList);
 }
