@@ -2,8 +2,12 @@ package ch.bfh.bti7081.s2018.black.pms.model;
 
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import ch.bfh.bti7081.s2018.black.pms.presenter.DrugPresenter;
 
 /**
  * Drug class
@@ -17,10 +21,22 @@ public class DrugModel extends EntityModel {
 	// name of the drug
 	private String name;
 	
+	// description of the drug
+	private String description;
+	
 	// list of the patients that have to take the drug
 	// is mapped with the variable drugs of the class PatientModel
     @ManyToMany(mappedBy="drugs")
 	private List<PatientModel> patients;
+    
+    @ManyToMany
+    @JoinTable(name="drug_addiction",
+        joinColumns=
+            @JoinColumn(name="drug_id", referencedColumnName="id"),
+        inverseJoinColumns=
+            @JoinColumn(name="addiction_id", referencedColumnName="id"))
+	private List<AddictionModel> addictions;
+    
 
     /**
      * getter of the name
@@ -36,6 +52,22 @@ public class DrugModel extends EntityModel {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+    /**
+     * getter of the description
+     * @return the description of the drug
+     */
+	public String getDescription() {
+		return this.description;
+	}
+
+	/**
+	 * setter of the description
+	 * @param description of the drug
+	 */
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	/**

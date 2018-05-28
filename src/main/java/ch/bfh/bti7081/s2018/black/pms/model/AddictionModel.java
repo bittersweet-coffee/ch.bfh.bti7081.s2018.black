@@ -39,13 +39,14 @@ public class AddictionModel extends EntityModel {
 	@OneToMany(mappedBy = "addiction")
 	private List<SymptomModel> symptoms;
 
-	// hibernate ignores this variable. I think we don't need this variable
-	@Transient
-	private List<String> treatments = new LinkedList<>();;
+	// list of drugs to help cure the addiction
+	// is mapped with the variable addiction in the class DrugModel
+	@ManyToMany(mappedBy="addictions")
+	private List<DrugModel> drugs;
 	
 	// hibernate ignores this variable. TODO: Do we have to rename our LocationModel class to ClinicModel?
 	@Transient
-	private List<String> clinics = new LinkedList<>();;
+	private List<String> clinics = new LinkedList<>();
 	
 	// list of patients with the same addiction
 	// is mapped with the variable addictions in the class PatientModel
@@ -101,7 +102,7 @@ public class AddictionModel extends EntityModel {
 	}
 	
 	/**
-	 * getter for symptioms
+	 * getter for symptoms
 	 * @return a list with the symptoms of the addiction
 	 */
 	public List<SymptomModel> getSymptoms() {
@@ -132,14 +133,20 @@ public class AddictionModel extends EntityModel {
 			return symptomString;
 	}
 	
-	// the variable treatments may be deleted
-	public List<String> getTreatments() {
-		return this.treatments;
+	/**
+	 * getter of the drugs
+	 * @return List of drugs to help cure the addiction
+	 */
+	public List<DrugModel> getDrugs() {
+		return this.drugs;
 	}
 	
-	// the variable treatments may be deleted
-	public void setTreatments(List<String> treatments) {
-		this.treatments = treatments;
+	/**
+	 * setter of the drugs
+	 * @param drugs List of drugs to help cure the addiction
+	 */
+	public void setDrugs(List<DrugModel> drugs) {
+		this.drugs = drugs;
 	}
 	
 	/**
