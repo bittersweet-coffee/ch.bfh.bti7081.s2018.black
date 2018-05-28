@@ -19,7 +19,7 @@ public class PatientPresenter implements PatientView.PatientViewListener{
 	private List<String> patientNameListList = new LinkedList<>();
 
 
-	public PatientPresenter(PatientView view, PatientModel model) {
+	public PatientPresenter(PatientView view) {
 		this.view = view;
 		this.model = model;
 		view.addListener(this);
@@ -41,6 +41,7 @@ public class PatientPresenter implements PatientView.PatientViewListener{
 		for (PatientModel patient : this.patientModelList) {
      		this.patientNameListList.add(patient.getFirstname() + ", " + patient.getLastname());
      		//this.patientLastnameList.add(patient.getLastname());
+     		System.out.println(patient.getFirstname() + " " + patient.getLastname());
      	}
 	}
 
