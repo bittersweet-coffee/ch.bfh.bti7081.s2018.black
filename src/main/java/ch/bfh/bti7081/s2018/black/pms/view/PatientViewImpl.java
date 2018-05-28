@@ -120,7 +120,7 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 		vBox.addComponents(tileGridTop, tileGridMiddle, tileGridBottom);
 		vBox.setComponentAlignment(tileGridBottom, Alignment.BOTTOM_RIGHT);
 		vBox.setComponentAlignment(tileGridMiddle, Alignment.TOP_LEFT);
-				
+
 		super.contentPanel.setSizeUndefined();
 		super.contentPanel.setContent(vBox);
         

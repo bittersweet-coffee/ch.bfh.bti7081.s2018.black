@@ -27,6 +27,6 @@ public abstract class EntityModel {
 	 * @return id of the entity
 	 */
 	public int getId() {
-		return this.id;
+		return id;
 	}
 }

@@ -50,7 +50,7 @@ public class PmsCustomComponent extends CustomComponent {
     	contentBody.setSizeFull();
         contentBody.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
         contentBody.addComponent(contentPanel);
-        contentPanel.setWidth("1300px");
+        contentPanel.setWidth("1200px");
 
         VerticalLayout content = new VerticalLayout();
 		content.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);

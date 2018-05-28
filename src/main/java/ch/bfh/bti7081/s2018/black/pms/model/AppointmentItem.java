@@ -10,9 +10,9 @@ import com.vaadin.icons.VaadinIcons;
 
 public class AppointmentItem extends BasicItem {
 
-	private final Appointment appointment;
+	private final AppointmentModel appointment;
 	
-	public AppointmentItem(Appointment appointment) {
+	public AppointmentItem(AppointmentModel appointment) {
         super();
         this.appointment = appointment;
         if (appointment.getName() != null) {
@@ -50,7 +50,7 @@ public class AppointmentItem extends BasicItem {
 		return true;
 	}
 
-	public Appointment getAppointment() {
+	public AppointmentModel getAppointment() {
 		return this.appointment;
 	}
 	

@@ -9,8 +9,7 @@ import org.vaadin.addon.calendar.ui.CalendarComponentEvents;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Panel;
-
-import ch.bfh.bti7081.s2018.black.pms.model.Appointment;
+import ch.bfh.bti7081.s2018.black.pms.model.AppointmentModel;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentDataProvider;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
 
@@ -35,7 +34,7 @@ public class AgendaViewImpl extends PmsCustomComponent implements View, AgendaVi
 	
 	private void onCalendarRangeSelect(CalendarComponentEvents.RangeSelectEvent event) {
 		//final AppointmentWindow window = new AppointmentWindow(this, event.getStart().toLocalDateTime(), event.getEnd().toLocalDateTime());  
-		AppointmentItem appointmentItem = new AppointmentItem(new Appointment(event.getStart().toLocalDateTime(), event.getEnd().toLocalDateTime()));
+		AppointmentItem appointmentItem = new AppointmentItem(new AppointmentModel(event.getStart().toLocalDateTime(), event.getEnd().toLocalDateTime()));
 		final AppointmentWindow window = new AppointmentWindow(this, appointmentItem);  
 		super.getUI().getUI().addWindow(window);
     }
