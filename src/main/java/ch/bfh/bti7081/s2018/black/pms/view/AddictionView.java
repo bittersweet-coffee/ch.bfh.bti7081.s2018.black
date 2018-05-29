@@ -6,17 +6,13 @@ import java.util.List;
 public interface AddictionView {
 	
 	public interface AddictionViewListener {
-		void searchButtonClicked(String searchTerm);
-		void addToButtonClicked();
+		List<String> searchButtonClicked(String searchTerm);
+		List<String> addToButtonClicked();
 		void allocateButtonClicked(String addictionName, String patientName);
-		void selectListChanged(String addictionName);
-		void setupAddictList();
+		List<String> selectListChanged(String addictionName);
+		List<String> setupAddictList();
 		
 	}
 	
 	public void addListener(AddictionViewListener listener);
-	public void setupAddictList(List<String> addictionList);
-	public void setListDesc(String desc);
-	public void setListSymptoms(String symptoms);
-	public void setupPatientList(List<String> patientList);
 }

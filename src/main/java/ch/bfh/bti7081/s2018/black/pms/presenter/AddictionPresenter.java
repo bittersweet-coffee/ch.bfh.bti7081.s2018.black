@@ -24,17 +24,17 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 	}
 
 	@Override
-	public void searchButtonClicked(String searchTerm) {
+	public List<String> searchButtonClicked(String searchTerm) {
 		List<String> optionalAddict = this.addictModelList.stream()
 				.filter(addict -> addict.getName().toLowerCase().contains(searchTerm.toLowerCase()))
 				.map(AddictionModel::getName)
 				.collect(Collectors.toList());
-				
-		this.view.setupAddictList(optionalAddict);
+			
+		return optionalAddict;
 	}
 
 	@Override
-	public void addToButtonClicked() {
+	public List<String> addToButtonClicked() {
 
 	// These are Mock Objects because Patient Management isn't ready yet
 		List<String> patientList = new LinkedList<>();
@@ -50,7 +50,7 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 		//
 		//
 		
-		this.view.setupPatientList(patientList);
+		return patientList;
 	}
 	
 	@Override
@@ -79,15 +79,22 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 	}
 	
 	@Override
-	public void selectListChanged(String addictionName) {
+	public List<String> selectListChanged(String addictionName) {
 		Optional<AddictionModel> optionalAddict = this.addictModelList.stream()
 			.filter(addict -> addict.getName().equals(addictionName))
 			.findFirst();
 			
+		List<String> addictionDetails = new LinkedList<>();
+		
 		if(optionalAddict.isPresent()) {
-			this.view.setListDesc(optionalAddict.get().getDescription());
-			this.view.setListSymptoms(optionalAddict.get().getSymptomsAsString());
+			addictionDetails.add(optionalAddict.get().getDescription());
+			addictionDetails.add(optionalAddict.get().getSymptomsAsString());
+		} else {
+			addictionDetails.add("No Description present");
+			addictionDetails.add("No Symptoms present");
 		}
+		
+		return addictionDetails;
 	}
 	
 	public void fillAddictionList() {
@@ -101,7 +108,7 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 	}
 
 	@Override
-	public void setupAddictList() {
-		this.view.setupAddictList(this.addictNameList);
+	public List<String> setupAddictList() {
+		return this.addictNameList;
 	}
 }
