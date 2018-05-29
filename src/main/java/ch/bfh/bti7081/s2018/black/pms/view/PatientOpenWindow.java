@@ -16,44 +16,50 @@ import com.vaadin.ui.Window;
 
 public class PatientOpenWindow extends Window {
 
-	PatientViewImpl view;
+	private PatientViewImpl view;
+	private String patientName;
 
-	public PatientOpenWindow(PatientViewImpl view) {
+	public PatientOpenWindow(PatientViewImpl view, String patientName) {
 		super("Open Patient");
 		this.view = view;
+		this.patientName = patientName;
 		buildWindow();
 	}
 	
 	private void buildWindow() {
-		Label lblSurname = new Label("<h3>Surname: </h3>", ContentMode.HTML);
-		Label lblName = new Label("<h3>Name: </h3>", ContentMode.HTML);
-		Label lblBirthday = new Label("<h3>Birthday: </h3>", ContentMode.HTML);
+		Label lblFirstName = new Label("Firstname:");
+		Label lblLastName = new Label("Lastname:");
+		Label lblBirthday = new Label("Birthday:");
 		
-		TextField tfSurname = new TextField();
-		tfSurname.setStyleName("patient-record-view-lbl");
-		tfSurname.setPlaceholder("Insert surname");
-		tfSurname.setMaxLength(20);
+		String[] splittedName = patientName.split("\\,");
 		
-		TextField tfName = new TextField();
-		tfName.setStyleName("patient-record-view-lbl");
-		tfName.setPlaceholder("Insert name");
-		tfName.setMaxLength(20);
+		TextField txtFirstName = new TextField();
+		//txtFirstName.setPlaceholder("Insert surname");
+		txtFirstName.setMaxLength(20);
+		txtFirstName.setValue(splittedName[0]);
+		txtFirstName.setReadOnly(true);
 		
-		TextField tfBirthday = new TextField();
-		tfBirthday.setStyleName("patient-record-view-lbl");
-		tfBirthday.setPlaceholder("Insert Birthday");
-		tfBirthday.setMaxLength(20);
+		TextField txtLastName = new TextField();
+		//txtLastName.setPlaceholder("Insert name");
+		txtLastName.setReadOnly(true);
+		txtLastName.setMaxLength(20);
+		txtLastName.setValue(splittedName[1].trim());
+		
+		TextField txtBirthday = new TextField();
+		txtBirthday.setPlaceholder("Insert Birthday");
+		txtBirthday.setMaxLength(20);
+		txtBirthday.setReadOnly(true);
 		
 		GridLayout tileGridPatient = new GridLayout(2,3);
-		tileGridPatient.addComponent(lblSurname, 0, 0);
-		tileGridPatient.addComponent(lblName, 0, 1);
+		tileGridPatient.addComponent(lblFirstName, 0, 0);
+		tileGridPatient.addComponent(lblLastName, 0, 1);
 		tileGridPatient.addComponent(lblBirthday, 0, 2);
-		tileGridPatient.addComponent(tfSurname, 1, 0);
-		tileGridPatient.setComponentAlignment(tfSurname, Alignment.MIDDLE_CENTER);
-		tileGridPatient.addComponent(tfName, 1, 1);
-		tileGridPatient.setComponentAlignment(tfName, Alignment.MIDDLE_CENTER);
-		tileGridPatient.addComponent(tfBirthday, 1, 2);
-		tileGridPatient.setComponentAlignment(tfBirthday, Alignment.MIDDLE_CENTER);
+		tileGridPatient.addComponent(txtFirstName, 1, 0);
+		tileGridPatient.setComponentAlignment(txtFirstName, Alignment.MIDDLE_CENTER);
+		tileGridPatient.addComponent(txtLastName, 1, 1);
+		tileGridPatient.setComponentAlignment(txtLastName, Alignment.MIDDLE_CENTER);
+		tileGridPatient.addComponent(txtBirthday, 1, 2);
+		tileGridPatient.setComponentAlignment(txtBirthday, Alignment.MIDDLE_CENTER);
 		
 		//Appointment Part
         List<String> data = IntStream.range(0, 4).mapToObj(i -> "Appointment " + i).collect(Collectors.toList());
@@ -67,7 +73,7 @@ public class PatientOpenWindow extends Window {
         //lsPatient.addValueChangeListener(event -> System.out.println("Value changed"));
         
         Button btnNew = new Button("New");
-        btnNew.setStyleName("patient-record-view");      
+        //btnNew.setStyleName("patient-record-view");      
         
 		GridLayout tileGridAppointment = new GridLayout(1,2);
 		tileGridAppointment.addComponent(lsAppointment, 0, 0);

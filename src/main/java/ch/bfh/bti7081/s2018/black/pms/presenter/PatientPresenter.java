@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
@@ -22,6 +21,7 @@ public class PatientPresenter implements PatientView.PatientViewListener{
 
 	public PatientPresenter(PatientView view) {
 		this.view = view;
+		this.patientModelList = new LinkedList<>();
 		view.addListener(this);
 		this.fillPatientList();
 	}
@@ -40,42 +40,41 @@ public class PatientPresenter implements PatientView.PatientViewListener{
      	
 		for (PatientModel patient : this.patientModelList) {
 			this.patientNameList.put(patient.getId(), patient.getFirstname() + ", " + patient.getLastname());
-     		//this.patientNameList.add(patient.getFirstname() + ", " + patient.getLastname());
-     		System.out.println(patient.getFirstname() + " " + patient.getLastname());
      	}
 	}
 
+	
 	@Override
-	public void setupPatientList() {
-		//this.view.setupAddictList(this.addictNameList);
-		this.view.setupPatientList(this.patientNameList);
+	public Map<Integer, String> setupPatientList() {
+		return this.patientNameList;
 	}
 
 
 
 	@Override
-	public void searchButtonClicked(String searchTerm) {
+	public Map<Integer, String> searchButtonClicked(String searchTerm) {
 		Map<Integer, String> optionalPatient = this.patientModelList.stream()
 				.filter(patient -> patient.getFirstname().toLowerCase().contains(searchTerm.toLowerCase()) || patient.getLastname().toLowerCase().contains(searchTerm.toLowerCase()))
-				//.flatMap(patient -> Stream.of(patient.getId(), patient.getFirstname() + ", " + patient.getLastname()))
 				.collect(Collectors.toMap(PatientModel::getId, patient -> patient.getFirstname() + ", " + patient.getLastname()));
 		
-		System.out.println(optionalPatient.toString());
-		this.view.setupPatientList(optionalPatient);
+		return optionalPatient;
 	}
-	
-	/*
+
+
+
 	@Override
-	public void selectListChanged(String firstName, String lastName) {
-		Optional<PatientModel> optionalPatient = this.patientModelList.stream()
-			.filter(patient -> patient.getFirstname().equals(firstName))
-			.findAny();
-			
-		if(optionalPatient.isPresent()) {
-			this.view.setListDesc(optionalPatient.get().getDescription());
-			this.view.setListSymptoms(optionalPatient.get().getSymptomsAsString());
-		}
+	public List<List<String>> openButtonClicked(Integer patientId, String patientName) {
+		List<List<String>> wrapper = new LinkedList<>();
+		List<String> addictionList = new LinkedList<>();		// fetch DB for assigned Addictions
+		List<String> drugList = new LinkedList<>();				// fetch DB for assigned Drugs
+		List<String> appointmentList = new LinkedList<>();		// fetch DB for assigned Appointments
+		List<String> birthdayList = new LinkedList<>();			// fetch DB for Patient's Birthday 
+		
+		wrapper.add(addictionList);
+		wrapper.add(drugList);
+		wrapper.add(appointmentList);
+		wrapper.add(birthdayList);
+		
+		return wrapper;
 	}
-	
-	*/
 }
