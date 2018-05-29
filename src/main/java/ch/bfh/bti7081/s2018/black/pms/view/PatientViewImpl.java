@@ -44,8 +44,6 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 
 		this.nativePatient.setWidth("80%");
         
-        
-		
 		for (PatientViewListener listener: listeners) {
 			this.nativePatient.setItems(listener.setupPatientList().values());
 		}
@@ -78,18 +76,14 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 	
 		super.contentPanel.setContent(vLayout);
 		
-		
 		btnOpen.addClickListener(new ClickListener() {
-			
 			@Override
 			public void buttonClick(ClickEvent event) {
 				patientOpenWindow();
 			}
 		});
 		
-		
 		btnNewPatient.addClickListener(new ClickListener() {
-			
 			@Override
 			public void buttonClick(ClickEvent event) {
 				patientNewWindow();
@@ -97,18 +91,15 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 		});
 		
 		this.nativePatient.addValueChangeListener(selected -> {
-			if(this.nativePatient.getSelectedItem().isPresent()) {
+			if (this.nativePatient.getSelectedItem().isPresent()) {
 				btnOpen.setEnabled(true);
 			} else {
 				btnOpen.setEnabled(false);
 			}
-				
 		});
 		
-		
-		
         btnSearch.addClickListener(click -> {
-        	if(this.nativePatient.getSelectedItem().isPresent() || !txtSearch.isEmpty()) {
+        	if (this.nativePatient.getSelectedItem().isPresent() || !txtSearch.isEmpty()) {
         		this.nativePatient.setSelectedItem(null);
         	}
         	btnOpen.setEnabled(false);
@@ -116,9 +107,6 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
         		this.nativePatient.setItems(listener.searchButtonClicked(txtSearch.getValue()).values());
         	}
         });
-        
-    
-
 	}
 
 	protected void patientNewWindow() {
@@ -136,10 +124,8 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 	public void save(PatientItem newPatient) {
 	}
 	
-	
 	@Override
 	public void addListener(PatientViewListener listener) {
 		this.listeners.add(listener);
 	}
-
 }

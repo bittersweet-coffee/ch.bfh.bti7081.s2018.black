@@ -18,19 +18,15 @@ public class PatientPresenter implements PatientView.PatientViewListener{
 	private List<PatientModel> patientModelList;
 	private Map<Integer, String> patientNameList = new HashMap<>();
 
-
 	public PatientPresenter(PatientView view) {
 		this.view = view;
 		this.patientModelList = new LinkedList<>();
 		view.addListener(this);
 		this.fillPatientList();
 	}
-	
-	
 
 	@Override
 	public void saveButtonClick(PatientItem patient) {
-		
 	}
 
 	public void fillPatientList() {
@@ -43,24 +39,21 @@ public class PatientPresenter implements PatientView.PatientViewListener{
      	}
 	}
 
-	
 	@Override
 	public Map<Integer, String> setupPatientList() {
 		return this.patientNameList;
 	}
 
-
-
 	@Override
 	public Map<Integer, String> searchButtonClicked(String searchTerm) {
 		Map<Integer, String> optionalPatient = this.patientModelList.stream()
-				.filter(patient -> patient.getFirstname().toLowerCase().contains(searchTerm.toLowerCase()) || patient.getLastname().toLowerCase().contains(searchTerm.toLowerCase()))
+				.filter(patient -> patient.getFirstname().toLowerCase().contains(searchTerm.toLowerCase()) || 
+						patient.getLastname().toLowerCase().contains(searchTerm.toLowerCase())
+						)
 				.collect(Collectors.toMap(PatientModel::getId, patient -> patient.getFirstname() + ", " + patient.getLastname()));
 		
 		return optionalPatient;
 	}
-
-
 
 	@Override
 	public List<List<String>> openButtonClicked(Integer patientId, String patientName) {

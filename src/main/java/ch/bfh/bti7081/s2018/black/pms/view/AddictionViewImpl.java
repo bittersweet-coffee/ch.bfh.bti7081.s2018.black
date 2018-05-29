@@ -13,7 +13,6 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Link;
 import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
@@ -98,7 +97,8 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         hLayout.addComponents(
         		nativeAddict, 
         		addictDetails, 
-        		btnAddTo);
+        		btnAddTo
+        		);
         
         hLayout.setWidth("100%");
         hLayout.setMargin(new MarginInfo(false, true, true, true));
@@ -140,7 +140,7 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         super.contentPanel.setContent(vLayout);
         
         btnSearch.addClickListener(click -> {
-        	if(this.nativeAddict.getSelectedItem().isPresent() || !txtSearch.isEmpty()) {
+        	if (this.nativeAddict.getSelectedItem().isPresent() || !txtSearch.isEmpty()) {
         		this.nativeAddict.setSelectedItem(null);
         	}
         	btnAddTo.setEnabled(false);
@@ -176,7 +176,7 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 		});
 		
 		btnPatient.addClickListener(click -> {
-			if(nativePatient.getSelectedItem().isPresent()) {
+			if (nativePatient.getSelectedItem().isPresent()) {
 				for (AddictionViewListener listener: listeners)
 	        		listener.allocateButtonClicked(nativeAddict.getSelectedItem().get(),
 	        				nativePatient.getSelectedItem().get());
@@ -203,14 +203,11 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 	}
 	
 	/*
-	
 	@Override
 	public void setupAddictList(List<String> addictionList) {
 		this.nativeAddict.setItems(addictionList);
 	}
 	
-	
-
 	@Override
 	public void setListDesc(String desc) {
 		this.txtAddictDesc.setValue(desc);
@@ -225,6 +222,5 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 	public void setupPatientList(List<String> patientList) {
 		this.patientList = patientList;
 	}
-	
 	*/
 }
