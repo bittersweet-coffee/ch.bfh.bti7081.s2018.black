@@ -18,7 +18,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 
-//import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
+import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 
 public class PatientViewImpl extends PmsCustomComponent implements View, PatientView {
 
@@ -59,7 +59,7 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 		HorizontalLayout searchLayout = new HorizontalLayout();
 		
 		searchLayout.addComponents(txtSearch, btnSearch);
-		
+		searchLayout.setMargin(new MarginInfo(true, false, false, true));
 				
 		Button btnOpen = new Button("Open");
 		btnOpen.setEnabled(false);	
@@ -70,17 +70,13 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 		hLayout.setComponentAlignment(btnOpen, Alignment.BOTTOM_CENTER);
 		hLayout.setComponentAlignment(btnNewPatient, Alignment.BOTTOM_RIGHT);
 		hLayout.setWidth("100%");
+		hLayout.setMargin(new MarginInfo(false, false, true, true));
 		
 		vLayout.addComponents(lblFilter, searchLayout, hLayout);
 		vLayout.setWidth("100%");
 		vLayout.setMargin(new MarginInfo(true));
-		
-		
 	
 		super.contentPanel.setContent(vLayout);
-        
-		
-		
 		
 		
 		btnOpen.addClickListener(new ClickListener() {
@@ -136,10 +132,10 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 		window.setModal(true);
 		super.getUI().getUI().addWindow(window);
 	}
-/*
+
 	public void save(PatientItem newPatient) {
 	}
-	*/
+	
 	
 	@Override
 	public void addListener(PatientViewListener listener) {
