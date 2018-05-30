@@ -262,3 +262,48 @@
 * Deployment Diagramm (Amin, Toni)
 * Klassen Diagramm(Aleks, Cedric)
 * Sprint Planung (Hofer, Jan, Nicolas)
+
+## 2018-05-14
+
+### Teilnehmer
+
+* Aleksander
+* Amin
+* Antonio
+* Cedric
+* Jan
+* Michael
+* Nicola
+
+### Agenda
+
+* Kurze erklärung der geschriebenen Codes innehralb der Gruppe (Austausch)
+
+## TODO
+
+* Weitere Arbeit nach Einteilung und Absprache (siehe Sprintlog)
+
+## 2018-05-18
+
+### Teilnehmer
+
+* Aleksander
+* Amin
+* Antonio
+* Cedric
+* Jan
+* Michael
+* Nicola
+
+### Agenda
+
+* Sprint 1 Review mit Product Owner
+* Beginn Sprint 2
+
+### Beschlüsse
+
+* Neu Orientierung anhand vom Sprintlog zu Sprint 2 und zu Task 8
+
+## TODO
+
+* Weitere Arbeiten anhand des Sprintlogs

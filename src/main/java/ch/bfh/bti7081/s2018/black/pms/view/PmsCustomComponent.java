@@ -33,6 +33,7 @@ public class PmsCustomComponent extends CustomComponent {
 		};
 
     	MenuBar menuBar = new MenuBar();
+    	menuBar.setWidth("1200px");
     	menuBar.addStyleName("main-menubar");
 
     	MenuItem pmsItem = menuBar.addItem("PATIENT MANAGEMENT SYSTEM", new ThemeResource("img/pms_32px.png"), pmsCommand);
@@ -51,11 +52,12 @@ public class PmsCustomComponent extends CustomComponent {
     	Component breadCrumb = bC.getContent();
     	
     	HorizontalLayout contentBody = new HorizontalLayout();
+    	contentBody.setSizeFull();
         contentBody.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
         contentBody.addComponent(contentPanel);
+        contentPanel.setWidth("1200px");
 
         VerticalLayout content = new VerticalLayout();
-		content.setSizeFull();
 		content.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
 		content.addComponents(menuBar,breadCrumb , contentBody);
 		

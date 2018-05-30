@@ -20,6 +20,12 @@ following features:
 
 TODO
 
+# Dependencies
+
+The app depends on the following Libraries and Components:
+
+* [Vaadin Calendar Addon](https://github.com/blackbluegl/calendar-component)
+
 # Contributions
 
 Contributions are more than welcome. Please note that this is an academical
