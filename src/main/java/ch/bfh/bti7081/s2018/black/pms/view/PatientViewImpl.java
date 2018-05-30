@@ -145,9 +145,9 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 	}
 
 	@Override
-	public void saveNoteButtonClicked(Integer patientId, String note) {
+	public void saveNoteButtonClicked(PatientItem patientItem, String note) {
 		for (PatientViewListener listener: listeners) {
-			listener.saveNoteButtonClicked(patientId, note);
+			listener.saveNoteButtonClicked(patientItem, note);
 		}
 		
 	}

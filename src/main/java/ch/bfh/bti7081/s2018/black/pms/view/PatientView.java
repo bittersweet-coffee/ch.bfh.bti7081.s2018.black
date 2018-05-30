@@ -9,14 +9,12 @@ public interface PatientView {
 	
 	public interface PatientViewListener {
 		void saveButtonClick(PatientItem patient);
-		Map<Integer, String> searchButtonClicked(String searchterm);
-		//Map<Integer, String> setupPatientList();
 		List<List<String>> openButtonClicked(Integer patientId, String patientName);
 		List<String> getNotesForPatient(Integer patientId);
-		void saveNoteButtonClicked(Integer patientId, String note);
+		void saveNoteButtonClicked(PatientItem patientItem, String note);
 		List<PatientItem> setupPatientItemList();
 	}
 	
 	public void addListener(PatientViewListener listener);
-	public void saveNoteButtonClicked(Integer patientId, String note);
+	public void saveNoteButtonClicked(PatientItem patientItem, String note);
 }

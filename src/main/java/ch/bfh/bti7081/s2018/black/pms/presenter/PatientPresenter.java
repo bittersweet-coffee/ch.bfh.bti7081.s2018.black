@@ -43,32 +43,7 @@ public class PatientPresenter implements PatientView.PatientViewListener{
 
 	@Override
 	public List<PatientItem> setupPatientItemList() {
-		
-		/*
-		for(int i=0; i<10; i++) {
-			List<String> notes = new LinkedList<>();
-			notes.add("Note1");
-			notes.add("Note2");
-			PatientItem temp = new PatientItem(i, "First_" + i, "Last_" + i*3, notes);
-			this.patientItemList.add(temp);
-			
-		}
-		*/
-		
-		
-		
 		return this.patientItemList;
-	}
-
-	@Override
-	public Map<Integer, String> searchButtonClicked(String searchTerm) {
-		Map<Integer, String> optionalPatient = this.patientModelList.stream()
-				.filter(patient -> patient.getFirstname().toLowerCase().contains(searchTerm.toLowerCase()) || 
-						patient.getLastname().toLowerCase().contains(searchTerm.toLowerCase())
-						)
-				.collect(Collectors.toMap(PatientModel::getId, patient -> patient.getFirstname() + ", " + patient.getLastname()));
-		
-		return optionalPatient;
 	}
 
 	@Override
@@ -88,10 +63,15 @@ public class PatientPresenter implements PatientView.PatientViewListener{
 	}
 
 	@Override
-	public void saveNoteButtonClicked(Integer patientId, String note) {
+	public void saveNoteButtonClicked(PatientItem patientItem, String note) {
 		
-		// put this information into the DB
-		System.out.println("ID: " + patientId + "\nNote: " + note);
+		List<String> newList = patientItem.getNotes();
+		newList.add(note);
+		patientItem.setNotes(newList);
+		
+		// put this object into the DB
+		
+		System.out.println("Firstname: " + patientItem.getFirstName() + "\nNote: " + note);
 	}
 
 	@Override
