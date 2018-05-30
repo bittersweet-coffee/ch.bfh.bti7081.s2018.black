@@ -116,7 +116,7 @@ public class DoctorModel extends EntityModel {
 	 * @return the login user of the doctor
 	 */
 	public UserModel getUser() {
-		return user;
+		return this.user;
 	}
 
 	/**
