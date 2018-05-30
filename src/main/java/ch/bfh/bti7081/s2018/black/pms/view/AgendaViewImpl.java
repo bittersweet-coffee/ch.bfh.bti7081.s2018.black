@@ -3,8 +3,6 @@ package ch.bfh.bti7081.s2018.black.pms.view;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.WindowConstants;
-
 import org.vaadin.addon.calendar.Calendar;
 import org.vaadin.addon.calendar.handler.BasicDateClickHandler;
 import org.vaadin.addon.calendar.handler.BasicItemMoveHandler;
@@ -13,8 +11,6 @@ import org.vaadin.addon.calendar.ui.CalendarComponentEvents;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.ui.Window.CloseEvent;
-import com.vaadin.ui.Window.CloseListener;
 
 import ch.bfh.bti7081.s2018.black.pms.model.Appointment;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentDataProvider;
@@ -41,11 +37,13 @@ public class AgendaViewImpl extends PmsCustomComponent implements View, AgendaVi
 	private void onCalendarRangeSelect(CalendarComponentEvents.RangeSelectEvent event) {
 		AppointmentItem appointmentItem = new AppointmentItem(new Appointment(event.getStart().toLocalDateTime(), event.getEnd().toLocalDateTime()));
 		final AppointmentWindow window = new AppointmentWindow(this, appointmentItem); 
+		window.setModal(true);
 		super.getUI().getUI().addWindow(window);
     }
 	
 	private void onCalendarItemClick(CalendarComponentEvents.ItemClickEvent event) {
 		final AppointmentWindow window = new AppointmentWindow(this, (AppointmentItem) event.getCalendarItem());
+		window.setModal(true);
 		super.getUI().getUI().addWindow(window);;
 	}
 	
@@ -95,6 +93,5 @@ public class AgendaViewImpl extends PmsCustomComponent implements View, AgendaVi
 	}
 	
 	public void changeCalendarRange() {
-		
 	}
 }
