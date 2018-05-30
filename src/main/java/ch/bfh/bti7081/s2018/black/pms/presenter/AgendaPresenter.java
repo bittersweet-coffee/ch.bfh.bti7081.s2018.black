@@ -75,11 +75,9 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 		JpaUtility transaction = new JpaUtility();
 		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
 		for (AppointmentModel appointmentModel : this.appointmentModelList) {
-			appointmentModel.setName(appointment.getTitle());
-			appointmentModel.setDescription(appointment.getDescription());
-			appointmentModel.setStart(appointment.getStart());
-			appointmentModel.setEnd(appointment.getEnd());
-			objects.remove(appointmentModel);
+			if(appointmentModel.getId() == appointment.getId()) {
+				objects.remove(appointmentModel);
+			}
      	}
 	}
 	

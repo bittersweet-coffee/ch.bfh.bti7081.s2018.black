@@ -83,7 +83,7 @@ public class JpaDataAccessObject {
 				// lambda for writing the anonymous class
 				(entityManager) -> { 
 					// remove the passed entity
-					entityManager.remove(entity);
+					entityManager.remove(entityManager.contains(entity) ? entity : entityManager.merge(entity));
 					// the method does not return an object
 					return null;
 				}
