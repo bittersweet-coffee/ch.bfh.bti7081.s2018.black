@@ -1,6 +1,5 @@
 package ch.bfh.bti7081.s2018.black.pms.presenter;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,7 @@ public class PatientPresenter implements PatientView.PatientViewListener{
 	
 	private PatientView view;
 	private List<PatientModel> patientModelList;
-	private Map<Integer, String> patientNameList = new HashMap<>();
+	private List<PatientItem> patientItemList = new LinkedList<>();
 
 	public PatientPresenter(PatientView view) {
 		this.view = view;
@@ -35,13 +34,30 @@ public class PatientPresenter implements PatientView.PatientViewListener{
 		this.patientModelList = objects.findAll(PatientModel.class);
      	
 		for (PatientModel patient : this.patientModelList) {
-			this.patientNameList.put(patient.getId(), patient.getFirstname() + ", " + patient.getLastname());
+			List<String> mockNotes = new LinkedList<>();
+			mockNotes.add("Note_1");
+			mockNotes.add("NOte_2");
+			this.patientItemList.add(new PatientItem(patient.getId(), patient.getFirstname(), patient.getLastname(), mockNotes));
      	}
 	}
 
 	@Override
-	public Map<Integer, String> setupPatientList() {
-		return this.patientNameList;
+	public List<PatientItem> setupPatientItemList() {
+		
+		/*
+		for(int i=0; i<10; i++) {
+			List<String> notes = new LinkedList<>();
+			notes.add("Note1");
+			notes.add("Note2");
+			PatientItem temp = new PatientItem(i, "First_" + i, "Last_" + i*3, notes);
+			this.patientItemList.add(temp);
+			
+		}
+		*/
+		
+		
+		
+		return this.patientItemList;
 	}
 
 	@Override
@@ -69,5 +85,21 @@ public class PatientPresenter implements PatientView.PatientViewListener{
 		wrapper.add(birthdayList);
 		
 		return wrapper;
+	}
+
+	@Override
+	public void saveNoteButtonClicked(Integer patientId, String note) {
+		
+		// put this information into the DB
+		System.out.println("ID: " + patientId + "\nNote: " + note);
+	}
+
+	@Override
+	public List<String> getNotesForPatient(Integer patientId) {
+		
+		List<String> patientNotes = new LinkedList<>();		// fetch DB for Patient Notes
+		
+		
+		return patientNotes;
 	}
 }
