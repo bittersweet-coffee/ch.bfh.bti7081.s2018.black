@@ -1,7 +1,6 @@
 package ch.bfh.bti7081.s2018.black.pms.util;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.EntityGraph;
 import javax.persistence.NamedEntityGraph;
@@ -139,6 +138,4 @@ public class JpaDataAccessObject {
 	public void setLastId(int lastId) {
 		this.lastId = lastId;
 	}
-	
-	
 }

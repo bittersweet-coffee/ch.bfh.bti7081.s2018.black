@@ -1,8 +1,6 @@
 package ch.bfh.bti7081.s2018.black.pms.view;
 
 
-import java.time.LocalDateTime;
-
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentDataProvider;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
 

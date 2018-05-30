@@ -70,9 +70,6 @@ public class AppointmentWindow extends Window {
 		GridLayout tileGrid = new GridLayout(3, 5);
 		
 		tileGrid.setMargin(true);
-		
-        setContent(tileGrid);
-        
         tileGrid.addComponent(startDatePanel, 0, 0);
         tileGrid.addComponent(endDatePanel, 0, 1);
         tileGrid.addComponent(namePanel, 0, 2);
@@ -84,5 +81,7 @@ public class AppointmentWindow extends Window {
 		tileGrid.addComponent(descriptionField, 1, 3);
 		tileGrid.addComponent(btnCancel, 1, 4); 
 		tileGrid.addComponent(btnDelete, 2, 4); 
+		
+        setContent(tileGrid);
 	}
 }

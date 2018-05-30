@@ -1,15 +1,9 @@
 package ch.bfh.bti7081.s2018.black.pms.presenter;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-
-import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
 import ch.bfh.bti7081.s2018.black.pms.model.Appointment;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentDataProvider;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
@@ -40,7 +34,7 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 	public void saveAppointment(AppointmentItem appointmentItem) {
 		JpaUtility transaction = new JpaUtility();
 		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		if(appointmentItem.getAppointment().getId() == 0) {
+		if (appointmentItem.getAppointment().getId() == 0) {
 			eventProvider.addItem(appointmentItem);
 			AppointmentModel appointmentModel = new AppointmentModel();
 			appointmentModel.setName(appointmentItem.getAppointment().getTitle());
@@ -50,9 +44,9 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 			objects.store(appointmentModel);
 			appointmentItem.getAppointment().setId(objects.getLastId());
 			appointmentModelList.add(appointmentModel);
-		}else {
+		} else {
 			for (AppointmentModel appointmentModel : this.appointmentModelList) {
-				if(appointmentModel.getId() == appointmentItem.getAppointment().getId()) {
+				if (appointmentModel.getId() == appointmentItem.getAppointment().getId()) {
 					appointmentModel.setName(appointmentItem.getAppointment().getTitle());
 					appointmentModel.setDescription(appointmentItem.getAppointment().getDescription());
 					appointmentModel.setStart(appointmentItem.getAppointment().getStart());
@@ -75,7 +69,7 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 		JpaUtility transaction = new JpaUtility();
 		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
 		for (AppointmentModel appointmentModel : this.appointmentModelList) {
-			if(appointmentModel.getId() == appointment.getId()) {
+			if (appointmentModel.getId() == appointment.getId()) {
 				objects.remove(appointmentModel);
 			}
      	}

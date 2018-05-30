@@ -25,8 +25,6 @@ public class AppointmentItem extends BasicItem {
         setEnd(ZonedDateTime.of(appointment.getEnd(), ZoneId.systemDefault()));
 	}
 	
-	
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -35,32 +33,31 @@ public class AppointmentItem extends BasicItem {
 		return result;
 	}
 
-
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		AppointmentItem other = (AppointmentItem) obj;
 		if (appointment == null) {
-			if (other.appointment != null)
+			if (other.appointment != null) {
 				return false;
-		} else if (!appointment.equals(other.appointment))
+			}
+		} else if (!appointment.equals(other.appointment)) {
 			return false;
+		}
 		return true;
 	}
-
-
-
-
 
 	public Appointment getAppointment() {
 		return this.appointment;
 	}
-	
 	
 	@Override
 	public void setEnd(ZonedDateTime end) {
@@ -92,6 +89,4 @@ public class AppointmentItem extends BasicItem {
 		appointment.setDescription(description);
 		super.setDescription(description);
 	}
-	
-	
 }

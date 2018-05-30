@@ -1,9 +1,6 @@
 package ch.bfh.bti7081.s2018.black.pms.model;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-
-import org.vaadin.addon.calendar.item.BasicItem;
 
 public class Appointment {
 
@@ -14,7 +11,6 @@ public class Appointment {
 	private String description;
 	
 	public Appointment() {
-		
 	}
 	
 	public Appointment(LocalDateTime start, LocalDateTime end) {
@@ -23,7 +19,7 @@ public class Appointment {
 	}
 
 	public LocalDateTime getStart() {
-		return start;
+		return this.start;
 	}
 
 	public void setStart(LocalDateTime start) {
@@ -31,7 +27,7 @@ public class Appointment {
 	}
 
 	public LocalDateTime getEnd() {
-		return end;
+		return this.end;
 	}
 
 	public void setEnd(LocalDateTime end) {
@@ -39,7 +35,7 @@ public class Appointment {
 	}
 
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
 	public void setTitle(String title) {
@@ -47,7 +43,7 @@ public class Appointment {
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public void setDescription(String description) {
@@ -55,11 +51,10 @@ public class Appointment {
 	}
 
 	public int getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(int id) {
 		this.id = id;
 	}
-	
 }
