@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedSubgraph;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -84,6 +85,11 @@ public class PatientModel extends EntityModel {
         inverseJoinColumns=
             @JoinColumn(name="appointment_id", referencedColumnName="id"))
 	private List<AppointmentModel> appointments;
+	
+	// list of notes of the patient.
+	// is mapped with the variable patient in the class NoticeModel
+	@OneToMany(mappedBy = "patient")
+	private List<NoticeModel> notes;
 	
 	// location of the patient
 	// location_id is the foreign key. Can not be null
