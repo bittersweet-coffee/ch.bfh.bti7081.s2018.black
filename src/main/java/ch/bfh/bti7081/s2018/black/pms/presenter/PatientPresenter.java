@@ -32,7 +32,7 @@ public class PatientPresenter implements PatientView.PatientViewListener {
      	
 		this.patientItemList = new LinkedList<>();
 		for (PatientModel patient : this.patientModelList) {
-			this.patientItemList.add(new PatientItem(patient ));
+			this.patientItemList.add(new PatientItem(patient));
      	}
 	}
 

@@ -20,17 +20,16 @@ public class PatientItem {
 	public void reloadFromModel() {
 		this.id = model.getId();
 		this.firstName = model.getFirstname();
-		this.lastName = model.getFirstname();
+		this.lastName = model.getLastname();
 
 		this.notes = new LinkedList<>();
 		for (NoticeModel note : model.getNotes()) {
-			System.out.println(note.getNote());
 			this.notes.add(note.getNote());
 		}
 	}
 
 	public Integer getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Integer id) {
@@ -38,7 +37,7 @@ public class PatientItem {
 	}
 
 	public List<String> getNotes() {
-		return notes;
+		return this.notes;
 	}
 	
 	public String getNotesAsString() {
@@ -60,7 +59,7 @@ public class PatientItem {
 	}
 
 	public String getFirstName() {
-		return firstName;
+		return this.firstName;
 	}
 
 	public void setFirstName(String firstName) {
@@ -68,7 +67,7 @@ public class PatientItem {
 	}
 
 	public String getLastName() {
-		return lastName;
+		return this.lastName;
 	}
 
 	public void setLastName(String lastName) {
