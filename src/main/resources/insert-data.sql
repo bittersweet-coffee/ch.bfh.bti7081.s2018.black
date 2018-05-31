@@ -14,7 +14,6 @@ INSERT INTO doctor (firstname, lastname, user_id) VALUES ('Michael', 'Hofer', 5)
 INSERT INTO doctor (firstname, lastname, user_id) VALUES ('Aleksandar', 'Andrejic', 6)
 INSERT INTO doctor (firstname, lastname, user_id) VALUES ('Jan', 'Henzi', 7)
 
-
 INSERT INTO addiction (name, description) VALUES('Alcoholism', 'Alcoholism, also known as alcohol use disorder (AUD), is a broad term for any drinking of alcohol that results in mental or physical health problems. The disorder was previously divided into two types: alcohol abuse and alcohol dependence. In a medical context, alcoholism is said to exist when two or more of the following conditions is present: a person drinks large amounts over a long time period, has difficulty cutting down, acquiring and drinking alcohol takes up a great deal of time, alcohol is strongly desired, usage results in not fulfilling responsibilities, usage results in social problems, usage results in health problems, usage results in risky situations, withdrawal occurs when stopping, and alcohol tolerance has occurred with use.')
 INSERT INTO addiction (name, description) VALUES('Cocaine Dependence', 'Cocaine dependence is a psychological desire to use cocaine regularly. Cocaine overdose may result in cardiovascular and brain damage, such as: constricting blood vessels in the brain, causing strokes and constricting arteries in the heart; causing heart attacks. The use of cocaine creates euphoria and high amounts of energy. If taken in large, unsafe doses, it is possible to cause mood swings, paranoia, insomnia, psychosis, high blood pressure, a fast heart rate, panic attacks, cognitive impairments and drastic changes in personality.')
 INSERT INTO addiction (name, description) VALUES('Problem Gambling', 'Problem gambling (or ludomania, but usually referred to as "gambling addiction" or "compulsive gambling") is an urge to gamble continuously despite harmful negative consequences or a desire to stop.')
@@ -116,12 +115,12 @@ INSERT INTO patient (firstname, lastname, notice, post_code, street, telephone, 
 INSERT INTO patient (firstname, lastname, notice, post_code, street, telephone, location_id) VALUES('Flavio','Winkler','',1024,'Biderstrasse','062 767 99 99',3)
 INSERT INTO patient (firstname, lastname, notice, post_code, street, telephone, location_id) VALUES('Shawn','Roth','',1025,'Bienenstrasse','044 814 27 74',4)
 
-insert into appointment(id, name, location_id) values (1, 'Test', 1)
-insert into drug (name) values ('Test')
-insert into patient_drug (patient_id, drug_id) values (1, 1)
-insert into patient_addiction (patient_id, addiction_id) values (1, 1)
-insert into patient_doctor (patient_id, doctor_id) values (1, 1)
-insert into patient_appointment (patient_id, appointment_id) values (1, 1)
+INSERT INTO appointment (name, description, start, end) VALUES ('test','test','2008-01-01 00:00:01','2008-01-01 00:00:01')
+INSERT INTO drug (name) values ('Test')
+INSERT INTO patient_drug (patient_id, drug_id) values (1, 1)
+INSERT INTO patient_addiction (patient_id, addiction_id) values (1, 1)
+INSERT INTO patient_doctor (patient_id, doctor_id) values (1, 1)
+INSERT INTO patient_appointment (patient_id, appointment_id) values (1, 1)
 
-insert into notice(note, patient_id) values ('Test', 1)
-insert into notice(note, patient_id) values ('Nochmals ein Test', 1)
+INSERT INTO notice(note, patient_id) values ('Test', 1)
+INSERT INTO notice(note, patient_id) values ('Nochmals ein Test', 1)

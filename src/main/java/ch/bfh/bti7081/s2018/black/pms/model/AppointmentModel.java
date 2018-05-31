@@ -32,7 +32,7 @@ public class AppointmentModel extends EntityModel{
 	private LocalDateTime end;
 	
 	// period of the appointment
-	private String period;
+	//private String period;
 	
 	// date formatter. Is ignored by hibernate
 	@Transient
@@ -55,7 +55,7 @@ public class AppointmentModel extends EntityModel{
 	// location where the appointment will take place
 	// location_id is the foreign key. Can not be null
 	@ManyToOne
-	@JoinColumn(name="location_id", nullable=false)
+	@JoinColumn(name="location_id", nullable=true)
 	private LocationModel location;
 	
 	// Do we really need this constructor
@@ -137,7 +137,7 @@ public class AppointmentModel extends EntityModel{
 	 * getter of the period
 	 * @return the period of the appointment
 	 */
-	public String getPeriod() {
+	/*public String getPeriod() {
 		return this.period;
 	}
 
@@ -145,7 +145,7 @@ public class AppointmentModel extends EntityModel{
 	 * setter of the period
 	 * @param period of the appointment
 	 */
-	public void setPeriod(String period) {
+	/*public void setPeriod(String period) {
 		this.period = period;
 	}
 

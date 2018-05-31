@@ -10,16 +10,16 @@ import com.vaadin.icons.VaadinIcons;
 
 public class AppointmentItem extends BasicItem {
 
-	private final AppointmentModel appointment;
+	private final Appointment appointment;
 	
-	public AppointmentItem(AppointmentModel appointment) {
+	public AppointmentItem(Appointment appointment) {
         super();
         this.appointment = appointment;
-        if (appointment.getName() != null) {
-        	setCaption(appointment.getName());
+        if (appointment.getTitle() != null) {
+        	setCaption(appointment.getTitle());
         }
         if (appointment.getDescription() != null) {
-        	setCaption(appointment.getDescription());
+        	setDescription(appointment.getDescription());
         }
         setStart(ZonedDateTime.of(appointment.getStart(), ZoneId.systemDefault()));
         setEnd(ZonedDateTime.of(appointment.getEnd(), ZoneId.systemDefault()));
@@ -35,22 +35,27 @@ public class AppointmentItem extends BasicItem {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		AppointmentItem other = (AppointmentItem) obj;
 		if (appointment == null) {
-			if (other.appointment != null)
+			if (other.appointment != null) {
 				return false;
-		} else if (!appointment.equals(other.appointment))
+			}
+		} else if (!appointment.equals(other.appointment)) {
 			return false;
+		}
 		return true;
 	}
 
-	public AppointmentModel getAppointment() {
+	public Appointment getAppointment() {
 		return this.appointment;
 	}
 	
@@ -75,7 +80,7 @@ public class AppointmentItem extends BasicItem {
 	
 	@Override
 	public void setCaption(String caption) {
-		appointment.setName(caption);
+		appointment.setTitle(caption);
 		super.setCaption(caption);
 	}
 	
