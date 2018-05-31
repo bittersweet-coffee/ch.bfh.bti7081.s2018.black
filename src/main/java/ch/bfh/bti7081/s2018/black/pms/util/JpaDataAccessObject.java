@@ -6,6 +6,7 @@ import javax.persistence.EntityGraph;
 import javax.persistence.NamedEntityGraph;
 
 import ch.bfh.bti7081.s2018.black.pms.model.EntityModel;
+import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 
 /**
  * class JpaDataAccessObject
@@ -108,6 +109,17 @@ public class JpaDataAccessObject {
 							.setHint(JAVAX_PERSISTENCE_FETCHGRAPH, entityGraph)
 							.getResultList();				
 					}
+		);
+	}
+	
+	public EntityModel byid(int id) {
+		return transaction.execute(
+				// lambda for writing the anonymous class
+				(entityManager) -> { 
+					// remove the passed entity
+	                return entityManager.find(PatientModel.class, id);
+
+				}
 		);
 	}
 }

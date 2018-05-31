@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
+import ch.bfh.bti7081.s2018.black.pms.model.NoticeModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.util.JpaDataAccessObject;
@@ -21,7 +23,6 @@ public class PatientPresenter implements PatientView.PatientViewListener{
 		this.view = view;
 		this.patientModelList = new LinkedList<>();
 		view.addListener(this);
-		this.fillPatientList();
 	}
 
 	@Override
@@ -33,16 +34,21 @@ public class PatientPresenter implements PatientView.PatientViewListener{
 		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
 		this.patientModelList = objects.findAll(PatientModel.class);
      	
+		this.patientItemList = new LinkedList<>();
 		for (PatientModel patient : this.patientModelList) {
 			List<String> mockNotes = new LinkedList<>();
-			mockNotes.add("Note_1");
-			mockNotes.add("NOte_2");
+			for (NoticeModel note : patient.getNotes()) {
+				System.out.println(note.getNote());
+				mockNotes.add(note.getNote());
+			}
+			
 			this.patientItemList.add(new PatientItem(patient.getId(), patient.getFirstname(), patient.getLastname(), mockNotes));
      	}
 	}
 
 	@Override
 	public List<PatientItem> setupPatientItemList() {
+		this.fillPatientList();
 		return this.patientItemList;
 	}
 
@@ -65,13 +71,19 @@ public class PatientPresenter implements PatientView.PatientViewListener{
 	@Override
 	public void saveNoteButtonClicked(PatientItem patientItem, String note) {
 		
-		List<String> newList = patientItem.getNotes();
-		newList.add(note);
-		patientItem.setNotes(newList);
+		JpaUtility t1 = new JpaUtility();
+		JpaDataAccessObject ob1 = new JpaDataAccessObject(t1);
+		PatientModel patient = (PatientModel) ob1.byid(patientItem.getId());
 		
-		// put this object into the DB
+		NoticeModel notes = new NoticeModel();
+		notes.setNote(note);
+		notes.setPatient(patient);
 		
-		System.out.println("Firstname: " + patientItem.getFirstName() + "\nNote: " + note);
+		JpaUtility t2 = new JpaUtility();
+		JpaDataAccessObject ob2 = new JpaDataAccessObject(t2);
+		ob2.update(notes);
+		
+		//setupPatientItemList();
 	}
 
 	@Override

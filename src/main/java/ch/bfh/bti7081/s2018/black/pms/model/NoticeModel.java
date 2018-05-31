@@ -1,5 +1,6 @@
 package ch.bfh.bti7081.s2018.black.pms.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -13,7 +14,7 @@ public class NoticeModel extends EntityModel {
 	
 	// Patients that are associated with the note
 	// patient_id is the foreign key. Can not be null
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="patient_id", nullable=false)
 	private PatientModel patient;
 	

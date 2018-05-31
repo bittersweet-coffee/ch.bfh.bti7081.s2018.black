@@ -36,7 +36,7 @@ public class PatientItem {
 	public String getNotesAsString() {
 		String strNotes = "";
 		for(String note : this.notes) {
-			strNotes = strNotes.concat(note + "<br><br>");
+			strNotes = strNotes.concat("- " + note + " \n\n");
 		}
 		if(strNotes.length() > 2)  // cut the ending line feeds
 			return strNotes.substring(0, strNotes.length()-2);
