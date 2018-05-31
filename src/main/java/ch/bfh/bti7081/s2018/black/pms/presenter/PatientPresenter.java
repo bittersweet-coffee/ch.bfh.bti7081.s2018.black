@@ -2,10 +2,6 @@ package ch.bfh.bti7081.s2018.black.pms.presenter;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
 import ch.bfh.bti7081.s2018.black.pms.model.NoticeModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
@@ -13,7 +9,7 @@ import ch.bfh.bti7081.s2018.black.pms.util.JpaDataAccessObject;
 import ch.bfh.bti7081.s2018.black.pms.util.JpaUtility;
 import ch.bfh.bti7081.s2018.black.pms.view.PatientView;
 
-public class PatientPresenter implements PatientView.PatientViewListener{
+public class PatientPresenter implements PatientView.PatientViewListener {
 	
 	private PatientView view;
 	private List<PatientModel> patientModelList;
@@ -36,13 +32,7 @@ public class PatientPresenter implements PatientView.PatientViewListener{
      	
 		this.patientItemList = new LinkedList<>();
 		for (PatientModel patient : this.patientModelList) {
-			List<String> mockNotes = new LinkedList<>();
-			for (NoticeModel note : patient.getNotes()) {
-				System.out.println(note.getNote());
-				mockNotes.add(note.getNote());
-			}
-			
-			this.patientItemList.add(new PatientItem(patient.getId(), patient.getFirstname(), patient.getLastname(), mockNotes));
+			this.patientItemList.add(new PatientItem(patient ));
      	}
 	}
 
@@ -69,29 +59,24 @@ public class PatientPresenter implements PatientView.PatientViewListener{
 	}
 
 	@Override
-	public void saveNoteButtonClicked(PatientItem patientItem, String note) {
+	public void saveNoteButtonClicked(PatientItem patientItem, String newNote) {
 		
-		JpaUtility t1 = new JpaUtility();
-		JpaDataAccessObject ob1 = new JpaDataAccessObject(t1);
-		PatientModel patient = (PatientModel) ob1.byid(patientItem.getId());
+		PatientModel patient = patientItem.getModel();
 		
-		NoticeModel notes = new NoticeModel();
-		notes.setNote(note);
-		notes.setPatient(patient);
+		NoticeModel note = new NoticeModel();
+		note.setNote(newNote);
+		note.setPatient(patient);
 		
 		JpaUtility t2 = new JpaUtility();
 		JpaDataAccessObject ob2 = new JpaDataAccessObject(t2);
-		ob2.update(notes);
-		
-		//setupPatientItemList();
+		ob2.update(note);
+
+		patient.getNotes().add(note);
 	}
 
 	@Override
 	public List<String> getNotesForPatient(Integer patientId) {
-		
 		List<String> patientNotes = new LinkedList<>();		// fetch DB for Patient Notes
-		
-		
 		return patientNotes;
 	}
 }

@@ -32,6 +32,8 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 	
 	private Grid<PatientItem> patientItemGrid;
 
+	private ListDataProvider<PatientItem> patientProvider;
+
 	public PatientViewImpl() {
 		super();
 	}
@@ -40,39 +42,33 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 		this.patientItemGrid = new Grid<>();
 		this.patientItemList = new LinkedList<>();
 		
-		
 		patientItemGrid = new Grid<>();
 		patientItemGrid.addColumn(PatientItem::getId).setCaption("ID");
 		patientItemGrid.addColumn(PatientItem::getFirstName).setCaption("Firstname");
 		patientItemGrid.addColumn(PatientItem::getLastName).setCaption("Lastname");
 		
-		for (PatientViewListener listener: listeners) {
-			this.patientItemList = listener.setupPatientItemList();
-		}
+		updatePatientItemList();
+		patientProvider = DataProvider.ofCollection(patientItemList);
+		patientProvider.refreshAll();
 		
-		ListDataProvider<PatientItem> patientProvider = DataProvider.ofCollection(patientItemList);
 		patientProvider.withConfigurableFilter();
 		
 		patientItemGrid.setDataProvider(patientProvider);
 		patientItemGrid.setSelectionMode(SelectionMode.SINGLE);
 		
-		
 		TextField txtFilter = new TextField();
 		txtFilter.setPlaceholder("Filter by first- or lastname");
 		txtFilter.setWidth("30%");
-		
 		
 		txtFilter.addValueChangeListener(action -> {
 			patientProvider.setFilter(name -> {
 				String firstNameLower = name.getFirstName().toLowerCase();
 				String lastNameLower = name.getLastName().toLowerCase();
 				String filterLower = action.getValue().toLowerCase();
-				return firstNameLower.contains(filterLower) || lastNameLower.contains(filterLower);				
+				return firstNameLower.contains(filterLower) || lastNameLower.contains(filterLower);
 		
 			});
 		});
-		
-		
 		
 		Label lblFilter = new Label("Filter:");
 		
@@ -113,25 +109,31 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 				patientNewWindow();
 			}
 		});
+
 		patientItemGrid.addSelectionListener(selection -> {
-			
 			if (selection.getFirstSelectedItem().isPresent()) {
-				btnOpen.setEnabled(true);				
+				btnOpen.setEnabled(true);
 			} else {
 				btnOpen.setEnabled(false);
 			}
 		});
-		
+	}
+
+	private void updatePatientItemList() {
+		for (PatientViewListener listener: listeners) {
+			this.patientItemList = listener.setupPatientItemList();
+		}
 	}
 
 	protected void patientNewWindow() {
-		final PatientNewWindow window = new PatientNewWindow(this);   
+		final PatientNewWindow window = new PatientNewWindow(this);
 		window.setModal(true);
 		super.getUI().getUI().addWindow(window);
 	}
 
 	protected void patientOpenWindow() {
-		final PatientOpenWindow window = new PatientOpenWindow(this, this.patientItemGrid.getSelectedItems().iterator().next());   
+		PatientItem patient = this.patientItemGrid.getSelectedItems().iterator().next();
+		final PatientOpenWindow window = new PatientOpenWindow(this, patient);
 		window.setModal(true);
 		super.getUI().getUI().addWindow(window);
 	}
@@ -149,6 +151,7 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 		for (PatientViewListener listener: listeners) {
 			listener.saveNoteButtonClicked(patientItem, note);
 		}
-		
+		patientItem.reloadFromModel();
+		patientProvider.refreshItem(patientItem);
 	}
 }

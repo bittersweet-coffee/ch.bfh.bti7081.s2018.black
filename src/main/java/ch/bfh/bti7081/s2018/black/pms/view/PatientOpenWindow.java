@@ -156,7 +156,7 @@ public class PatientOpenWindow extends Window {
 		
 		btnSaveNote.addClickListener(click -> {
 			this.view.saveNoteButtonClicked(this.patientItem, txtNewNote.getValue());
-			txtNewNote.clear();
+			this.close();
 		});
 	}
 }
