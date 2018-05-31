@@ -1,10 +1,11 @@
 package ch.bfh.bti7081.s2018.black.pms.view;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
+import com.vaadin.data.provider.DataProvider;
+import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.MarginInfo;
@@ -12,11 +13,12 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Grid;
+import com.vaadin.ui.Grid.SelectionMode;
 
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 
@@ -26,37 +28,54 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 	
 	private List<PatientViewListener> listeners = new ArrayList<PatientViewListener>();
 	
-	private Map<Integer, String> patientList;
+	private List<PatientItem> patientItemList;
 	
-	private NativeSelect<String> nativePatient;
+	private Grid<PatientItem> patientItemGrid;
+
+	private ListDataProvider<PatientItem> patientProvider;
 
 	public PatientViewImpl() {
 		super();
 	}
 	
 	public void enter(ViewChangeEvent event) {
-		this.nativePatient = new NativeSelect<>();
-		this.patientList = new HashMap<>();
-        
-        this.nativePatient.setVisibleItemCount(18);
-        this.nativePatient.setEmptySelectionAllowed(false);
-        this.nativePatient.setItems(this.patientList.values());
-
-		this.nativePatient.setWidth("80%");
-        
-		for (PatientViewListener listener: listeners) {
-			this.nativePatient.setItems(listener.setupPatientList().values());
-		}
+		this.patientItemGrid = new Grid<>();
+		this.patientItemList = new LinkedList<>();
+		
+		patientItemGrid = new Grid<>();
+		patientItemGrid.addColumn(PatientItem::getId).setCaption("ID");
+		patientItemGrid.addColumn(PatientItem::getFirstName).setCaption("Firstname");
+		patientItemGrid.addColumn(PatientItem::getLastName).setCaption("Lastname");
+		
+		updatePatientItemList();
+		patientProvider = DataProvider.ofCollection(patientItemList);
+		patientProvider.refreshAll();
+		
+		patientProvider.withConfigurableFilter();
+		
+		patientItemGrid.setDataProvider(patientProvider);
+		patientItemGrid.setSelectionMode(SelectionMode.SINGLE);
+		
+		TextField txtFilter = new TextField();
+		txtFilter.setPlaceholder("Filter by first- or lastname");
+		txtFilter.setWidth("30%");
+		
+		txtFilter.addValueChangeListener(action -> {
+			patientProvider.setFilter(name -> {
+				String firstNameLower = name.getFirstName().toLowerCase();
+				String lastNameLower = name.getLastName().toLowerCase();
+				String filterLower = action.getValue().toLowerCase();
+				return firstNameLower.contains(filterLower) || lastNameLower.contains(filterLower);
+		
+			});
+		});
 		
 		Label lblFilter = new Label("Filter:");
-		TextField txtSearch = new TextField();
-		txtSearch.setPlaceholder("Insert Searchterm");
-		Button btnSearch = new Button("Search");
 		
 		VerticalLayout vLayout = new VerticalLayout();
-		HorizontalLayout searchLayout = new HorizontalLayout();
+		VerticalLayout searchLayout = new VerticalLayout();
 		
-		searchLayout.addComponents(txtSearch, btnSearch);
+		searchLayout.addComponents(lblFilter, txtFilter);
 		searchLayout.setMargin(new MarginInfo(true, false, false, true));
 				
 		Button btnOpen = new Button("Open");
@@ -64,8 +83,8 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 		Button btnNewPatient = new Button("New Patient");
 		
 		HorizontalLayout hLayout = new HorizontalLayout();
-		hLayout.addComponents(this.nativePatient, btnOpen, btnNewPatient);
-		hLayout.setComponentAlignment(btnOpen, Alignment.BOTTOM_CENTER);
+		hLayout.addComponents(patientItemGrid, btnOpen, btnNewPatient);
+		hLayout.setComponentAlignment(btnOpen, Alignment.BOTTOM_RIGHT);
 		hLayout.setComponentAlignment(btnNewPatient, Alignment.BOTTOM_RIGHT);
 		hLayout.setWidth("100%");
 		hLayout.setMargin(new MarginInfo(false, false, true, true));
@@ -75,6 +94,7 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 		vLayout.setMargin(new MarginInfo(true));
 	
 		super.contentPanel.setContent(vLayout);
+	
 		
 		btnOpen.addClickListener(new ClickListener() {
 			@Override
@@ -89,34 +109,31 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 				patientNewWindow();
 			}
 		});
-		
-		this.nativePatient.addValueChangeListener(selected -> {
-			if (this.nativePatient.getSelectedItem().isPresent()) {
+
+		patientItemGrid.addSelectionListener(selection -> {
+			if (selection.getFirstSelectedItem().isPresent()) {
 				btnOpen.setEnabled(true);
 			} else {
 				btnOpen.setEnabled(false);
 			}
 		});
-		
-        btnSearch.addClickListener(click -> {
-        	if (this.nativePatient.getSelectedItem().isPresent() || !txtSearch.isEmpty()) {
-        		this.nativePatient.setSelectedItem(null);
-        	}
-        	btnOpen.setEnabled(false);
-        	for (PatientViewListener listener: listeners) {
-        		this.nativePatient.setItems(listener.searchButtonClicked(txtSearch.getValue()).values());
-        	}
-        });
+	}
+
+	private void updatePatientItemList() {
+		for (PatientViewListener listener: listeners) {
+			this.patientItemList = listener.setupPatientItemList();
+		}
 	}
 
 	protected void patientNewWindow() {
-		final PatientNewWindow window = new PatientNewWindow(this);   
+		final PatientNewWindow window = new PatientNewWindow(this);
 		window.setModal(true);
 		super.getUI().getUI().addWindow(window);
 	}
 
 	protected void patientOpenWindow() {
-		final PatientOpenWindow window = new PatientOpenWindow(this, this.nativePatient.getSelectedItem().get());   
+		PatientItem patient = this.patientItemGrid.getSelectedItems().iterator().next();
+		final PatientOpenWindow window = new PatientOpenWindow(this, patient);
 		window.setModal(true);
 		super.getUI().getUI().addWindow(window);
 	}
@@ -127,5 +144,14 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 	@Override
 	public void addListener(PatientViewListener listener) {
 		this.listeners.add(listener);
+	}
+
+	@Override
+	public void saveNoteButtonClicked(PatientItem patientItem, String note) {
+		for (PatientViewListener listener: listeners) {
+			listener.saveNoteButtonClicked(patientItem, note);
+		}
+		patientItem.reloadFromModel();
+		patientProvider.refreshItem(patientItem);
 	}
 }

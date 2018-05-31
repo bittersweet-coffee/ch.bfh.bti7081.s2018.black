@@ -121,3 +121,6 @@ INSERT INTO patient_drug (patient_id, drug_id) values (1, 1)
 INSERT INTO patient_addiction (patient_id, addiction_id) values (1, 1)
 INSERT INTO patient_doctor (patient_id, doctor_id) values (1, 1)
 INSERT INTO patient_appointment (patient_id, appointment_id) values (1, 1)
+
+INSERT INTO notice(note, patient_id) values ('Test', 1)
+INSERT INTO notice(note, patient_id) values ('Nochmals ein Test', 1)

@@ -13,15 +13,17 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
+import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
+
 public class PatientOpenWindow extends Window {
 
 	private PatientViewImpl view;
-	private String patientName;
+	private PatientItem patientItem;
 
-	public PatientOpenWindow(PatientViewImpl view, String patientName) {
+	public PatientOpenWindow(PatientViewImpl view, PatientItem patientItem) {
 		super("Open Patient");
 		this.view = view;
-		this.patientName = patientName;
+		this.patientItem = patientItem;
 		buildWindow();
 	}
 	
@@ -30,19 +32,17 @@ public class PatientOpenWindow extends Window {
 		Label lblLastName = new Label("Lastname:");
 		Label lblBirthday = new Label("Birthday:");
 		
-		String[] splittedName = patientName.split("\\,");
+		//String[] splittedName = patientName.split("\\,");
 		
 		TextField txtFirstName = new TextField();
-		//txtFirstName.setPlaceholder("Insert surname");
+		txtFirstName.setValue(this.patientItem.getFirstName());
 		txtFirstName.setMaxLength(20);
-		txtFirstName.setValue(splittedName[0]);
 		txtFirstName.setReadOnly(true);
 		
 		TextField txtLastName = new TextField();
-		//txtLastName.setPlaceholder("Insert name");
 		txtLastName.setReadOnly(true);
 		txtLastName.setMaxLength(20);
-		txtLastName.setValue(splittedName[1].trim());
+		txtLastName.setValue(this.patientItem.getLastName());
 		
 		TextField txtBirthday = new TextField();
 		txtBirthday.setPlaceholder("Insert Birthday");
@@ -80,13 +80,26 @@ public class PatientOpenWindow extends Window {
 		tileGridAppointment.setComponentAlignment(btnNew, Alignment.BOTTOM_RIGHT);
 		
 		//Comment Part
-		TextField tfComments = new TextField();
-		tfComments.setWidth("510px");
-		tfComments.setHeight("340px");
-		tfComments.setPlaceholder("Insert Comment");
+		TextField txtCurrentNotes = new TextField();
+		txtCurrentNotes.setWidth("210px");
+		txtCurrentNotes.setHeight("340px");
+		txtCurrentNotes.setReadOnly(true);
+		txtCurrentNotes.setCaptionAsHtml(true);
+		txtCurrentNotes.setValue(this.patientItem.getNotesAsString());
 		
-		GridLayout tileGridComment = new GridLayout(1,1);
-		tileGridComment.addComponent(tfComments, 0, 0);
+		TextField txtNewNote = new TextField();
+		txtNewNote.setWidth("210px");
+		txtNewNote.setHeight("340px");
+		
+		Button btnSaveNote = new Button("Save");
+		//TextField 
+		
+		GridLayout tileGridComment = new GridLayout(2,2);
+		tileGridComment.addComponent(txtCurrentNotes, 0, 0);
+		tileGridComment.addComponent(txtNewNote, 1, 0);
+		tileGridComment.addComponent(btnSaveNote, 0, 1);
+		
+		
 		
 		//Addiction Part
 		List<String> dataAddiction = IntStream.range(0, 4).mapToObj(i -> "Addiction " + i).collect(Collectors.toList());
@@ -139,5 +152,11 @@ public class PatientOpenWindow extends Window {
 		tileGrid.addComponent(vBoxRight, 1, 0);
 		
 		setContent(tileGrid);
+		
+		
+		btnSaveNote.addClickListener(click -> {
+			this.view.saveNoteButtonClicked(this.patientItem, txtNewNote.getValue());
+			this.close();
+		});
 	}
 }
