@@ -1,23 +1,24 @@
 package ch.bfh.bti7081.s2018.black.pms.view;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
+import com.vaadin.data.provider.DataProvider;
+import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.shared.ui.ContentMode;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.ListSelect;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Grid;
+import com.vaadin.ui.Grid.SelectionMode;
 
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 
@@ -26,118 +27,113 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 	public static final String NAME = "patient";
 	
 	private List<PatientViewListener> listeners = new ArrayList<PatientViewListener>();
+	
+	private List<PatientItem> patientItemList;
+	
+	private Grid<PatientItem> patientItemGrid;
+
+	private ListDataProvider<PatientItem> patientProvider;
 
 	public PatientViewImpl() {
 		super();
 	}
 	
 	public void enter(ViewChangeEvent event) {
+		this.patientItemGrid = new Grid<>();
+		this.patientItemList = new LinkedList<>();
 		
-		Label lblFilter = new Label("<h4>Filter: </h4>", ContentMode.HTML);
-		lblFilter.setStyleName("patient-view-positions");
+		patientItemGrid = new Grid<>();
+		patientItemGrid.addColumn(PatientItem::getId).setCaption("ID");
+		patientItemGrid.addColumn(PatientItem::getFirstName).setCaption("Firstname");
+		patientItemGrid.addColumn(PatientItem::getLastName).setCaption("Lastname");
 		
-		TextField tfSearchterm = new TextField();
-        tfSearchterm.setPlaceholder("Insert searchterm");
-        tfSearchterm.setMaxLength(20);
-        tfSearchterm.setStyleName("patient-view-positions");
-        
-        Button btnSearch = new Button("Search");
-        btnSearch.setStyleName("patient-view-positions");
+		updatePatientItemList();
+		patientProvider = DataProvider.ofCollection(patientItemList);
+		patientProvider.refreshAll();
 		
-        List<String> data = IntStream.range(0, 10).mapToObj(i -> "Option " + i).collect(Collectors.toList());
-        
-        ListSelect lsPatient = new ListSelect<>("", data);
-        lsPatient.setRows(10);
-        lsPatient.select(data.get(0));
-        lsPatient.setStyleName("patient-view-positions");
-        lsPatient.setWidth("1120px");
-        //lsPatient.setWidth(100.0f, Unit.PERCENTAGE);
-        
-        //lsPatient.addValueChangeListener(event -> System.out.println("Value changed"));
-        
-        Button btnOpenPatient = new Button("Open");
-		btnOpenPatient.addClickListener(new ClickListener() {
-			
+		patientProvider.withConfigurableFilter();
+		
+		patientItemGrid.setDataProvider(patientProvider);
+		patientItemGrid.setSelectionMode(SelectionMode.SINGLE);
+		
+		TextField txtFilter = new TextField();
+		txtFilter.setPlaceholder("Filter by first- or lastname");
+		txtFilter.setWidth("30%");
+		
+		txtFilter.addValueChangeListener(action -> {
+			patientProvider.setFilter(name -> {
+				String firstNameLower = name.getFirstName().toLowerCase();
+				String lastNameLower = name.getLastName().toLowerCase();
+				String filterLower = action.getValue().toLowerCase();
+				return firstNameLower.contains(filterLower) || lastNameLower.contains(filterLower);
+		
+			});
+		});
+		
+		Label lblFilter = new Label("Filter:");
+		
+		VerticalLayout vLayout = new VerticalLayout();
+		VerticalLayout searchLayout = new VerticalLayout();
+		
+		searchLayout.addComponents(lblFilter, txtFilter);
+		searchLayout.setMargin(new MarginInfo(true, false, false, true));
+				
+		Button btnOpen = new Button("Open");
+		btnOpen.setEnabled(false);	
+		Button btnNewPatient = new Button("New Patient");
+		
+		HorizontalLayout hLayout = new HorizontalLayout();
+		hLayout.addComponents(patientItemGrid, btnOpen, btnNewPatient);
+		hLayout.setComponentAlignment(btnOpen, Alignment.BOTTOM_RIGHT);
+		hLayout.setComponentAlignment(btnNewPatient, Alignment.BOTTOM_RIGHT);
+		hLayout.setWidth("100%");
+		hLayout.setMargin(new MarginInfo(false, false, true, true));
+		
+		vLayout.addComponents(lblFilter, searchLayout, hLayout);
+		vLayout.setWidth("100%");
+		vLayout.setMargin(new MarginInfo(true));
+	
+		super.contentPanel.setContent(vLayout);
+	
+		
+		btnOpen.addClickListener(new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				patientOpenWindow();
 			}
 		});
 		
-		Button btnNewPatient = new Button("New Patient");
 		btnNewPatient.addClickListener(new ClickListener() {
-			
 			@Override
 			public void buttonClick(ClickEvent event) {
 				patientNewWindow();
 			}
 		});
-		
-		HorizontalLayout hBoxBottom = new HorizontalLayout();
-		hBoxBottom.setStyleName("patient-view-positions");
-		hBoxBottom.addComponents(btnNewPatient, btnOpenPatient);
-				
-		/*
-		HorizontalLayout hBox = new HorizontalLayout();
-		hBox.setStyleName("patient-view-positions");
-		hBox.addComponents(tfSearchterm, btnSearch);
-		
-		GridLayout tileGrid = new GridLayout(1,4);
-		tileGrid.setHeight("700px");
-		tileGrid.setWidth("1200px");
-		
-		tileGrid.addComponent(lblFilter, 0, 0);
-		tileGrid.setRowExpandRatio(0, 0.01f);
-		tileGrid.setComponentAlignment(lblFilter, Alignment.TOP_LEFT);
-		
-		tileGrid.addComponent(hBox, 0, 0);
-		tileGrid.setRowExpandRatio(1, 0.1f);
-		
-		tileGrid.addComponent(lsPatient, 0, 2);
-		tileGrid.setRowExpandRatio(2, 0.69f);
-		
-		tileGrid.addComponent(hBoxBottom, 0, 3);
-		tileGrid.setRowExpandRatio(0, 0.2f);
-		tileGrid.setComponentAlignment(hBoxBottom, Alignment.MIDDLE_RIGHT);		
-		 */
-		
-		GridLayout tileGridTop = new GridLayout(2,2);
-		tileGridTop.addComponent(lblFilter, 0, 0);
-		tileGridTop.addComponent(tfSearchterm, 0, 1);
-		tileGridTop.addComponent(btnSearch, 1, 1);
-		
-		GridLayout tileGridMiddle = new GridLayout(1,1);
-		tileGridMiddle.addComponent(lsPatient, 0, 0);
-		
-		GridLayout tileGridBottom = new GridLayout(1,1);
-		tileGridBottom.addComponent(hBoxBottom, 0, 0);
-		tileGridBottom.setWidth("1200px");
-		tileGridBottom.setComponentAlignment(hBoxBottom, Alignment.BOTTOM_RIGHT);
-		
-		VerticalLayout vBox = new VerticalLayout();
-		vBox.setWidth("1200px");
-		//vBox.setHeight("700px");
-		vBox.addComponents(tileGridTop, tileGridMiddle, tileGridBottom);
-		vBox.setComponentAlignment(tileGridBottom, Alignment.BOTTOM_RIGHT);
-		vBox.setComponentAlignment(tileGridMiddle, Alignment.TOP_LEFT);
 
-		super.contentPanel.setSizeUndefined();
-		super.contentPanel.setContent(vBox);
-        
-        //UserModel user = new UserModel();
-        //user.setName("Test generic");
-        //JpaUtility.persist(user);
-        //JpaDemo.testUser();
+		patientItemGrid.addSelectionListener(selection -> {
+			if (selection.getFirstSelectedItem().isPresent()) {
+				btnOpen.setEnabled(true);
+			} else {
+				btnOpen.setEnabled(false);
+			}
+		});
+	}
+
+	private void updatePatientItemList() {
+		for (PatientViewListener listener: listeners) {
+			this.patientItemList = listener.setupPatientItemList();
+		}
 	}
 
 	protected void patientNewWindow() {
-		final PatientNewWindow window = new PatientNewWindow(this);   
+		final PatientNewWindow window = new PatientNewWindow(this);
 		window.setModal(true);
 		super.getUI().getUI().addWindow(window);
 	}
 
 	protected void patientOpenWindow() {
-		final PatientOpenWindow window = new PatientOpenWindow(this);   
+		PatientItem patient = this.patientItemGrid.getSelectedItems().iterator().next();
+		final PatientOpenWindow window = new PatientOpenWindow(this, patient);
 		window.setModal(true);
 		super.getUI().getUI().addWindow(window);
 	}
@@ -146,5 +142,19 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 		for (PatientViewListener listener : listeners) {
 			listener.saveButtonClick(newPatient);
 		}
+	}
+	
+	@Override
+	public void addListener(PatientViewListener listener) {
+		this.listeners.add(listener);
+	}
+
+	@Override
+	public void saveNoteButtonClicked(PatientItem patientItem, String note) {
+		for (PatientViewListener listener: listeners) {
+			listener.saveNoteButtonClicked(patientItem, note);
+		}
+		patientItem.reloadFromModel();
+		patientProvider.refreshItem(patientItem);
 	}
 }

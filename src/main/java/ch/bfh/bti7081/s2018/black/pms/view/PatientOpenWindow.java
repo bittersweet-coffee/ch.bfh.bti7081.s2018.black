@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.GridLayout;
@@ -14,46 +13,52 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
+import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
+
 public class PatientOpenWindow extends Window {
 
-	PatientViewImpl view;
+	private PatientViewImpl view;
+	private PatientItem patientItem;
 
-	public PatientOpenWindow(PatientViewImpl view) {
+	public PatientOpenWindow(PatientViewImpl view, PatientItem patientItem) {
 		super("Open Patient");
 		this.view = view;
+		this.patientItem = patientItem;
 		buildWindow();
 	}
 	
 	private void buildWindow() {
-		Label lblSurname = new Label("<h3>Surname: </h3>", ContentMode.HTML);
-		Label lblName = new Label("<h3>Name: </h3>", ContentMode.HTML);
-		Label lblBirthday = new Label("<h3>Birthday: </h3>", ContentMode.HTML);
+		Label lblFirstName = new Label("Firstname:");
+		Label lblLastName = new Label("Lastname:");
+		Label lblBirthday = new Label("Birthday:");
 		
-		TextField tfSurname = new TextField();
-		tfSurname.setStyleName("patient-record-view-lbl");
-		tfSurname.setPlaceholder("Insert surname");
-		tfSurname.setMaxLength(20);
+		//String[] splittedName = patientName.split("\\,");
 		
-		TextField tfName = new TextField();
-		tfName.setStyleName("patient-record-view-lbl");
-		tfName.setPlaceholder("Insert name");
-		tfName.setMaxLength(20);
+		TextField txtFirstName = new TextField();
+		txtFirstName.setValue(this.patientItem.getFirstName());
+		txtFirstName.setMaxLength(20);
+		txtFirstName.setReadOnly(true);
 		
-		TextField tfBirthday = new TextField();
-		tfBirthday.setStyleName("patient-record-view-lbl");
-		tfBirthday.setPlaceholder("Insert Birthday");
-		tfBirthday.setMaxLength(20);
+		TextField txtLastName = new TextField();
+		txtLastName.setReadOnly(true);
+		txtLastName.setMaxLength(20);
+		txtLastName.setValue(this.patientItem.getLastName());
+		
+		TextField txtBirthday = new TextField();
+		txtBirthday.setPlaceholder("Insert Birthday");
+		txtBirthday.setMaxLength(20);
+		txtBirthday.setReadOnly(true);
 		
 		GridLayout tileGridPatient = new GridLayout(2,3);
-		tileGridPatient.addComponent(lblSurname, 0, 0);
-		tileGridPatient.addComponent(lblName, 0, 1);
+		tileGridPatient.addComponent(lblFirstName, 0, 0);
+		tileGridPatient.addComponent(lblLastName, 0, 1);
 		tileGridPatient.addComponent(lblBirthday, 0, 2);
-		tileGridPatient.addComponent(tfSurname, 1, 0);
-		tileGridPatient.setComponentAlignment(tfSurname, Alignment.MIDDLE_CENTER);
-		tileGridPatient.addComponent(tfName, 1, 1);
-		tileGridPatient.setComponentAlignment(tfName, Alignment.MIDDLE_CENTER);
-		tileGridPatient.addComponent(tfBirthday, 1, 2);
-		tileGridPatient.setComponentAlignment(tfBirthday, Alignment.MIDDLE_CENTER);
+		tileGridPatient.addComponent(txtFirstName, 1, 0);
+		tileGridPatient.setComponentAlignment(txtFirstName, Alignment.MIDDLE_CENTER);
+		tileGridPatient.addComponent(txtLastName, 1, 1);
+		tileGridPatient.setComponentAlignment(txtLastName, Alignment.MIDDLE_CENTER);
+		tileGridPatient.addComponent(txtBirthday, 1, 2);
+		tileGridPatient.setComponentAlignment(txtBirthday, Alignment.MIDDLE_CENTER);
 		
 		//Appointment Part
         List<String> data = IntStream.range(0, 4).mapToObj(i -> "Appointment " + i).collect(Collectors.toList());
@@ -67,7 +72,7 @@ public class PatientOpenWindow extends Window {
         //lsPatient.addValueChangeListener(event -> System.out.println("Value changed"));
         
         Button btnNew = new Button("New");
-        btnNew.setStyleName("patient-record-view");      
+        //btnNew.setStyleName("patient-record-view");      
         
 		GridLayout tileGridAppointment = new GridLayout(1,2);
 		tileGridAppointment.addComponent(lsAppointment, 0, 0);
@@ -75,13 +80,26 @@ public class PatientOpenWindow extends Window {
 		tileGridAppointment.setComponentAlignment(btnNew, Alignment.BOTTOM_RIGHT);
 		
 		//Comment Part
-		TextField tfComments = new TextField();
-		tfComments.setWidth("510px");
-		tfComments.setHeight("340px");
-		tfComments.setPlaceholder("Insert Comment");
+		TextField txtCurrentNotes = new TextField();
+		txtCurrentNotes.setWidth("210px");
+		txtCurrentNotes.setHeight("340px");
+		txtCurrentNotes.setReadOnly(true);
+		txtCurrentNotes.setCaptionAsHtml(true);
+		txtCurrentNotes.setValue(this.patientItem.getNotesAsString());
 		
-		GridLayout tileGridComment = new GridLayout(1,1);
-		tileGridComment.addComponent(tfComments, 0, 0);
+		TextField txtNewNote = new TextField();
+		txtNewNote.setWidth("210px");
+		txtNewNote.setHeight("340px");
+		
+		Button btnSaveNote = new Button("Save");
+		//TextField 
+		
+		GridLayout tileGridComment = new GridLayout(2,2);
+		tileGridComment.addComponent(txtCurrentNotes, 0, 0);
+		tileGridComment.addComponent(txtNewNote, 1, 0);
+		tileGridComment.addComponent(btnSaveNote, 0, 1);
+		
+		
 		
 		//Addiction Part
 		List<String> dataAddiction = IntStream.range(0, 4).mapToObj(i -> "Addiction " + i).collect(Collectors.toList());
@@ -134,5 +152,11 @@ public class PatientOpenWindow extends Window {
 		tileGrid.addComponent(vBoxRight, 1, 0);
 		
 		setContent(tileGrid);
+		
+		
+		btnSaveNote.addClickListener(click -> {
+			this.view.saveNoteButtonClicked(this.patientItem, txtNewNote.getValue());
+			this.close();
+		});
 	}
 }

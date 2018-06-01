@@ -6,6 +6,7 @@ import javax.persistence.EntityGraph;
 import javax.persistence.NamedEntityGraph;
 
 import ch.bfh.bti7081.s2018.black.pms.model.EntityModel;
+import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 
 /**
  * class JpaDataAccessObject
@@ -22,6 +23,7 @@ public class JpaDataAccessObject {
 	
 	// JPA transaction variable
 	private JpaUtility transaction;
+	private int lastId;
 
 	// property of the fetchgraph as String
 	private static final String JAVAX_PERSISTENCE_FETCHGRAPH = "javax.persistence.fetchgraph";
@@ -45,6 +47,8 @@ public class JpaDataAccessObject {
 				(entityManager) -> { 
 					// the object will be stored in the database
 					entityManager.persist(entity);
+					entityManager.flush();
+					lastId = entity.getId();
 					// the method does not return an object
 					return null;
 				}
@@ -79,7 +83,7 @@ public class JpaDataAccessObject {
 				// lambda for writing the anonymous class
 				(entityManager) -> { 
 					// remove the passed entity
-					entityManager.remove(entity);
+					entityManager.remove(entityManager.contains(entity) ? entity : entityManager.merge(entity));
 					// the method does not return an object
 					return null;
 				}
@@ -109,5 +113,41 @@ public class JpaDataAccessObject {
 							.getResultList();				
 					}
 		);
+	}
+	
+	public <T> List<T> findAll2(Class<T> entityClass) {
+		// return the result of the execute method of the JpaUtility class with our block of code
+		return transaction.execute(
+				// lambda for writing the anonymous class
+				(entityManager) -> { 
+					// get the EntityGraph from the passed class parameter			
+				
+					// return all objects from the entity
+					return entityManager.createQuery(
+							"Select objects FROM " + entityClass.getName() + " objects", entityClass)
+							// here we set that all relationships are considered as lazy
+							// regardless of the annotations
+							.getResultList();				
+					}
+		);
+	}
+
+	public EntityModel byid(int id) {
+		return transaction.execute(
+				// lambda for writing the anonymous class
+				(entityManager) -> { 
+					// remove the passed entity
+	                return entityManager.find(PatientModel.class, id);
+
+				}
+		);
+	}
+
+	public int getLastId() {
+		return lastId;
+	}
+
+	public void setLastId(int lastId) {
+		this.lastId = lastId;
 	}
 }

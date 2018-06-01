@@ -10,11 +10,12 @@
         </description>
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>ch.bfh.bti7081.s2018.black.pms.model.AddictionModel</class>
-        <class>ch.bfh.bti7081.s2018.black.pms.model.Appointment</class>
+        <class>ch.bfh.bti7081.s2018.black.pms.model.AppointmentModel</class>
         <class>ch.bfh.bti7081.s2018.black.pms.model.DrugModel</class>
         <class>ch.bfh.bti7081.s2018.black.pms.model.DoctorModel</class>
         <class>ch.bfh.bti7081.s2018.black.pms.model.LocationModel</class>
         <class>ch.bfh.bti7081.s2018.black.pms.model.PatientModel</class>
+        <class>ch.bfh.bti7081.s2018.black.pms.model.NoticeModel</class>
         <class>ch.bfh.bti7081.s2018.black.pms.model.UserModel</class>
         
         <properties>

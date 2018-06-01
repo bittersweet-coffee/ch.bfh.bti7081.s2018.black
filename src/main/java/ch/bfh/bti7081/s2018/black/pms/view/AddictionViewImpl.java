@@ -43,7 +43,7 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 		this.patientList = new LinkedList<>();
 		
 		for (AddictionViewListener listener: listeners) {
-    		listener.setupAddictList();;
+			this.nativeAddict.setItems(listener.setupAddictList());
 		}
 		
         TextField txtSearch = new TextField("Filter:");
@@ -54,7 +54,7 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         HorizontalLayout searchLayout = new HorizontalLayout();
         searchLayout.addComponents(txtSearch, btnSearch);
         searchLayout.setComponentAlignment(btnSearch, Alignment.BOTTOM_CENTER);
-        searchLayout.setMargin(new MarginInfo(false, false, true, false));
+        searchLayout.setMargin(new MarginInfo(false, false, true, true));
         
         HorizontalLayout hLayout = new HorizontalLayout();
         
@@ -94,9 +94,14 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         Button btnAddTo = new Button("Add To");
         btnAddTo.setEnabled(false);
         
-        hLayout.addComponents(nativeAddict, addictDetails, btnAddTo);
+        hLayout.addComponents(
+        		nativeAddict, 
+        		addictDetails, 
+        		btnAddTo
+        		);
+        
         hLayout.setWidth("100%");
-        hLayout.setMargin(new MarginInfo(false, false, true, false));
+        hLayout.setMargin(new MarginInfo(false, true, true, true));
         hLayout.setComponentAlignment(btnAddTo, Alignment.BOTTOM_RIGHT);
         hLayout.setComponentAlignment(nativeAddict, Alignment.TOP_LEFT);
         hLayout.setComponentAlignment(addictDetails, Alignment.TOP_CENTER);
@@ -135,7 +140,7 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         super.contentPanel.setContent(vLayout);
         
         btnSearch.addClickListener(click -> {
-        	if(this.nativeAddict.getSelectedItem().isPresent() || !txtSearch.isEmpty()) {
+        	if (this.nativeAddict.getSelectedItem().isPresent() || !txtSearch.isEmpty()) {
         		this.nativeAddict.setSelectedItem(null);
         	}
         	btnAddTo.setEnabled(false);
@@ -143,13 +148,13 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         	this.txtAddictDesc.setValue("");
         	this.txtSymptoms.setValue("");
         	for (AddictionViewListener listener: listeners) {
-        		listener.searchButtonClicked(txtSearch.getValue());
+        		this.nativeAddict.setItems(listener.searchButtonClicked(txtSearch.getValue()));
         	}
         });
         
         btnAddTo.addClickListener(click -> {
 			for (AddictionViewListener listener: listeners) {
-        		listener.addToButtonClicked();
+        		this.patientList = listener.addToButtonClicked();
 			}
         	super.contentPanel.getUI().getUI().addWindow(windowPatient);
         	lblSelectedAddict.setValue("Selected Addiction: " + this.nativeAddict.getSelectedItem().get());
@@ -159,15 +164,19 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 		this.nativeAddict.addValueChangeListener(selected -> {
 			for (AddictionViewListener listener: listeners) {
         		if(this.nativeAddict.getSelectedItem().isPresent()) {
-        			listener.selectListChanged(this.nativeAddict.getSelectedItem().get());
+        			List<String> addictDetailList = listener.selectListChanged(this.nativeAddict.getSelectedItem().get());
+        			
         			this.txtAddictName.setValue(selected.getValue());
+        			this.txtAddictDesc.setValue(addictDetailList.get(0));
+        			this.txtSymptoms.setValue(addictDetailList.get(1));
+        			
         		}
 			}	
 			btnAddTo.setEnabled(true);
 		});
 		
 		btnPatient.addClickListener(click -> {
-			if(nativePatient.getSelectedItem().isPresent()) {
+			if (nativePatient.getSelectedItem().isPresent()) {
 				for (AddictionViewListener listener: listeners)
 	        		listener.allocateButtonClicked(nativeAddict.getSelectedItem().get(),
 	        				nativePatient.getSelectedItem().get());
@@ -193,11 +202,12 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 		this.listeners.add(listener);
 	}
 	
+	/*
 	@Override
 	public void setupAddictList(List<String> addictionList) {
 		this.nativeAddict.setItems(addictionList);
 	}
-
+	
 	@Override
 	public void setListDesc(String desc) {
 		this.txtAddictDesc.setValue(desc);
@@ -212,4 +222,5 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 	public void setupPatientList(List<String> patientList) {
 		this.patientList = patientList;
 	}
+	*/
 }

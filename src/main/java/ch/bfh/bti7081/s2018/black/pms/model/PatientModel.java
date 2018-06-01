@@ -1,12 +1,19 @@
 package ch.bfh.bti7081.s2018.black.pms.model;
 
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -16,6 +23,9 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="patient")
+@NamedEntityGraph(name = "PatientModel.notes",
+attributeNodes = @NamedAttributeNode(value = "notes", subgraph = "notes"),
+subgraphs = @NamedSubgraph(name = "notes", attributeNodes = @NamedAttributeNode("patient")))
 public class PatientModel extends EntityModel {
 	
 	// firstname of the patient. Can not be null
@@ -78,6 +88,11 @@ public class PatientModel extends EntityModel {
         inverseJoinColumns=
             @JoinColumn(name="appointment_id", referencedColumnName="id"))
 	private List<AppointmentModel> appointments;
+	
+	// list of notes of the patient.
+	// is mapped with the variable patient in the class NoticeModel
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "patient")
+	private List<NoticeModel> notes;
 	
 	// location of the patient
 	// location_id is the foreign key. Can not be null
@@ -259,5 +274,21 @@ public class PatientModel extends EntityModel {
 	 */
 	public void setLocation(LocationModel location) {
 		this.location = location;
+	}
+
+	/**
+	 * getter of the notes
+	 * @return a list with the notes of the patient
+	 */
+	public List<NoticeModel> getNotes() {
+		return this.notes;
+	}
+
+	/**
+	 * setter of the notes
+	 * @param notes of the patient
+	 */
+	public void setNotes(List<NoticeModel> notes) {
+		this.notes = notes;
 	}
 }

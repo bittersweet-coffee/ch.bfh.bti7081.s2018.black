@@ -101,7 +101,7 @@ public class AddictionModel extends EntityModel {
 	}
 	
 	/**
-	 * getter for symptioms
+	 * getter for symptoms
 	 * @return a list with the symptoms of the addiction
 	 */
 	public List<SymptomModel> getSymptoms() {
@@ -144,7 +144,7 @@ public class AddictionModel extends EntityModel {
 	
 	/**
 	 * getter of the clinics
-	 * @return List of clinics where the addiciton can be cured
+	 * @return List of clinics where the addiction can be cured
 	 */
 	public List<String> getClinics() {
 		return this.clinics;
