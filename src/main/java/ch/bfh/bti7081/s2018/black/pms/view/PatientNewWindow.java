@@ -7,17 +7,21 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.TwinColSelect;
 import com.vaadin.ui.Window;
+
+import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
+
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 
 public class PatientNewWindow extends Window {
 	
 	PatientViewImpl view;
-	//PatientItem newPatient = new PatientItem();
+	PatientModel patient;
 	
-	public PatientNewWindow(PatientViewImpl view) {
+	public PatientNewWindow(PatientViewImpl view, PatientModel patientModel) {
 		super("New Patient");
 		this.view = view;
+		this.patient = patientModel;
 		buildWindow();
 	}
 	
@@ -40,7 +44,9 @@ public class PatientNewWindow extends Window {
 		Button btnSave = new Button("Save", new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				//view.save(newPatient);
+				patient.setFirstname(firstNameField.getValue());
+				patient.setLastname(lastNameField.getValue());
+				view.save(patient);
 				close();
 			}
 		});
