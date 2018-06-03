@@ -10,9 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
-import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -23,9 +20,6 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="patient")
-@NamedEntityGraph(name = "PatientModel.notes",
-attributeNodes = @NamedAttributeNode(value = "notes", subgraph = "notes"),
-subgraphs = @NamedSubgraph(name = "notes", attributeNodes = @NamedAttributeNode("patient")))
 public class PatientModel extends EntityModel {
 	
 	// firstname of the patient. Can not be null
@@ -91,7 +85,7 @@ public class PatientModel extends EntityModel {
 	
 	// list of notes of the patient.
 	// is mapped with the variable patient in the class NoticeModel
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "patient")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "patient")
 	private List<NoticeModel> notes;
 	
 	// location of the patient

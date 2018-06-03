@@ -1,12 +1,8 @@
-package ch.bfh.bti7081.s2018.black.pms.util;
+package ch.bfh.bti7081.s2018.black.pms.persistence;
 
 import java.util.List;
 
-import javax.persistence.EntityGraph;
-import javax.persistence.NamedEntityGraph;
-
 import ch.bfh.bti7081.s2018.black.pms.model.EntityModel;
-import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 
 /**
  * class JpaDataAccessObject
@@ -24,9 +20,6 @@ public class JpaDataAccessObject {
 	// JPA transaction variable
 	private JpaUtility transaction;
 	private int lastId;
-
-	// property of the fetchgraph as String
-	private static final String JAVAX_PERSISTENCE_FETCHGRAPH = "javax.persistence.fetchgraph";
 	 
 	/**
 	 * creates a new object with a transaction
@@ -100,53 +93,26 @@ public class JpaDataAccessObject {
 		return transaction.execute(
 				// lambda for writing the anonymous class
 				(entityManager) -> { 
-					// get the EntityGraph from the passed class parameter
-					EntityGraph<?> entityGraph = entityManager.getEntityGraph(
-							entityClass.getAnnotation(NamedEntityGraph.class).name());			
-				
 					// return all objects from the entity
 					return entityManager.createQuery(
 							"Select objects FROM " + entityClass.getName() + " objects", entityClass)
-							// here we set that all relationships are considered as lazy
-							// regardless of the annotations
-							.setHint(JAVAX_PERSISTENCE_FETCHGRAPH, entityGraph)
-							.getResultList();				
-					}
-		);
-	}
-	
-	public <T> List<T> findAll2(Class<T> entityClass) {
-		// return the result of the execute method of the JpaUtility class with our block of code
-		return transaction.execute(
-				// lambda for writing the anonymous class
-				(entityManager) -> { 
-					// get the EntityGraph from the passed class parameter			
-				
-					// return all objects from the entity
-					return entityManager.createQuery(
-							"Select objects FROM " + entityClass.getName() + " objects", entityClass)
-							// here we set that all relationships are considered as lazy
-							// regardless of the annotations
 							.getResultList();				
 					}
 		);
 	}
 
-	public EntityModel byid(int id) {
-		return transaction.execute(
-				// lambda for writing the anonymous class
-				(entityManager) -> { 
-					// remove the passed entity
-	                return entityManager.find(PatientModel.class, id);
-
-				}
-		);
-	}
-
+	/**
+	 * getter of the lastId
+	 * @return the ID of the last fetched entity
+	 */
 	public int getLastId() {
 		return lastId;
 	}
 
+	/**
+	 * setter of the lastId
+	 * @param lastId: Id of the last fetched entity
+	 */
 	public void setLastId(int lastId) {
 		this.lastId = lastId;
 	}

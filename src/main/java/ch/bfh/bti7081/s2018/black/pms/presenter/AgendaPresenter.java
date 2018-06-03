@@ -8,8 +8,8 @@ import ch.bfh.bti7081.s2018.black.pms.model.Appointment;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentDataProvider;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentModel;
-import ch.bfh.bti7081.s2018.black.pms.util.JpaDataAccessObject;
-import ch.bfh.bti7081.s2018.black.pms.util.JpaUtility;
+import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
+import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 import ch.bfh.bti7081.s2018.black.pms.view.AgendaView;
 
 public class AgendaPresenter implements AgendaView.AgendaViewListener {
@@ -78,7 +78,7 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 	public void fillAppointmentList() {
 		JpaUtility transaction = new JpaUtility();
 		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		this.appointmentModelList = objects.findAll2(AppointmentModel.class);
+		this.appointmentModelList = objects.findAll(AppointmentModel.class);
 		for (AppointmentModel appointmentModel : this.appointmentModelList) {
 			Appointment appointment = new Appointment();
 			appointment.setId(appointmentModel.getId());

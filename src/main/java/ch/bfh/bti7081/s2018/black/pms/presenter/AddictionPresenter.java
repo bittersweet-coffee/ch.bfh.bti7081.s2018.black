@@ -6,8 +6,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
-import ch.bfh.bti7081.s2018.black.pms.util.JpaDataAccessObject;
-import ch.bfh.bti7081.s2018.black.pms.util.JpaUtility;
+import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
+import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 import ch.bfh.bti7081.s2018.black.pms.view.AddictionView;
 
 public class AddictionPresenter implements AddictionView.AddictionViewListener {
