@@ -48,8 +48,8 @@ public class PatientNewWindow extends Window {
 		List<DoctorModel> docList = new LinkedList<DoctorModel>();
 		List<LocationModel> locList = new LinkedList<LocationModel>();
 
-		//docList = //view.getDoctors(docList);
-		//locList = //view.getLocations(locList);
+		docList = view.getDoctors(docList);
+		locList = view.getLocations(locList);
 				
 		ComboBox<DoctorModel> cmbDocs = new ComboBox<DoctorModel>("Select your doctor:");
 		cmbDocs.setItems(docList);

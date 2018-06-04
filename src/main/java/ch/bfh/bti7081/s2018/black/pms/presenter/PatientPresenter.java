@@ -30,6 +30,9 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
 		addDummyData(patient, objects);
 		this.patientModelList = objects.findAll(PatientModel.class);
+		for (PatientModel p : patientModelList) {
+			System.out.println(p.getLastname() + " " + p.getId());
+		}
 		this.patientItemList = new LinkedList<>();
 		for (PatientModel p : this.patientModelList) {
 			this.patientItemList.add(new PatientItem(p));
