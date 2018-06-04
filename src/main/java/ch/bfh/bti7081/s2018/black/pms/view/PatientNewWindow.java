@@ -14,8 +14,6 @@ import com.vaadin.ui.Window;
 import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
 import ch.bfh.bti7081.s2018.black.pms.model.LocationModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
-import ch.bfh.bti7081.s2018.black.pms.util.JpaDataAccessObject;
-import ch.bfh.bti7081.s2018.black.pms.util.JpaUtility;
 
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
