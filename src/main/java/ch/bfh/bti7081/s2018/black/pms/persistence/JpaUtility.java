@@ -1,4 +1,4 @@
-package ch.bfh.bti7081.s2018.black.pms.util;
+package ch.bfh.bti7081.s2018.black.pms.persistence;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -9,7 +9,7 @@ import javax.persistence.Persistence;
 /**
  * class JpaUtility
  * @author musaa1, karras
- * @version 0.2
+ * @version 0.3
  * Inspired by https://bit.ly/2rDRJWo
  */
 
@@ -17,15 +17,18 @@ public class JpaUtility {
 	
 	// EntityManagerFactory of the application
 	private static EntityManagerFactory emf;
+	// EntityManager of the application
+	private static EntityManager em;
 	
 	/**
-	 * initialize the EntityManagerFactory of the application
+	 * initialize the EntityManagerFactory and EntityManager of the application
 	 */
 	static {
 		// Singleton
 		if (emf == null) {
 			try {
 				emf = Persistence.createEntityManagerFactory("PMS");
+				em = emf.createEntityManager();
 			} catch (Exception e){
 				throw e;
 			}
@@ -33,11 +36,11 @@ public class JpaUtility {
 	}
 	
 	/**
-	 * create a new EntityManager
-	 * @return a new EntityManager from the EntityManagerFactory
+	 * getter of the EntityManager
+	 * @return the static EntityManager
 	 */
-	public static EntityManager createEntityManager(){
-		return emf.createEntityManager();
+	public static EntityManager getEntityManager(){
+		return em;
 	}
 	
 	/**
@@ -51,7 +54,7 @@ public class JpaUtility {
 	 * @return the result of the block of code that is passed by parameter
 	 */
 	public <T> T execute(ABlockOfCode<T> aBlockOfCode) {
-		EntityManager entityManager = JpaUtility.createEntityManager();	
+		EntityManager entityManager = JpaUtility.getEntityManager();
 		EntityTransaction transaction = null; // transaction is null in the beginning
 		try {
 			transaction = entityManager.getTransaction();
@@ -71,9 +74,6 @@ public class JpaUtility {
 				transaction.rollback();
 			}
 		    throw new RuntimeException(e);
-		} finally {
-			// the entityManager will be closed at the end
-			entityManager.close();
 		}
 	}
 }
