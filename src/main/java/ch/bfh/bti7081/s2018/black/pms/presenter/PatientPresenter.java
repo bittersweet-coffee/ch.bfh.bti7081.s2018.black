@@ -8,8 +8,8 @@ import ch.bfh.bti7081.s2018.black.pms.model.LocationModel;
 import ch.bfh.bti7081.s2018.black.pms.model.NoticeModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
-import ch.bfh.bti7081.s2018.black.pms.util.JpaDataAccessObject;
-import ch.bfh.bti7081.s2018.black.pms.util.JpaUtility;
+import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
+import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 import ch.bfh.bti7081.s2018.black.pms.view.PatientView;
 
 public class PatientPresenter implements PatientView.PatientViewListener {

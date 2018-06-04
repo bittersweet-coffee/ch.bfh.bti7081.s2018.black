@@ -1,4 +1,4 @@
-package ch.bfh.bti7081.s2018.black.pms.util;
+package ch.bfh.bti7081.s2018.black.pms.persistence;
 
 import javax.persistence.EntityManager;
 
