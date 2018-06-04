@@ -3,6 +3,7 @@ package ch.bfh.bti7081.s2018.black.pms.presenter;
 import java.util.LinkedList;
 import java.util.List;
 
+import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
 import ch.bfh.bti7081.s2018.black.pms.model.LocationModel;
 import ch.bfh.bti7081.s2018.black.pms.model.NoticeModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
@@ -110,5 +111,19 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 	public List<String> getNotesForPatient(Integer patientId) {
 		List<String> patientNotes = new LinkedList<>(); // fetch DB for Patient Notes
 		return patientNotes;
+	}
+
+	@Override
+	public List<DoctorModel> getDoctors() {
+		JpaUtility transaction = new JpaUtility();
+		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
+		return objects.findAll(DoctorModel.class);
+	}
+
+	@Override
+	public List<LocationModel> getLocation() {
+		JpaUtility transaction = new JpaUtility();
+		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
+		return objects.findAll(LocationModel.class);
 	}
 }

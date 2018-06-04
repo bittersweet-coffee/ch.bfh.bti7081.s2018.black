@@ -20,6 +20,8 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
 
+import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
+import ch.bfh.bti7081.s2018.black.pms.model.LocationModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 
@@ -127,7 +129,7 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 	}
 
 	protected void patientNewWindow() {
-		final PatientNewWindow window = new PatientNewWindow(this, new PatientModel());
+		final PatientNewWindow window = new PatientNewWindow(this, new PatientModel(), new LocationModel());
 		window.setModal(true);
 		super.getUI().getUI().addWindow(window);
 	}
@@ -157,5 +159,19 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 		}
 		patientItem.reloadFromModel();
 		patientProvider.refreshItem(patientItem);
+	}
+
+	public List<DoctorModel> getDoctors(List<DoctorModel> docList) {
+		for (PatientViewListener listener : listeners) {
+			docList = listener.getDoctors();
+		}
+		return docList;
+	}
+
+	public List<LocationModel> getLocations(List<LocationModel> locList) {
+		for (PatientViewListener listener : listeners) {
+			locList = listener.getLocation();
+		}
+		return locList;
 	}
 }
