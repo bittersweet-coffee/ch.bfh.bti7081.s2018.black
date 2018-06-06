@@ -3,7 +3,9 @@ package ch.bfh.bti7081.s2018.black.pms.presenter;
 import java.util.LinkedList;
 import java.util.List;
 
+import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
 import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
+import ch.bfh.bti7081.s2018.black.pms.model.DrugModel;
 import ch.bfh.bti7081.s2018.black.pms.model.LocationModel;
 import ch.bfh.bti7081.s2018.black.pms.model.NoticeModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
@@ -28,17 +30,19 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 	public void saveButtonClick(PatientModel patient) {
 		JpaUtility transaction = new JpaUtility();
 		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		addDummyData(patient, objects);
 		this.patientModelList = objects.findAll(PatientModel.class);
-		for (PatientModel p : patientModelList) {
-			System.out.println(p.getLastname() + " " + p.getId());
-		}
+		objects.store(patient);
 		this.patientItemList = new LinkedList<>();
 		for (PatientModel p : this.patientModelList) {
 			this.patientItemList.add(new PatientItem(p));
 		}
 	}
 
+	/**
+	 * Not used Anymore but left for debug, checks and junittests to get infos
+	 * @param patient
+	 * @param objects
+	 */
 	private void addDummyData(PatientModel patient, JpaDataAccessObject objects) {
 		List<PatientModel> pml = objects.findAll(PatientModel.class);
 		PatientModel pmDummy = pml.get(0);
@@ -128,5 +132,19 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 		JpaUtility transaction = new JpaUtility();
 		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
 		return objects.findAll(LocationModel.class);
+	}
+
+	@Override
+	public List<AddictionModel> getAddictions() {
+		JpaUtility transaction = new JpaUtility();
+		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
+		return objects.findAll(AddictionModel.class);
+	}
+
+	@Override
+	public List<DrugModel> getDrugs() {
+		JpaUtility transaction = new JpaUtility();
+		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
+		return objects.findAll(DrugModel.class);
 	}
 }
