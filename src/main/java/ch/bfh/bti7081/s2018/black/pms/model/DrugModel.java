@@ -17,6 +17,12 @@ public class DrugModel extends EntityModel {
 	// name of the drug
 	private String name;
 	
+	// description of the drug
+	private String description;
+	
+	// 
+
+	
 	// list of the patients that have to take the drug
 	// is mapped with the variable drugs of the class PatientModel
     @ManyToMany(mappedBy="drugs")
@@ -37,6 +43,23 @@ public class DrugModel extends EntityModel {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+    /**
+     * getter of the description
+     * @return the description of the drug
+     */
+	public String getDescription() {
+		return this.description;
+	}
+
+	/**
+	 * setter of the description
+	 * @param description of the drug
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 
 	/**
 	 * getter of the patients
