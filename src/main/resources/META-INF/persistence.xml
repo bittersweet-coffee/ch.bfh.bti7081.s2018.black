@@ -13,10 +13,13 @@
         <class>ch.bfh.bti7081.s2018.black.pms.model.AppointmentModel</class>
         <class>ch.bfh.bti7081.s2018.black.pms.model.DrugModel</class>
         <class>ch.bfh.bti7081.s2018.black.pms.model.DoctorModel</class>
+        <class>ch.bfh.bti7081.s2018.black.pms.model.EntityModel</class>
         <class>ch.bfh.bti7081.s2018.black.pms.model.LocationModel</class>
+        <class>ch.bfh.bti7081.s2018.black.pms.model.NoticeModel</class>
         <class>ch.bfh.bti7081.s2018.black.pms.model.PatientModel</class>
+        <class>ch.bfh.bti7081.s2018.black.pms.model.SymptomModel</class>
         <class>ch.bfh.bti7081.s2018.black.pms.model.UserModel</class>
-        
+      
         <properties>
 <!-- Parameters based on https://github.com/hibernate/hibernate-orm/blob/master/hibernate-envers/src/demo/resources/META-INF/persistence.xml -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>

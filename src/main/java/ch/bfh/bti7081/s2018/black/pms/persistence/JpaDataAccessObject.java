@@ -1,9 +1,6 @@
-package ch.bfh.bti7081.s2018.black.pms.util;
+package ch.bfh.bti7081.s2018.black.pms.persistence;
 
 import java.util.List;
-
-import javax.persistence.EntityGraph;
-import javax.persistence.NamedEntityGraph;
 
 import ch.bfh.bti7081.s2018.black.pms.model.EntityModel;
 
@@ -22,9 +19,7 @@ public class JpaDataAccessObject {
 	
 	// JPA transaction variable
 	private JpaUtility transaction;
-
-	// property of the fetchgraph as String
-	private static final String JAVAX_PERSISTENCE_FETCHGRAPH = "javax.persistence.fetchgraph";
+	private int lastId;
 	 
 	/**
 	 * creates a new object with a transaction
@@ -45,6 +40,8 @@ public class JpaDataAccessObject {
 				(entityManager) -> { 
 					// the object will be stored in the database
 					entityManager.persist(entity);
+					entityManager.flush();
+					lastId = entity.getId();
 					// the method does not return an object
 					return null;
 				}
@@ -79,7 +76,7 @@ public class JpaDataAccessObject {
 				// lambda for writing the anonymous class
 				(entityManager) -> { 
 					// remove the passed entity
-					entityManager.remove(entity);
+					entityManager.remove(entityManager.contains(entity) ? entity : entityManager.merge(entity));
 					// the method does not return an object
 					return null;
 				}
@@ -96,18 +93,27 @@ public class JpaDataAccessObject {
 		return transaction.execute(
 				// lambda for writing the anonymous class
 				(entityManager) -> { 
-					// get the EntityGraph from the passed class parameter
-					EntityGraph<?> entityGraph = entityManager.getEntityGraph(
-							entityClass.getAnnotation(NamedEntityGraph.class).name());			
-				
 					// return all objects from the entity
 					return entityManager.createQuery(
 							"Select objects FROM " + entityClass.getName() + " objects", entityClass)
-							// here we set that all relationships are considered as lazy
-							// regardless of the annotations
-							.setHint(JAVAX_PERSISTENCE_FETCHGRAPH, entityGraph)
 							.getResultList();				
 					}
 		);
+	}
+
+	/**
+	 * getter of the lastId
+	 * @return the ID of the last fetched entity
+	 */
+	public int getLastId() {
+		return lastId;
+	}
+
+	/**
+	 * setter of the lastId
+	 * @param lastId: Id of the last fetched entity
+	 */
+	public void setLastId(int lastId) {
+		this.lastId = lastId;
 	}
 }

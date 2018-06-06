@@ -10,12 +10,10 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 
-import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
-
 public class PatientNewWindow extends Window {
 	
 	PatientViewImpl view;
-	PatientItem newPatient = new PatientItem();
+	//PatientItem newPatient = new PatientItem();
 	
 	public PatientNewWindow(PatientViewImpl view) {
 		super("New Patient");
@@ -42,7 +40,7 @@ public class PatientNewWindow extends Window {
 		Button btnSave = new Button("Save", new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				view.save(newPatient);
+				//view.save(newPatient);
 				close();
 			}
 		});

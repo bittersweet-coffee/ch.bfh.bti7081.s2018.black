@@ -307,3 +307,60 @@
 ## TODO
 
 * Weitere Arbeiten anhand des Sprintlogs
+
+
+## 2018-05-28
+
+### Teilnehmer
+
+* Aleksander
+* Amin
+* Antonio
+* Cedric
+* Jan
+* Michael
+* Nicola
+
+### Agenda
+
+* DB-Inserts
+* Patienten UI überarbeitet
+* Zwischen Presenter & View Liste durch HashMap ersetzt
+* Agenda Anbindung an DB
+
+### Beschlüsse
+
+* Umstellung von Liste auf HashMap --> Patientenname ist nicht eindeutig darum mit ID
+* Patient UI-Anpassung - Wechsel von ListSelect auf NativeSelect --> Damit Element identisch wie bei Addiction
+
+## TODO
+
+* DB Insert fertigstellen
+
+
+## 2018-05-30
+
+### Teilnehmer
+
+* Aleksander
+* Amin
+* Antonio
+* Cedric
+* Jan
+* Michael
+* Nicola
+
+### Agenda
+
+* Feedback Task 8
+* Besprechung mit Herr Vogel über MockModel für View
+
+### Beschlüsse
+
+* Patient-MockObject, dass die View verwenden darf ohne MVP zu verletzen
+* Definitiver Entscheid, dass Patientennotiz eine eigene Klasse ist. 
+
+## TODO
+
+* Vorbereitung Sprintreview für Freitag
+* Planung Sprint 3

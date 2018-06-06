@@ -11,7 +11,6 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
 
-import ch.bfh.bti7081.s2018.black.pms.model.AgendaModel;
 import ch.bfh.bti7081.s2018.black.pms.presenter.AddictionPresenter;
 import ch.bfh.bti7081.s2018.black.pms.presenter.AgendaPresenter;
 import ch.bfh.bti7081.s2018.black.pms.presenter.PatientPresenter;
@@ -39,9 +38,7 @@ public class Main extends UI {
     	PatientViewImpl patientView = new PatientViewImpl();
     	ReportViewImpl reportView = new ReportViewImpl();
     	
-    	AgendaModel agendaModel = new AgendaModel();
-    	
-    	new AgendaPresenter(agendaView, agendaModel);
+    	new AgendaPresenter(agendaView);
     	new AddictionPresenter(addictionView);
     	new PatientPresenter(patientView);
 

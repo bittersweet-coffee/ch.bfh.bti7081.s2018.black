@@ -5,10 +5,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
-import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -22,9 +20,6 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name="addiction")
-@NamedEntityGraph(name = "AddictionModel.symptoms",
-				attributeNodes = @NamedAttributeNode(value = "symptoms", subgraph = "symptoms"),
-				subgraphs = @NamedSubgraph(name = "symptoms", attributeNodes = @NamedAttributeNode("addiction")))
 public class AddictionModel extends EntityModel {
 
 	// name of the addiction
@@ -36,7 +31,7 @@ public class AddictionModel extends EntityModel {
 	
 	// list of symptoms of the addiction.
 	// is mapped with the variable addiction in the class SymptomModel
-	@OneToMany(mappedBy = "addiction")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "addiction")
 	private List<SymptomModel> symptoms;
 
 	// hibernate ignores this variable. I think we don't need this variable
@@ -101,7 +96,7 @@ public class AddictionModel extends EntityModel {
 	}
 	
 	/**
-	 * getter for symptioms
+	 * getter for symptoms
 	 * @return a list with the symptoms of the addiction
 	 */
 	public List<SymptomModel> getSymptoms() {
@@ -144,7 +139,7 @@ public class AddictionModel extends EntityModel {
 	
 	/**
 	 * getter of the clinics
-	 * @return List of clinics where the addiciton can be cured
+	 * @return List of clinics where the addiction can be cured
 	 */
 	public List<String> getClinics() {
 		return this.clinics;

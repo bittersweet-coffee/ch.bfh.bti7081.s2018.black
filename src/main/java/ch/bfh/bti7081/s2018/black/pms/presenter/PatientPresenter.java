@@ -1,28 +1,24 @@
 package ch.bfh.bti7081.s2018.black.pms.presenter;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
+import ch.bfh.bti7081.s2018.black.pms.model.NoticeModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
-import ch.bfh.bti7081.s2018.black.pms.util.JpaDataAccessObject;
-import ch.bfh.bti7081.s2018.black.pms.util.JpaUtility;
+import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
+import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 import ch.bfh.bti7081.s2018.black.pms.view.PatientView;
 
-public class PatientPresenter implements PatientView.PatientViewListener{
+public class PatientPresenter implements PatientView.PatientViewListener {
 	
 	private PatientView view;
 	private List<PatientModel> patientModelList;
-	private Map<Integer, String> patientNameList = new HashMap<>();
+	private List<PatientItem> patientItemList = new LinkedList<>();
 
 	public PatientPresenter(PatientView view) {
 		this.view = view;
 		this.patientModelList = new LinkedList<>();
 		view.addListener(this);
-		this.fillPatientList();
 	}
 
 	@Override
@@ -34,25 +30,16 @@ public class PatientPresenter implements PatientView.PatientViewListener{
 		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
 		this.patientModelList = objects.findAll(PatientModel.class);
      	
+		this.patientItemList = new LinkedList<>();
 		for (PatientModel patient : this.patientModelList) {
-			this.patientNameList.put(patient.getId(), patient.getFirstname() + ", " + patient.getLastname());
+			this.patientItemList.add(new PatientItem(patient));
      	}
 	}
 
 	@Override
-	public Map<Integer, String> setupPatientList() {
-		return this.patientNameList;
-	}
-
-	@Override
-	public Map<Integer, String> searchButtonClicked(String searchTerm) {
-		Map<Integer, String> optionalPatient = this.patientModelList.stream()
-				.filter(patient -> patient.getFirstname().toLowerCase().contains(searchTerm.toLowerCase()) || 
-						patient.getLastname().toLowerCase().contains(searchTerm.toLowerCase())
-						)
-				.collect(Collectors.toMap(PatientModel::getId, patient -> patient.getFirstname() + ", " + patient.getLastname()));
-		
-		return optionalPatient;
+	public List<PatientItem> setupPatientItemList() {
+		this.fillPatientList();
+		return this.patientItemList;
 	}
 
 	@Override
@@ -69,5 +56,27 @@ public class PatientPresenter implements PatientView.PatientViewListener{
 		wrapper.add(birthdayList);
 		
 		return wrapper;
+	}
+
+	@Override
+	public void saveNoteButtonClicked(PatientItem patientItem, String newNote) {
+		
+		PatientModel patient = patientItem.getModel();
+		
+		NoticeModel note = new NoticeModel();
+		note.setNote(newNote);
+		note.setPatient(patient);
+		
+		JpaUtility t2 = new JpaUtility();
+		JpaDataAccessObject ob2 = new JpaDataAccessObject(t2);
+		ob2.update(note);
+
+		patient.getNotes().add(note);
+	}
+
+	@Override
+	public List<String> getNotesForPatient(Integer patientId) {
+		List<String> patientNotes = new LinkedList<>();		// fetch DB for Patient Notes
+		return patientNotes;
 	}
 }
