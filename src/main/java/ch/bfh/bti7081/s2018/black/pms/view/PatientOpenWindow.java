@@ -9,6 +9,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.ListSelect;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -80,14 +81,14 @@ public class PatientOpenWindow extends Window {
 		tileGridAppointment.setComponentAlignment(btnNew, Alignment.BOTTOM_RIGHT);
 		
 		//Comment Part
-		TextField txtCurrentNotes = new TextField();
+		TextArea txtCurrentNotes = new TextArea();
 		txtCurrentNotes.setWidth("210px");
 		txtCurrentNotes.setHeight("340px");
 		txtCurrentNotes.setReadOnly(true);
 		txtCurrentNotes.setCaptionAsHtml(true);
 		txtCurrentNotes.setValue(this.patientItem.getNotesAsString());
 		
-		TextField txtNewNote = new TextField();
+		TextArea txtNewNote = new TextArea();
 		txtNewNote.setWidth("210px");
 		txtNewNote.setHeight("340px");
 		
