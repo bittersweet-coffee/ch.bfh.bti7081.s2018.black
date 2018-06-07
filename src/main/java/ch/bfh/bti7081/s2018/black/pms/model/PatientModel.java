@@ -47,9 +47,6 @@ public class PatientModel extends EntityModel {
 	// telephone number of the patient
 	private String telephone;
 	
-	// a notice for the patient
-	private String notice;
-	
 	// list of the drugs that the patient needs
 	// this is a many-to-many relation so we need a relation table
 	@ManyToMany
@@ -179,22 +176,6 @@ public class PatientModel extends EntityModel {
 	 */
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
-	}
-
-	/**
-	 * getter of the notice
-	 * @return the notice that belongs to the patient
-	 */
-	public String getNotice() {
-		return this.notice;
-	}
-
-	/**
-	 * setter of the notice
-	 * @param notice that belongs to the patient
-	 */
-	public void setNotice(String notice) {
-		this.notice = notice;
 	}
 
 	/**
