@@ -73,8 +73,8 @@ INSERT INTO location (email, name, place, post_code, street, telephone) VALUES('
 INSERT INTO location (email, name, place, post_code, street, telephone) VALUES('request@upd.ch','Universitäre Psychiatrische Dienste Bern (UPD)','Bern',1018,'Alpenstrasse','044 786 00 00')
 
 INSERT INTO patient (firstname, lastname, birthday, post_code, street, telephone, location_id) VALUES('Dominik','Mueller','1994-03-17',1000,'Aarbergergasse','062 287 32 32',1)
-INSERT INTO patient (firstname, lastname, birthday, post_code, street, telephone, location_id) VALUES('Xaver','Schmidt','1990-04-23','',1003,'Aarstrasse','081 303 30 30',1)
-INSERT INTO patient (firstname, lastname, birthday, post_code, street, telephone, location_id) VALUES('Laurenz','Schneider','1991-05-06','',1004,'Abendstrasse','0848 801 100',2)
+INSERT INTO patient (firstname, lastname, birthday, post_code, street, telephone, location_id) VALUES('Xaver','Schmidt','1990-04-23',1003,'Aarstrasse','081 303 30 30',1)
+INSERT INTO patient (firstname, lastname, birthday, post_code, street, telephone, location_id) VALUES('Laurenz','Schneider','1991-05-06',1004,'Abendstrasse','0848 801 100',2)
 INSERT INTO patient (firstname, lastname, birthday, post_code, street, telephone, location_id) VALUES('Jannes','Fischer','1992-02-15',1005,'Aberlistrasse','044 786 00 00',3)
 INSERT INTO patient (firstname, lastname, birthday, post_code, street, telephone, location_id) VALUES('Mark','Weber','1995-09-27',1006,'Aebistrasse','062 287 32 32',4)
 INSERT INTO patient (firstname, lastname, birthday, post_code, street, telephone, location_id) VALUES('Mike','Meyer','1997-12-01',1007,'Aegertenstrasse','062 767 99 99',5)
