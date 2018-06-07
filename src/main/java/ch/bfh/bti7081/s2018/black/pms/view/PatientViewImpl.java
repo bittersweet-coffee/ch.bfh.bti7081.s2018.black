@@ -136,13 +136,6 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 	protected void patientNewWindow() {
 		final PatientNewWindow window = new PatientNewWindow(this, new PatientItem(), new LocationModel());
 		window.setModal(true);
-		window.addCloseListener(new CloseListener() {
-
-			@Override
-			public void windowClose(CloseEvent e) {
-				Page.getCurrent().reload();
-			}
-		});
 		super.getUI().getUI().addWindow(window);
 	}
 

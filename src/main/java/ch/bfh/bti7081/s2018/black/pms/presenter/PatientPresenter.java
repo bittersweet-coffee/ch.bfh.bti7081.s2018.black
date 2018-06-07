@@ -134,11 +134,9 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 		notes.add(note);
 		patient.setNotes(notes);
 
-
 		JpaUtility t2 = new JpaUtility();
 		JpaDataAccessObject ob2 = new JpaDataAccessObject(t2);
 		ob2.store(patient);
-
 	}
 
 	@Override

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import com.vaadin.server.Page;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
@@ -106,8 +107,8 @@ public class PatientNewWindow extends Window {
 				patient.setLocation(getSelectedLocation(cmbLocs.getSelectedItem()));
 				//patient.setNotes(noticeList);
 				view.save(patient, descriptionField.getValue());
+				Page.getCurrent().reload();
 				close();
-				view.updatePatientItemList();
 			}
 		});
 
