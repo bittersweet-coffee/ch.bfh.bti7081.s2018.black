@@ -57,7 +57,7 @@ INSERT INTO location (email, name, place, post_code, street, telephone) VALUES('
 INSERT INTO location (email, name, place, post_code, street, telephone) VALUES('request@StiftungDiaconisPalliativeCareDiakonissenhaus.ch','Stiftung Diaconis Palliative Care Diakonissenhaus Bern','Bern',1015,'Alpeneggstrasse','0848 801 100')
 INSERT INTO location (email, name, place, post_code, street, telephone) VALUES('request@upd.ch','Universitäre Psychiatrische Dienste Bern (UPD)','Bern',1018,'Alpenstrasse','044 786 00 00')
 
-INSERT INTO patient (firstname, lastname, birthday, notice, post_code, street, telephone, location_id) VALUES('Dominik','Müller','17.03.1994','',1000,'Aarbergergasse','062 287 32 32',1)
+INSERT INTO patient (firstname, lastname, birthday, notice, post_code, street, telephone, location_id) VALUES('Dominik','Müller','1994-03-17','',1000,'Aarbergergasse','062 287 32 32',1)
 INSERT INTO patient (firstname, lastname, notice, post_code, street, telephone, location_id) VALUES('Xaver','Schmidt','',1003,'Aarstrasse','081 303 30 30',1)
 INSERT INTO patient (firstname, lastname, notice, post_code, street, telephone, location_id) VALUES('Laurenz','Schneider','',1004,'Abendstrasse','0848 801 100',2)
 INSERT INTO patient (firstname, lastname, notice, post_code, street, telephone, location_id) VALUES('Jannes','Fischer','',1005,'Aberlistrasse','044 786 00 00',3)

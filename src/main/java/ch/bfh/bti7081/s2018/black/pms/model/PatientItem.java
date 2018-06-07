@@ -1,5 +1,6 @@
 package ch.bfh.bti7081.s2018.black.pms.model;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ public class PatientItem {
 	private PatientModel model;
 	
 	private String firstName, lastName;
-	private String birthday;
+	private Date birthday;
 	
 	public PatientItem(PatientModel model) {
 		this.model = model;
@@ -76,10 +77,14 @@ public class PatientItem {
 		this.lastName = lastName;
 	}
 	
-	public String getBirthday() {
+	public Date getBirthday() {
 		return this.birthday;
 	}
 
+	public String getBirthdayAsString() {
+		return String.valueOf(this.birthday);
+	}
+	
 	public PatientModel getModel() {
 		return this.model;
 	}
