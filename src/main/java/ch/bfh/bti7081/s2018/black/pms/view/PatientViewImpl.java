@@ -46,6 +46,7 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 		patientItemGrid.addColumn(PatientItem::getId).setCaption("ID");
 		patientItemGrid.addColumn(PatientItem::getFirstName).setCaption("Firstname");
 		patientItemGrid.addColumn(PatientItem::getLastName).setCaption("Lastname");
+		patientItemGrid.addColumn(PatientItem::getBirthday).setCaption("Birthday");
 		
 		updatePatientItemList();
 		patientProvider = DataProvider.ofCollection(patientItemList);

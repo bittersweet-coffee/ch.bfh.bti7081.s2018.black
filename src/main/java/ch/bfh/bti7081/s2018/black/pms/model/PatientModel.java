@@ -37,6 +37,10 @@ public class PatientModel extends EntityModel {
 	@Column(name="post_code")
 	private int postCode;
 	
+	// birthday of the patient
+	@Column(length=10)
+	private String birthday;
+	
 	// telephone number of the patient
 	private String telephone;
 	
@@ -156,6 +160,22 @@ public class PatientModel extends EntityModel {
 	 */
 	public void setPostCode(int postCode) {
 		this.postCode = postCode;
+	}
+
+	/**
+	 * getter of the birthday
+	 * @return the birthday of the patient
+	 */
+	public String getBirthday() {
+		return this.birthday;
+	}
+
+	/**
+	 * setter of the birthday
+	 * @param birthday of the patient
+	 */
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
 	}
 
 	/**

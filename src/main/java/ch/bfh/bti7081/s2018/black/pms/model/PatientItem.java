@@ -11,6 +11,7 @@ public class PatientItem {
 	private PatientModel model;
 	
 	private String firstName, lastName;
+	private String birthday;
 	
 	public PatientItem(PatientModel model) {
 		this.model = model;
@@ -21,6 +22,7 @@ public class PatientItem {
 		this.id = model.getId();
 		this.firstName = model.getFirstname();
 		this.lastName = model.getLastname();
+		this.birthday = model.getBirthday();
 
 		this.notes = new LinkedList<>();
 		for (NoticeModel note : model.getNotes()) {
@@ -72,6 +74,10 @@ public class PatientItem {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+	
+	public String getBirthday() {
+		return this.birthday;
 	}
 
 	public PatientModel getModel() {
