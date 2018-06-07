@@ -6,6 +6,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import ch.bfh.bti7081.s2018.black.pms.model.DrugModel;
+import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
+import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
+import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
+import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 import ch.bfh.bti7081.s2018.black.pms.view.DrugView;
 
 public class DrugPresenter implements DrugView.DrugViewListener {
@@ -14,7 +18,8 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 	private DrugView view;
 	private List<DrugModel> drugModelList;
 	private List<String> drugNameList = new LinkedList<>();
-
+	private List<PatientModel> patientModelList;
+	private List<PatientItem> patientItemList = new LinkedList<>();
 	
 	public DrugPresenter(DrugView view) {
 		this.view = view;
@@ -26,21 +31,9 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 	
 	public void fillDrugList() {
 		
-		for(int i=0; i<20; i++) {
-			DrugModel dummy = new DrugModel();
-			dummy.setName("Drug_" + Integer.toString(i));
-			
-			String desc = "";
-			
-			for(int j=0; j<15; j++) {
-				desc = desc.concat("This is a Description.....\n\n");
-			}
-			
-			desc.substring(0, desc.length()-2);
-			dummy.setDescription(desc);
-			
-			this.drugModelList.add(dummy);
-		}
+		JpaUtility transaction = new JpaUtility();
+		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
+		this.drugModelList = objects.findAll(DrugModel.class);
 		
 		for (DrugModel drug : this.drugModelList) {
      		this.drugNameList.add(drug.getName());
@@ -61,14 +54,24 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 	
 	@Override
 	public List<String> addToButtonClicked() {
+		
+		List<String> patientList = new LinkedList<>();
+
+		JpaUtility transaction = new JpaUtility();
+		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
+		this.patientModelList = objects.findAll(PatientModel.class);
+     	
+		this.patientItemList = new LinkedList<>();
+		for (PatientModel patient : this.patientModelList) {
+			patientList.add(patient.getFirstname() + " " + patient.getLastname());
+     	}
 
 	// These are Mock Objects because Patient Management isn't ready yet
-		List<String> patientList = new LinkedList<>();
-		patientList.add("Toni Donato");
-		patientList.add("Nico Schlup");
-		patientList.add("Cederik Bielmann");
-		patientList.add("Michi Hofer");
-		patientList.add("Jan Henzi");
+		//patientList.add("Toni Donato");
+		//patientList.add("Nico Schlup");
+		//patientList.add("Cederik Bielmann");
+		//patientList.add("Michi Hofer");
+		//patientList.add("Jan Henzi");
 		
 		//
 		//
@@ -127,12 +130,4 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 	public List<String> setupDrugList() {
 		return this.drugNameList;
 	}
-	
-	
-	
-	
-	
-	
-	
-
 }

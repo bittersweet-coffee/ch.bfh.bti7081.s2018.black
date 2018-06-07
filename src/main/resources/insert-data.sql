@@ -116,7 +116,9 @@ INSERT INTO patient (firstname, lastname, notice, post_code, street, telephone, 
 INSERT INTO patient (firstname, lastname, notice, post_code, street, telephone, location_id) VALUES('Shawn','Roth','',1025,'Bienenstrasse','044 814 27 74',4)
 
 INSERT INTO appointment (name, description, start, end) VALUES ('test','test','2008-01-01 00:00:01','2008-01-01 00:00:01')
-INSERT INTO drug (name) values ('Test')
+INSERT INTO drug (name, description) values ('Amlodipine', 'Amlodipine is a calcium channel blocker that dilates (widens) blood vessels and improves blood flow.')
+INSERT INTO drug (name, description) values ('Aspirin', 'Aspirin is a salicylate (sa-LIS-il-ate). It works by reducing substances in the body that cause pain, fever, and inflammation.')
+INSERT INTO drug (name, description) values ('Austedo', 'Austedo (deutetrabenazine) reduces the amount of certain chemicals in the body that are overly active in people with Huntingtons disease.')
 INSERT INTO patient_drug (patient_id, drug_id) values (1, 1)
 INSERT INTO patient_addiction (patient_id, addiction_id) values (1, 1)
 INSERT INTO patient_doctor (patient_id, doctor_id) values (1, 1)
