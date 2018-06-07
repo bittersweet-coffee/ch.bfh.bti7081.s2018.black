@@ -113,6 +113,33 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 
 		patient.getNotes().add(note);
 	}
+	
+	@Override
+	public void saveButtonClicked(PatientItem patientItem, String newNote) {
+		PatientModel patient = new PatientModel();
+		patient.setFirstname(patientItem.getFirstName());
+		patient.setLastname(patientItem.getLastName());
+		patient.setStreet(patientItem.getStreet());
+		patient.setTelephone(patientItem.getTelephone());
+		patient.setPostCode(patientItem.getPostcode());
+		patient.setAddictions(patientItem.getAddictions());
+		patient.setDoctors(patientItem.getDoctors());
+		patient.setDrugs(patientItem.getDrugs());
+		patient.setLocation(patientItem.getLocation());
+		
+		NoticeModel note = new NoticeModel();
+		note.setNote(newNote);
+		note.setPatient(patient);
+		List<NoticeModel> notes = new LinkedList<>();
+		notes.add(note);
+		patient.setNotes(notes);
+
+
+		JpaUtility t2 = new JpaUtility();
+		JpaDataAccessObject ob2 = new JpaDataAccessObject(t2);
+		ob2.store(patient);
+
+	}
 
 	@Override
 	public List<String> getNotesForPatient(Integer patientId) {

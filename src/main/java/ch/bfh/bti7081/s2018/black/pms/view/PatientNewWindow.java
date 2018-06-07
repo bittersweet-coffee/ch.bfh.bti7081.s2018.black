@@ -19,6 +19,7 @@ import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
 import ch.bfh.bti7081.s2018.black.pms.model.DrugModel;
 import ch.bfh.bti7081.s2018.black.pms.model.LocationModel;
 import ch.bfh.bti7081.s2018.black.pms.model.NoticeModel;
+import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 
 import com.vaadin.ui.Button.ClickEvent;
@@ -28,13 +29,13 @@ import com.vaadin.ui.ComboBox;
 public class PatientNewWindow extends Window {
 
 	PatientViewImpl view;
-	PatientModel patient;
+	PatientItem patient;
 	LocationModel location;
 	
-	public PatientNewWindow(PatientViewImpl view, PatientModel patientModel, LocationModel location) {
+	public PatientNewWindow(PatientViewImpl view, PatientItem patientItem, LocationModel location) {
 		super("New Patient");
 		this.view = view;
-		this.patient = patientModel;
+		this.patient = patientItem;
 		this.location = location;
 		buildWindow();
 	}
@@ -94,23 +95,19 @@ public class PatientNewWindow extends Window {
 		Button btnSave = new Button("Save", new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				patient.setFirstname(firstNameField.getValue());
-				patient.setLastname(lastNameField.getValue());
+				patient.setFirstName(firstNameField.getValue());
+				patient.setLastName(lastNameField.getValue());
 				patient.setStreet(streetField.getValue());
-				patient.setPostCode(Integer.parseInt(postodeField.getValue())); //TO-DO: Check if int!!
+				patient.setPostcode(Integer.parseInt(postodeField.getValue())); //TO-DO: Check if int!!
 				patient.setTelephone(phoneField.getValue());
 				patient.setDoctors(getSelectedDoctors(cmbDocs.getSelectedItem()));
 				patient.setAddictions(parseSelectedAddictions(addictionselect.getSelectedItems()));
 				patient.setDrugs(parseSelectedDrugs(drugselect.getSelectedItems()));
 				patient.setLocation(getSelectedLocation(cmbLocs.getSelectedItem()));
-				NoticeModel note = new NoticeModel();
-				note.setNote(descriptionField.getValue());
-				note.setPatient(patient);
-				List<NoticeModel> noticeList = new LinkedList<NoticeModel>();
-				noticeList.add(note);
-				patient.setNotes(noticeList);
-				view.save(patient);
+				//patient.setNotes(noticeList);
+				view.save(patient, descriptionField.getValue());
 				close();
+				view.updatePatientItemList();
 			}
 		});
 

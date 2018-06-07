@@ -8,6 +8,7 @@ import com.vaadin.data.provider.DataProvider;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.Page;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -15,6 +16,8 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window.CloseEvent;
+import com.vaadin.ui.Window.CloseListener;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Grid;
@@ -131,8 +134,15 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 	}
 
 	protected void patientNewWindow() {
-		final PatientNewWindow window = new PatientNewWindow(this, new PatientModel(), new LocationModel());
+		final PatientNewWindow window = new PatientNewWindow(this, new PatientItem(), new LocationModel());
 		window.setModal(true);
+		window.addCloseListener(new CloseListener() {
+
+			@Override
+			public void windowClose(CloseEvent e) {
+				Page.getCurrent().reload();
+			}
+		});
 		super.getUI().getUI().addWindow(window);
 	}
 
@@ -143,9 +153,9 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 		super.getUI().getUI().addWindow(window);
 	}
 
-	public void save(PatientModel patient) {
+	public void save(PatientItem patientItem, String note) {
 		for (PatientViewListener listener : listeners) {
-			listener.saveButtonClick(patient);
+			listener.saveButtonClicked(patientItem, note);
 		}
 	}
 	

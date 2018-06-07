@@ -17,6 +17,7 @@ public interface PatientView {
 		List<List<String>> openButtonClicked(Integer patientId, String patientName);
 		List<String> getNotesForPatient(Integer patientId);
 		void saveNoteButtonClicked(PatientItem patientItem, String note);
+		void saveButtonClicked(PatientItem patientItem, String note);
 		List<PatientItem> setupPatientItemList();
 		List<DoctorModel> getDoctors();
 		List<LocationModel> getLocation();
