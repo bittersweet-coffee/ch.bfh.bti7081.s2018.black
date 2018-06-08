@@ -76,11 +76,13 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
 				clinicDetails.add(String.valueOf(optionalClinic.get().getPostCode()));
 				clinicDetails.add(optionalClinic.get().getStreet());
 				clinicDetails.add(optionalClinic.get().getTelephone());
+				clinicDetails.add(optionalClinic.get().getemail());
 			} else {
 				clinicDetails.add("No City present");
 				clinicDetails.add("No PostCode present");
 				clinicDetails.add("No Street present");
 				clinicDetails.add("No Telephone present");
+				clinicDetails.add("No E-Mail present");
 			}
 			
 			return clinicDetails;

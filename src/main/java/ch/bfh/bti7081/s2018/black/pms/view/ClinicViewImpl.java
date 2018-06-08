@@ -29,6 +29,8 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
 
 	public static final String NAME = "clinic";
 	
+	private String email;
+	
 	private List<ClinicViewListener> listeners = new ArrayList<ClinicViewListener>();
 	
 	private List<String> patientList;
@@ -170,7 +172,7 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
                 && (desktop = Desktop.getDesktop()).isSupported(Desktop.Action.MAIL)) {
               URI mailto = null;
     		try {
-    			mailto = new URI("mailto:john@example.com?subject=Request");
+    			mailto = new URI("mailto:" + this.email + "?subject=Request");
     		} catch (URISyntaxException e) {
     			// TODO Auto-generated catch block
     			e.printStackTrace();
@@ -217,7 +219,8 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
         			this.txtPostCode.setValue(clinicDetailList.get(1));
         			this.txtStreet.setValue(clinicDetailList.get(2));
         			this.txtTelephone.setValue(clinicDetailList.get(3));
-        			
+        			this.email = clinicDetailList.get(4);
+
         		}
 			}	
 			btnMailTo.setEnabled(true);
