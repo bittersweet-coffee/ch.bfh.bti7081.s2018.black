@@ -4,14 +4,16 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.vaadin.data.provider.DataProvider;
+import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.NativeSelect;
@@ -20,6 +22,9 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.Grid.SelectionMode;
+
+import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 
 
 
@@ -31,7 +36,13 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 	
 	private List<String> patientList;
 	
+	private List<PatientItem> patientItemList;
+	
 	private NativeSelect<String> nativeDrug;
+	
+	private Grid<PatientItem> patientItemGrid;
+	
+	private ListDataProvider<PatientItem> patientProvider;
 	
 	private Label lblDrugNameTitle, lblDrugDescTitle;
 	
@@ -105,26 +116,55 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 	    VerticalLayout marginLayout = new VerticalLayout();
 	    HorizontalLayout patientLayout = new HorizontalLayout();
 	    
+		this.patientItemGrid = new Grid<>();
+		this.patientItemList = new LinkedList<>();
+		
+		patientItemGrid.addColumn(PatientItem::getId).setCaption("ID");
+		patientItemGrid.addColumn(PatientItem::getFirstName).setCaption("Firstname");
+		patientItemGrid.addColumn(PatientItem::getLastName).setCaption("Lastname");
+	    
+		updatePatientItemList();
+		patientProvider = DataProvider.ofCollection(patientItemList);
+		patientProvider.refreshAll();
+		
+		patientProvider.withConfigurableFilter();
+		
+		patientItemGrid.setDataProvider(patientProvider);
+		patientItemGrid.setSelectionMode(SelectionMode.SINGLE);
+		patientItemGrid.setWidth(800.0f, Unit.PIXELS);
+	    
+		TextField txtFilter = new TextField();
+		txtFilter.setPlaceholder("Filter by Firstname or Lastname");
+		txtFilter.setWidth(735.0f, Unit.PIXELS);
+	    
+		txtFilter.addValueChangeListener(action -> {
+			patientProvider.setFilter(name -> {
+				String firstNameLower = name.getFirstName().toLowerCase();
+				String lastNameLower = name.getLastName().toLowerCase();
+				String filterLower = action.getValue().toLowerCase();
+				return firstNameLower.contains(filterLower) || lastNameLower.contains(filterLower);
+		
+			});
+		});
+	    
+		
 	    Label lblPatient = new Label("Patient:");
 	    Label lblSelectedDrug = new Label();
 	    
-	    NativeSelect<String> nativePatient = new NativeSelect<>();
-	    nativePatient.setWidth(300.0f, Unit.PIXELS);
-	    nativePatient.setEmptySelectionAllowed(false);
-	    
-	    patientLayout.addComponents(lblPatient, nativePatient);
-	    patientLayout.setMargin(new MarginInfo(true, false, true, false));
+	    patientLayout.addComponents(lblPatient, txtFilter);
+	    patientLayout.setMargin(new MarginInfo(true, false, false, false));
 	    
 	    Button btnPatient = new Button("Allocate");
+	    btnPatient.setEnabled(false);
 	    
-	    marginLayout.addComponents(lblSelectedDrug, patientLayout, btnPatient);
+	    marginLayout.addComponents(lblSelectedDrug, patientLayout, patientItemGrid, btnPatient);
 	    marginLayout.setMargin(true);
 	    
 	    allocateContent.addComponent(marginLayout);
 	    allocateContent.setMargin(true);
 	    
 	    final Window windowPatient = new Window("Allocate to Patient");
-	    windowPatient.setWidth(600.0f, Unit.PIXELS);
+	    windowPatient.setWidth(900.0f, Unit.PIXELS);
 	    windowPatient.setContent(allocateContent);
 	    windowPatient.setModal(true);
 	    
@@ -150,7 +190,6 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 			}
         	super.contentPanel.getUI().getUI().addWindow(windowPatient);
         	lblSelectedDrug.setValue("Selected Drug: " + this.nativeDrug.getSelectedItem().get());
-        	nativePatient.setItems(this.patientList);
         });
     
 		this.nativeDrug.addValueChangeListener(selected -> {
@@ -167,14 +206,25 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		});
 		
 		btnPatient.addClickListener(click -> {
-			if (nativePatient.getSelectedItem().isPresent()) {
-				for (DrugViewListener listener: listeners)
-	        		listener.allocateButtonClicked(nativeDrug.getSelectedItem().get(),
-	        				nativePatient.getSelectedItem().get());
+			if (patientItemGrid.getSelectedItems().iterator().hasNext()) {
+				for (DrugViewListener listener: listeners) {
+					listener.allocateButtonClicked(nativeDrug.getSelectedItem().get(),
+	        				patientItemGrid.getSelectedItems().iterator().next());
+				}
+	        		
 			} else {
 				Notification.show("Input Data Incomplete");
 			}
 			
+		});
+		
+		patientItemGrid.addSelectionListener(selection -> {
+			
+			if (patientItemGrid.getSelectedItems().iterator().hasNext()) {
+				btnPatient.setEnabled(true);
+			} else {
+				btnPatient.setEnabled(false);
+			}
 		});
 		
 		ShortcutListener enterSearchListener = new ShortcutListener("Enter Search Listener", ShortcutAction.KeyCode.ENTER, null) {
@@ -191,6 +241,12 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 	@Override
 	public void addListener(DrugViewListener listener) {
 		this.listeners.add(listener);
+	}
+	
+	private void updatePatientItemList() {
+		for (DrugViewListener listener: listeners) {
+			this.patientItemList = listener.setupPatientItemList();
+		}
 	}
 	
 }

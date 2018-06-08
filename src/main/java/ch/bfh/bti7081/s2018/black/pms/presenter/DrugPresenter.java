@@ -83,14 +83,14 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 	}
 	
 	@Override
-	public void allocateButtonClicked(String drugName, String patientName) {
+	public void allocateButtonClicked(String drugName, PatientItem patientItem) {
 		Optional<DrugModel> optionalDrug = this.drugModelList.stream()
 				.filter(drug -> drug.getName().equals(drugName))
 				.findFirst();
 		
 		if(optionalDrug.isPresent()) {
 			optionalDrug.get();		//		this is your DrugModel :)
-			System.out.println("Allocation: " + patientName + " needs to take " + optionalDrug.get().getName());
+			System.out.println("Allocation: " + patientItem.getFirstName() + " needs to take " + optionalDrug.get().getName());
 			//
 			//
 			// Put Logic in here
@@ -129,5 +129,23 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 	@Override
 	public List<String> setupDrugList() {
 		return this.drugNameList;
+	}
+
+
+	@Override
+	public List<PatientItem> setupPatientItemList() {
+		this.fillPatientList();
+		return this.patientItemList;
+	}
+	
+	public void fillPatientList() {
+		JpaUtility transaction = new JpaUtility();
+		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
+		this.patientModelList = objects.findAll(PatientModel.class);
+     	
+		this.patientItemList = new LinkedList<>();
+		for (PatientModel patient : this.patientModelList) {
+			this.patientItemList.add(new PatientItem(patient));
+     	}
 	}
 }
