@@ -32,8 +32,6 @@ public class PatientOpenWindow extends Window {
 		Label lblLastName = new Label("Lastname:");
 		Label lblBirthday = new Label("Birthday:");
 		
-		//String[] splittedName = patientName.split("\\,");
-		
 		TextField txtFirstName = new TextField();
 		txtFirstName.setValue(this.patientItem.getFirstName());
 		txtFirstName.setMaxLength(20);
