@@ -10,7 +10,7 @@ public interface DrugView {
 
 		List<String> searchButtonClicked(String searchTerm);
 		List<String> addToButtonClicked();
-		void allocateButtonClicked(String drugName, PatientItem patientItem);
+		boolean allocateButtonClicked(String drugName, PatientItem patientItem);
 		List<String> selectListChanged(String drugName);
 		List<String> setupDrugList();
 		List<PatientItem> setupPatientItemList();

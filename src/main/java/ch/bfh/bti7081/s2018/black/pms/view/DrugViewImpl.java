@@ -42,6 +42,8 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 	
 	private ListDataProvider<PatientItem> patientProvider;
 	
+	private Window windowPatient;
+	
 	private Label lblDrugNameTitle, lblDrugDescTitle;
 	
 	private TextArea txtDrugName, txtDrugDesc;
@@ -160,7 +162,7 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 	    allocateContent.addComponent(marginLayout);
 	    allocateContent.setMargin(true);
 	    
-	    final Window windowPatient = new Window("Allocate to Patient");
+	    windowPatient = new Window("Allocate to Patient");
 	    windowPatient.setWidth(900.0f, Unit.PIXELS);
 	    windowPatient.setContent(allocateContent);
 	    windowPatient.setModal(true);
@@ -202,14 +204,18 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		btnPatient.addClickListener(click -> {
 			if (patientItemGrid.getSelectedItems().iterator().hasNext()) {
 				for (DrugViewListener listener: listeners) {
-					listener.allocateButtonClicked(nativeDrug.getSelectedItem().get(),
-	        				patientItemGrid.getSelectedItems().iterator().next());
+					if(listener.allocateButtonClicked(nativeDrug.getSelectedItem().get(),
+	        				patientItemGrid.getSelectedItems().iterator().next())) {
+						this.windowPatient.close();
+					}
+					else {
+						Notification.show("The selected drug has already been prescribed to the patient");
+					}
 				}
 	        		
 			} else {
 				Notification.show("Input Data Incomplete");
 			}
-			
 		});
 		
 		patientItemGrid.addSelectionListener(selection -> {
@@ -241,5 +247,5 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 			this.patientItemList = listener.setupPatientItemList();
 		}
 	}
-	
+
 }

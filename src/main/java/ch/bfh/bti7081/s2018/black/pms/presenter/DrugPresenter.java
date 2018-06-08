@@ -83,20 +83,30 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 	}
 	
 	@Override
-	public void allocateButtonClicked(String drugName, PatientItem patientItem) {
+	public boolean allocateButtonClicked(String drugName, PatientItem patientItem) {
 		Optional<DrugModel> optionalDrug = this.drugModelList.stream()
 				.filter(drug -> drug.getName().equals(drugName))
 				.findFirst();
 		
 		if(optionalDrug.isPresent()) {
-			optionalDrug.get();		//		this is your DrugModel :)
-			System.out.println("Allocation: " + patientItem.getFirstName() + " needs to take " + optionalDrug.get().getName());
-			//
-			//
-			// Put Logic in here
-			//
-			//
+			//optionalDrug.get();		//		this is your DrugModel :)
+			return allocateDrugToPatient(optionalDrug.get(), patientItem.getModel());
 		}
+		return false;
+	}
+	
+	public boolean allocateDrugToPatient(DrugModel drug, PatientModel patient) {
+		Optional<DrugModel> drugList = patient.getDrugs().stream()
+				.filter(d -> d.getId() == drug.getId())
+				.findFirst();
+		if(!drugList.isPresent()) {
+			patient.getDrugs().add(drug);
+			JpaUtility transaction = new JpaUtility();
+			JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
+			objects.update(patient);
+			return true;
+		}
+		return false;
 	}
 	
 	public void addDrug(DrugModel drug) {
