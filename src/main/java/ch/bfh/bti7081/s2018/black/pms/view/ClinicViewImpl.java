@@ -1,5 +1,9 @@
 package ch.bfh.bti7081.s2018.black.pms.view;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,11 +47,11 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
 		this.nativeClinic = new NativeSelect<>();
 		this.patientList = new LinkedList<>();
 		
-		/*
+		
 		for (ClinicViewListener listener: listeners) {
-			this.nativeClinic.setItems(listener.setupAddictList());
+			this.nativeClinic.setItems(listener.setupClinicList());
 		}
-		*/
+		
 		
         TextField txtSearch = new TextField("Filter:");
         txtSearch.setTabIndex(1);
@@ -112,18 +116,18 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
         		);
         addictDetails.setMargin(false);
         
-        Button btnAddTo = new Button("Mail To");
-        btnAddTo.setEnabled(false);
+        Button btnMailTo = new Button("Mail To");
+        btnMailTo.setEnabled(true);
         
         hLayout.addComponents(
         		nativeClinic, 
         		addictDetails, 
-        		btnAddTo
+        		btnMailTo
         		);
         
         hLayout.setWidth("100%");
         hLayout.setMargin(new MarginInfo(false, true, true, true));
-        hLayout.setComponentAlignment(btnAddTo, Alignment.BOTTOM_RIGHT);
+        hLayout.setComponentAlignment(btnMailTo, Alignment.BOTTOM_RIGHT);
         hLayout.setComponentAlignment(nativeClinic, Alignment.TOP_LEFT);
         hLayout.setComponentAlignment(addictDetails, Alignment.TOP_CENTER);
         
@@ -135,7 +139,7 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
         HorizontalLayout patientLayout = new HorizontalLayout();
         
         Label lblPatient = new Label("Patient:");
-        Label lblSelectedAddict = new Label();
+        Label lblMailError = new Label();
         
         NativeSelect<String> nativePatient = new NativeSelect<>();
         nativePatient.setWidth(300.0f, Unit.PIXELS);
@@ -146,7 +150,7 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
         
         Button btnPatient = new Button("Allocate");
         
-        marginLayout.addComponents(lblSelectedAddict, patientLayout, btnPatient);
+        marginLayout.addComponents(lblMailError, patientLayout, btnPatient);
         marginLayout.setMargin(true);
         
         allocateContent.addComponent(marginLayout);
@@ -160,41 +164,63 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
         // Set content
         super.contentPanel.setContent(vLayout);
         
-        /*
+        btnMailTo.addClickListener(click -> {
+            Desktop desktop;
+            if (Desktop.isDesktopSupported() 
+                && (desktop = Desktop.getDesktop()).isSupported(Desktop.Action.MAIL)) {
+              URI mailto = null;
+    		try {
+    			mailto = new URI("mailto:john@example.com?subject=Request");
+    		} catch (URISyntaxException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+              try {
+    			desktop.mail(mailto);
+    		} catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+            } else {
+              // TODO fallback to some Runtime.exec(..) voodoo?
+            	super.contentPanel.getUI().getUI().addWindow(windowPatient);
+            	lblMailError.setValue("desktop doesn't support mailto; mail is dead anyway ;)");
+            	throw new RuntimeException("desktop doesn't support mailto; mail is dead anyway ;)");
+            }
+        });
+        
+        
         btnSearch.addClickListener(click -> {
         	if (this.nativeClinic.getSelectedItem().isPresent() || !txtSearch.isEmpty()) {
         		this.nativeClinic.setSelectedItem(null);
         	}
-        	btnAddTo.setEnabled(false);
+        	btnMailTo.setEnabled(false);
         	this.txtClinicName.setValue("");
         	this.txtCityName.setValue("");
         	this.txtPostCode.setValue("");
+        	this.txtStreet.setValue("");
+        	this.txtTelephone.setValue("");
         	for (ClinicViewListener listener: listeners) {
         		this.nativeClinic.setItems(listener.searchButtonClicked(txtSearch.getValue()));
         	}
         });
         
-        btnAddTo.addClickListener(click -> {
-			for (ClinicViewListener listener: listeners) {
-        		this.patientList = listener.addToButtonClicked();
-			}
-        	super.contentPanel.getUI().getUI().addWindow(windowPatient);
-        	lblSelectedAddict.setValue("Selected Addiction: " + this.nativeClinic.getSelectedItem().get());
-        	nativePatient.setItems(this.patientList);
-        });
+
     
 		this.nativeClinic.addValueChangeListener(selected -> {
 			for (ClinicViewListener listener: listeners) {
         		if(this.nativeClinic.getSelectedItem().isPresent()) {
-        			List<String> addictDetailList = listener.selectListChanged(this.nativeClinic.getSelectedItem().get());
+        			List<String> clinicDetailList = listener.selectListChanged(this.nativeClinic.getSelectedItem().get());
         			
         			this.txtClinicName.setValue(selected.getValue());
-        			this.txtCityName.setValue(addictDetailList.get(0));
-        			this.txtPostCode.setValue(addictDetailList.get(1));
+        			this.txtCityName.setValue(clinicDetailList.get(0));
+        			this.txtPostCode.setValue(clinicDetailList.get(1));
+        			this.txtStreet.setValue(clinicDetailList.get(2));
+        			this.txtTelephone.setValue(clinicDetailList.get(3));
         			
         		}
 			}	
-			btnAddTo.setEnabled(true);
+			btnMailTo.setEnabled(true);
 		});
 		
 		btnPatient.addClickListener(click -> {
@@ -222,8 +248,6 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
 	@Override
 	public void addListener(ClinicViewListener listener) {
 		this.listeners.add(listener);
-	}
-	*/
 	}
 	
 }

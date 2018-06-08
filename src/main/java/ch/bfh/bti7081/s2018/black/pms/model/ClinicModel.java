@@ -12,8 +12,8 @@ import javax.persistence.Table;
  * @version 0.1
  */
 @Entity
-@Table(name="location")
-public class LocationModel extends EntityModel {
+@Table(name="clinic")
+public class ClinicModel extends EntityModel {
 
 	// name of the location
 	private String name;
