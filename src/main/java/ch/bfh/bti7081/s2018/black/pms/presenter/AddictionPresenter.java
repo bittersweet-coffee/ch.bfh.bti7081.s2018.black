@@ -58,20 +58,29 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 	}
 	
 	@Override
-	public void allocateButtonClicked(String addictionName, PatientItem patientItem) {
+	public boolean allocateButtonClicked(String addictionName, PatientItem patientItem) {
 		Optional<AddictionModel> optionalAddict = this.addictModelList.stream()
 				.filter(addict -> addict.getName().equals(addictionName))
 				.findFirst();
 		
 		if(optionalAddict.isPresent()) {
-			optionalAddict.get();		//		this is your AddictionModel :)
-			System.out.println("Allocation: " + patientItem.getFirstName() + " suffers from " + optionalAddict.get().getName());
-			//
-			//
-			// Put Logic in here
-			//
-			//
+			return allocateAddictionToPatient(optionalAddict.get(), patientItem.getModel());
 		}
+		return false;
+	}
+	
+	public boolean allocateAddictionToPatient(AddictionModel addict, PatientModel patient) {
+		Optional<AddictionModel> addictList = patient.getAddictions().stream()
+				.filter(a -> a.getId() == addict.getId())
+				.findFirst();
+		if(!addictList.isPresent()) {
+			patient.getAddictions().add(addict);
+			JpaUtility transaction = new JpaUtility();
+			JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
+			objects.update(patient);
+			return true;
+		}
+		return false;
 	}
 	
 	public void addAddiction(AddictionModel addiction) {

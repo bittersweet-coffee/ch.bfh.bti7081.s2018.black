@@ -10,7 +10,7 @@ public interface AddictionView {
 	public interface AddictionViewListener {
 		List<String> searchButtonClicked(String searchTerm);
 		List<String> addToButtonClicked();
-		void allocateButtonClicked(String addictionName, PatientItem patientName);
+		boolean allocateButtonClicked(String addictionName, PatientItem patientName);
 		List<String> selectListChanged(String addictionName);
 		List<String> setupAddictList();
 		List<PatientItem> setupPatientItemList();

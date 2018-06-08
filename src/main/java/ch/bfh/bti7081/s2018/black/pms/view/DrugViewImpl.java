@@ -209,7 +209,7 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 						this.windowPatient.close();
 					}
 					else {
-						Notification.show("The selected drug has already been prescribed to the patient");
+						Notification.show("The selected drug has already been prescribed to the patient!");
 					}
 				}
 	        		

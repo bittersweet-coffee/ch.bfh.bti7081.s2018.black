@@ -89,7 +89,6 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 				.findFirst();
 		
 		if(optionalDrug.isPresent()) {
-			//optionalDrug.get();		//		this is your DrugModel :)
 			return allocateDrugToPatient(optionalDrug.get(), patientItem.getModel());
 		}
 		return false;

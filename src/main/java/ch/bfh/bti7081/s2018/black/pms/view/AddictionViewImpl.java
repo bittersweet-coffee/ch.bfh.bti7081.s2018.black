@@ -43,6 +43,8 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 	
 	private ListDataProvider<PatientItem> patientProvider;
 	
+	private Window windowPatient;
+	
 	private Label lblAddictNameTitle, lblAddictDescTitle, lblSymptoms;
 	
 	private TextArea txtAddictName, txtAddictDesc, txtSymptoms;
@@ -172,7 +174,7 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 	    allocateContent.addComponent(marginLayout);
 	    allocateContent.setMargin(true);
 	    
-        final Window windowPatient = new Window("Allocate to Patient");
+        windowPatient = new Window("Allocate to Patient");
         windowPatient.setWidth(900.0f, Unit.PIXELS);
         windowPatient.setContent(allocateContent);
         windowPatient.setModal(true);
@@ -216,8 +218,12 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 		btnPatient.addClickListener(click -> {
 			if (patientItemGrid.getSelectedItems().iterator().hasNext()) {
 				for (AddictionViewListener listener: listeners) {
-					listener.allocateButtonClicked(nativeAddict.getSelectedItem().get(),
-	        				patientItemGrid.getSelectedItems().iterator().next());
+					if(listener.allocateButtonClicked(nativeAddict.getSelectedItem().get(),
+	        				patientItemGrid.getSelectedItems().iterator().next())) {
+						this.windowPatient.close();
+					} else {
+						Notification.show("The selected addiction has already been assigned to the patient!");
+					}
 				}
 	        		
 			} else {
