@@ -13,6 +13,7 @@ import com.vaadin.ui.UI;
 
 import ch.bfh.bti7081.s2018.black.pms.presenter.AddictionPresenter;
 import ch.bfh.bti7081.s2018.black.pms.presenter.AgendaPresenter;
+import ch.bfh.bti7081.s2018.black.pms.presenter.ClinicPresenter;
 import ch.bfh.bti7081.s2018.black.pms.presenter.PatientPresenter;
 import ch.bfh.bti7081.s2018.black.pms.view.*;
 
@@ -41,6 +42,7 @@ public class Main extends UI {
     	new AgendaPresenter(agendaView);
     	new AddictionPresenter(addictionView);
     	new PatientPresenter(patientView);
+    	new ClinicPresenter(clinicView);
 
     	Navigator navigator = new Navigator(this, this);
     	navigator.addView(DashboardViewImpl.NAME, dashboardView);
