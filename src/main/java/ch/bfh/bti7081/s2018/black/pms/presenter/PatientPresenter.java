@@ -40,6 +40,7 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 
 	/**
 	 * Not used Anymore but left for debug, checks and junittests to get infos
+	 * 
 	 * @param patient
 	 * @param objects
 	 */
@@ -62,14 +63,13 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 		patient.setPostCode(1234);
 		patient.setStreet("Dummy Street");
 		patient.setTelephone("Dummy Phone");
-		
+
 	}
 
 	public void fillPatientList() {
 		JpaUtility transaction = new JpaUtility();
 		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
 		this.patientModelList = objects.findAll(PatientModel.class);
-
 		this.patientItemList = new LinkedList<>();
 		for (PatientModel patient : this.patientModelList) {
 			this.patientItemList.add(new PatientItem(patient));

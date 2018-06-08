@@ -9,10 +9,12 @@ import java.util.Set;
 import com.vaadin.server.Page;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.TwinColSelect;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
@@ -133,10 +135,7 @@ public class PatientNewWindow extends Window {
 
 		Button btnCancel = new Button("Cancel", event -> this.close());
 
-		GridLayout tileGrid = new GridLayout(2, 15);
-
-		tileGrid.setMargin(true);
-
+		GridLayout tileGrid = new GridLayout(2, 8);
 		tileGrid.addComponent(lblfirstName, 0, 0);
 		tileGrid.addComponent(firstNameField, 1, 0);
 		tileGrid.addComponent(lblLastName, 0, 1);
@@ -147,21 +146,21 @@ public class PatientNewWindow extends Window {
 		tileGrid.addComponent(postodeField, 1, 3);
 		tileGrid.addComponent(lblPhone, 0, 4);
 		tileGrid.addComponent(phoneField, 1, 4);
-		tileGrid.addComponent(addictionselect, 0, 5);
-		tileGrid.addComponent(lblNotes, 0, 6);
-		tileGrid.addComponent(descriptionField, 0, 7);
-		tileGrid.addComponent(drugselect, 0, 8);
-		tileGrid.addComponent(lblDoctors, 0, 9);
-		tileGrid.addComponent(cmbDocs, 1, 9);
-		tileGrid.addComponent(lblAppointment, 0, 10);
-		tileGrid.addComponent(btnAppointment, 1, 10);
-		tileGrid.addComponent(lblLocation, 0, 11);
-		tileGrid.addComponent(cmbLocs, 1, 12);
-		tileGrid.addComponent(btnSave, 0, 13);
-		tileGrid.addComponent(btnCancel, 1, 13);
-		tileGrid.addComponent(btnDummyData, 0, 14);
-
-		setContent(tileGrid);
+		tileGrid.addComponent(lblDoctors, 0, 5);
+		tileGrid.addComponent(cmbDocs, 1, 5);
+		tileGrid.addComponent(lblLocation, 0, 6);
+		tileGrid.addComponent(cmbLocs, 1, 6);
+		tileGrid.addComponent(lblAppointment, 0, 7);
+		tileGrid.addComponent(btnAppointment, 1, 7);
+		
+		VerticalLayout rightComponentBox = new VerticalLayout(addictionselect, lblNotes, descriptionField, drugselect);
+		HorizontalLayout navigationButtons = new HorizontalLayout(btnSave, btnDummyData, btnCancel);
+		VerticalLayout leftComponentBox = new VerticalLayout(tileGrid, navigationButtons);
+		HorizontalLayout mainOpenWindow = new HorizontalLayout(leftComponentBox, rightComponentBox);
+		this.setWidth("1000px");
+		tileGrid.setMargin(true);
+		
+		setContent(mainOpenWindow);
 	}
 
 	protected LocationModel getSelectedLocation(Optional<LocationModel> selectedItem) {

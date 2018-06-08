@@ -3,6 +3,8 @@ package ch.bfh.bti7081.s2018.black.pms.view;
 import java.util.List;
 import java.util.Map;
 
+import com.vaadin.data.provider.ListDataProvider;
+
 import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
 import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
 import ch.bfh.bti7081.s2018.black.pms.model.DrugModel;
