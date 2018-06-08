@@ -1,5 +1,6 @@
 package ch.bfh.bti7081.s2018.black.pms.model;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class PatientItem {
 	private List<DrugModel> drugs;
 	
 	private String firstName, lastName;
+	private Date birthday;
 	
 	public PatientItem() {
 		
@@ -32,6 +34,7 @@ public class PatientItem {
 		this.id = model.getId();
 		this.firstName = model.getFirstname();
 		this.lastName = model.getLastname();
+		this.birthday = model.getBirthday();
 
 		this.notes = new LinkedList<>();
 		for (NoticeModel note : model.getNotes()) {
@@ -84,7 +87,15 @@ public class PatientItem {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+	
+	public Date getBirthday() {
+		return this.birthday;
+	}
 
+	public String getBirthdayAsString() {
+		return String.valueOf(this.birthday);
+	}
+	
 	public PatientModel getModel() {
 		return this.model;
 	}

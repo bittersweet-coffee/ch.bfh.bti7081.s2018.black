@@ -47,6 +47,7 @@ public class PatientOpenWindow extends Window {
 		txtBirthday.setPlaceholder("Insert Birthday");
 		txtBirthday.setMaxLength(20);
 		txtBirthday.setReadOnly(true);
+		txtBirthday.setValue(this.patientItem.getBirthdayAsString());
 		
 		GridLayout tileGridPatient = new GridLayout(2,3);
 		tileGridPatient.addComponent(lblFirstName, 0, 0);
