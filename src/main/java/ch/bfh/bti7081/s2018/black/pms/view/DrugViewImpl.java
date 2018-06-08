@@ -34,8 +34,6 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 	
 	private List<DrugViewListener> listeners = new ArrayList<DrugViewListener>();
 	
-	private List<String> patientList;
-	
 	private List<PatientItem> patientItemList;
 	
 	private NativeSelect<String> nativeDrug;
@@ -142,11 +140,10 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 				String firstNameLower = name.getFirstName().toLowerCase();
 				String lastNameLower = name.getLastName().toLowerCase();
 				String filterLower = action.getValue().toLowerCase();
-				return firstNameLower.contains(filterLower) || lastNameLower.contains(filterLower);
-		
+				patientItemGrid.deselectAll();
+				return firstNameLower.contains(filterLower) || lastNameLower.contains(filterLower);		
 			});
 		});
-	    
 		
 	    Label lblPatient = new Label("Patient:");
 	    Label lblSelectedDrug = new Label();
@@ -185,9 +182,6 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
         });
         
         btnAddTo.addClickListener(click -> {
-			for (DrugViewListener listener: listeners) {
-        		this.patientList = listener.addToButtonClicked();
-			}
         	super.contentPanel.getUI().getUI().addWindow(windowPatient);
         	lblSelectedDrug.setValue("Selected Drug: " + this.nativeDrug.getSelectedItem().get());
         });
@@ -219,7 +213,6 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		});
 		
 		patientItemGrid.addSelectionListener(selection -> {
-			
 			if (patientItemGrid.getSelectedItems().iterator().hasNext()) {
 				btnPatient.setEnabled(true);
 			} else {

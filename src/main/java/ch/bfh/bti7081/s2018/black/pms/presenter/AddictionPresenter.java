@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
+import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
+import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 import ch.bfh.bti7081.s2018.black.pms.view.AddictionView;
@@ -15,6 +17,8 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 	private AddictionView view;
 	private List<AddictionModel> addictModelList;
 	private List<String> addictNameList = new LinkedList<>();
+	private List<PatientModel> patientModelList;
+	private List<PatientItem> patientItemList = new LinkedList<>();
 	
 	public AddictionPresenter(AddictionView view) {
 		this.view = view;
@@ -54,14 +58,14 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 	}
 	
 	@Override
-	public void allocateButtonClicked(String addictionName, String patientName) {
+	public void allocateButtonClicked(String addictionName, PatientItem patientItem) {
 		Optional<AddictionModel> optionalAddict = this.addictModelList.stream()
 				.filter(addict -> addict.getName().equals(addictionName))
 				.findFirst();
 		
 		if(optionalAddict.isPresent()) {
 			optionalAddict.get();		//		this is your AddictionModel :)
-			System.out.println("Allocation: " + patientName + " suffers from " + optionalAddict.get().getName());
+			System.out.println("Allocation: " + patientItem.getFirstName() + " suffers from " + optionalAddict.get().getName());
 			//
 			//
 			// Put Logic in here
@@ -111,4 +115,23 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 	public List<String> setupAddictList() {
 		return this.addictNameList;
 	}
+
+	@Override
+	public List<PatientItem> setupPatientItemList() {
+		this.fillPatientList();
+		return this.patientItemList;
+	}
+	
+	public void fillPatientList() {
+		JpaUtility transaction = new JpaUtility();
+		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
+		this.patientModelList = objects.findAll(PatientModel.class);
+     	
+		this.patientItemList = new LinkedList<>();
+		for (PatientModel patient : this.patientModelList) {
+			this.patientItemList.add(new PatientItem(patient));
+     	}
+	}
+
+
 }
