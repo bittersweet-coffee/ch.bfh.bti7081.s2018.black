@@ -94,7 +94,7 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 		return false;
 	}
 	
-	public boolean allocateDrugToPatient(DrugModel drug, PatientModel patient) {
+	private boolean allocateDrugToPatient(DrugModel drug, PatientModel patient) {
 		Optional<DrugModel> drugList = patient.getDrugs().stream()
 				.filter(d -> d.getId() == drug.getId())
 				.findFirst();

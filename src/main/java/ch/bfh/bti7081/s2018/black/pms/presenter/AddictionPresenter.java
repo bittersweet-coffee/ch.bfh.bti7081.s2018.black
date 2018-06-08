@@ -69,7 +69,7 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 		return false;
 	}
 	
-	public boolean allocateAddictionToPatient(AddictionModel addict, PatientModel patient) {
+	private boolean allocateAddictionToPatient(AddictionModel addict, PatientModel patient) {
 		Optional<AddictionModel> addictList = patient.getAddictions().stream()
 				.filter(a -> a.getId() == addict.getId())
 				.findFirst();
