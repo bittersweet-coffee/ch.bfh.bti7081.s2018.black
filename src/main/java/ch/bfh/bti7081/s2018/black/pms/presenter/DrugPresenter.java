@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import ch.bfh.bti7081.s2018.black.pms.model.DrugModel;
+import ch.bfh.bti7081.s2018.black.pms.model.Pair;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
@@ -26,8 +27,28 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 		view.addListener(this);
 		this.drugModelList = new LinkedList<>();
 		this.fillDrugList();
+		
+		
+		DrugModel dummy = this.drugModelList.get(0);
+		dummy.setMeasure("Integer");
+		dummy.setMinDose(new Double(1));
+		dummy.setMaxDose(new Double(10));
+
+
+		Pair result = dummy.checkDose(new Double(3.2));
+		System.out.println("Failure expected");
+		System.out.println("\tResult: " + result.getResult() + "\n\tMessage: " + result.getMessage());
+		
+		result = dummy.checkDose(new Double(3.0));
+		System.out.println("\n\nSuccess expected");
+		System.out.println("\tResult: " + result.getResult() + "\n\tMessage: " + result.getMessage());
 	}
 	
+	/*
+	public String checkEnteredDose(String enteredDose) {
+		return "";
+	}
+	*/
 	
 	public void fillDrugList() {
 		

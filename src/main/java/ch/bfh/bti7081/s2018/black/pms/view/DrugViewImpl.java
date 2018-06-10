@@ -115,6 +115,7 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 	    VerticalLayout allocateContent = new VerticalLayout();
 	    VerticalLayout marginLayout = new VerticalLayout();
 	    HorizontalLayout patientLayout = new HorizontalLayout();
+	    HorizontalLayout doseLayout = new HorizontalLayout();
 	    
 		this.patientItemGrid = new Grid<>();
 		this.patientItemList = new LinkedList<>();
@@ -122,6 +123,7 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		patientItemGrid.addColumn(PatientItem::getId).setCaption("ID");
 		patientItemGrid.addColumn(PatientItem::getFirstName).setCaption("Firstname");
 		patientItemGrid.addColumn(PatientItem::getLastName).setCaption("Lastname");
+		patientItemGrid.addColumn(PatientItem::getBirthdayAsString).setCaption("Birthday");
 	    
 		updatePatientItemList();
 		patientProvider = DataProvider.ofCollection(patientItemList);
@@ -150,13 +152,22 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 	    Label lblPatient = new Label("Patient:");
 	    Label lblSelectedDrug = new Label();
 	    
+	    Label lblDose = new Label("Enter Dose:");
+	    Label lblMeasurement = new Label("Measurement:");
+	    
+	    TextField txtDose = new TextField();
+	    txtDose.setPlaceholder("Dose");
+	    
+	    doseLayout.addComponents(lblDose, txtDose);
+	    doseLayout.setMargin(new MarginInfo(true, false, false, false));
+	    
 	    patientLayout.addComponents(lblPatient, txtFilter);
 	    patientLayout.setMargin(new MarginInfo(true, false, false, false));
 	    
-	    Button btnPatient = new Button("Allocate");
-	    btnPatient.setEnabled(false);
+	    Button btnAllocatePatient = new Button("Allocate");
+	    btnAllocatePatient.setEnabled(false);
 	    
-	    marginLayout.addComponents(lblSelectedDrug, patientLayout, patientItemGrid, btnPatient);
+	    marginLayout.addComponents(lblSelectedDrug, lblMeasurement, doseLayout, patientLayout, patientItemGrid, btnAllocatePatient);
 	    marginLayout.setMargin(true);
 	    
 	    allocateContent.addComponent(marginLayout);
@@ -201,7 +212,7 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 			btnAddTo.setEnabled(true);
 		});
 		
-		btnPatient.addClickListener(click -> {
+		btnAllocatePatient.addClickListener(click -> {
 			if (patientItemGrid.getSelectedItems().iterator().hasNext()) {
 				for (DrugViewListener listener: listeners) {
 					if(listener.allocateButtonClicked(nativeDrug.getSelectedItem().get(),
@@ -220,9 +231,9 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		
 		patientItemGrid.addSelectionListener(selection -> {
 			if (patientItemGrid.getSelectedItems().iterator().hasNext()) {
-				btnPatient.setEnabled(true);
+				btnAllocatePatient.setEnabled(true);
 			} else {
-				btnPatient.setEnabled(false);
+				btnAllocatePatient.setEnabled(false);
 			}
 		});
 		
