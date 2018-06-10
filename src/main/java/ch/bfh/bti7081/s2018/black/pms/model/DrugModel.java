@@ -122,19 +122,25 @@ public class DrugModel extends EntityModel {
     		this.measure = Measurement.DOSE_INTEGER;
     	} else if (measure.equals(Measurement.DOSE_DOUBLE.getMeasureString())) {
     		this.measure = Measurement.DOSE_DOUBLE;
-    	}
+    	} else if (measure.equals(Measurement.DOSE_HALVES.getMeasureString())) {
+    		this.measure = Measurement.DOSE_HALVES;
+		}
     }
 	
 // ONLY FOR TESTING! WILL BE REMOVED AFTER DRUGS ARE CORRECTLY IN DB!
 	public boolean setMinDose(Double minDose) {
 		// Ensure minDose hasn't been set yet
 		if (this.minDose == null) {
+			
 			// Check whether minDose is an Integer
 			if(this.measure.equals(Measurement.DOSE_INTEGER) && (minDose - Math.floor(minDose) == 0)) {
 				this.minDose = minDose;	
 				return true;
+				
 			// Check whether minDose is an Integer or Half	
 			} else if(this.measure.equals(Measurement.DOSE_HALVES) && ((minDose - Math.floor(minDose) == 0) || (minDose % 1 == 0.5))) {
+				this.minDose = minDose;	
+				return true;
 				
 			// minDose has to be Double	
 			} else if(this.measure.equals(Measurement.DOSE_DOUBLE)) {
@@ -150,12 +156,16 @@ public class DrugModel extends EntityModel {
 	public boolean setMaxDose(Double maxDose) {
 		// Ensure minDose hasn't been set yet
 		if (this.maxDose == null) {
+			
 			// Check whether minDose is an Integer
 			if(this.measure.equals(Measurement.DOSE_INTEGER) && (maxDose - Math.floor(maxDose) == 0)) {
 				this.maxDose = maxDose;	
 				return true;
+				
 			// Check whether minDose is an Integer or Half	
 			} else if(this.measure.equals(Measurement.DOSE_HALVES) && ((maxDose - Math.floor(maxDose) == 0) || (maxDose % 1 == 0.5))) {
+				this.maxDose = maxDose;	
+				return true;
 				
 			// Number has to be Double	
 			} else if(this.measure.equals(Measurement.DOSE_DOUBLE)) {

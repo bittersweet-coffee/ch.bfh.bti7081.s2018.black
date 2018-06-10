@@ -29,27 +29,30 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 		this.drugModelList = new LinkedList<>();
 		this.fillDrugList();
 		
+		System.out.println("(0): " + this.drugModelList.get(0).getName());
+		this.drugModelList.get(0).setMeasure("Integer");
+		this.drugModelList.get(0).setMinDose(new Double(1));
+		this.drugModelList.get(0).setMaxDose(new Double(10));
 		
-		DrugModel dummy = this.drugModelList.get(0);
-		dummy.setMeasure("Integer");
-		dummy.setMinDose(new Double(1));
-		dummy.setMaxDose(new Double(10));
+		System.out.println("(1): " + this.drugModelList.get(1).getName());
+		this.drugModelList.get(1).setMeasure("Halves");
+		this.drugModelList.get(1).setMinDose(new Double(0.5));
+		this.drugModelList.get(1).setMaxDose(new Double(15.5));
+		
+		System.out.println("(2): " + this.drugModelList.get(2).getName());
+		this.drugModelList.get(2).setMeasure("Double");
+		this.drugModelList.get(2).setMinDose(new Double(0.125));
+		this.drugModelList.get(2).setMaxDose(new Double(1.75));
 
 
-		Pair result = dummy.checkDose(new Double(3.2));
+		Pair result = this.drugModelList.get(0).checkDose(new Double(3.2));
 		System.out.println("Failure expected");
 		System.out.println("\tResult: " + result.getResult() + "\n\tMessage: " + result.getMessage());
 		
-		result = dummy.checkDose(new Double(3.0));
+		result = this.drugModelList.get(0).checkDose(new Double(3.0));
 		System.out.println("\n\nSuccess expected");
 		System.out.println("\tResult: " + result.getResult() + "\n\tMessage: " + result.getMessage());
 	}
-	
-	/*
-	public String checkEnteredDose(String enteredDose) {
-		return "";
-	}
-	*/
 	
 	public void fillDrugList() {
 		
@@ -105,21 +108,37 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 	}
 	
 	@Override
-	public boolean allocateButtonClicked(String drugName, PatientItem patientItem) {
+	public Pair allocateButtonClicked(String drugName, PatientItem patientItem, Double dose) {
 		Optional<DrugModel> optionalDrug = this.drugModelList.stream()
 				.filter(drug -> drug.getName().equals(drugName))
 				.findFirst();
 		
+		Pair result = new Pair();
+		
 		if(optionalDrug.isPresent()) {
-			return allocateDrugToPatient(optionalDrug.get(), patientItem.getModel());
+			result = optionalDrug.get().checkDose(dose);
+			
+			if (result.getResult()) {
+				// dose is within DoseBounds
+				if(allocateDrugToPatient(optionalDrug.get(), patientItem.getModel())) {
+					// Drug has been successfully allocated to the patient
+					return result;
+				} else {
+					// Drug couldn't be allocated to the patient
+					result.put(false, "The selected drug has already been prescribed to the patient!");
+				}
+			} 
 		}
-		return false;
+		
+		return result;
 	}
+	
 	
 	private boolean allocateDrugToPatient(DrugModel drug, PatientModel patient) {
 		Optional<PatientDrugModel> drugList = patient.getDrugs().stream()
 				.filter(d -> d.getDrug().getId() == drug.getId())
 				.findFirst();
+		
 		System.out.println(drugList);
 		if(!drugList.isPresent()) {
 			PatientDrugModel test = new PatientDrugModel();

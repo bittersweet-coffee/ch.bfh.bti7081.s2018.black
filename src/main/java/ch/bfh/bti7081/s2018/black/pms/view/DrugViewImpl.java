@@ -24,6 +24,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Grid.SelectionMode;
 
+import ch.bfh.bti7081.s2018.black.pms.model.Pair;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 
 
@@ -157,6 +158,7 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 	    
 	    TextField txtDose = new TextField();
 	    txtDose.setPlaceholder("Dose");
+	    txtDose.setRequiredIndicatorVisible(true);
 	    
 	    doseLayout.addComponents(lblDose, txtDose);
 	    doseLayout.setMargin(new MarginInfo(true, false, false, false));
@@ -214,16 +216,24 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		
 		btnAllocatePatient.addClickListener(click -> {
 			if (patientItemGrid.getSelectedItems().iterator().hasNext()) {
-				for (DrugViewListener listener: listeners) {
-					if(listener.allocateButtonClicked(nativeDrug.getSelectedItem().get(),
-	        				patientItemGrid.getSelectedItems().iterator().next())) {
-						this.windowPatient.close();
+				System.out.println(patientItemGrid.getSelectedItems().iterator().next().getFirstName());
+				if(isDouble(txtDose.getValue())) {
+					for (DrugViewListener listener: listeners) {
+						
+						Pair result = listener.allocateButtonClicked(nativeDrug.getSelectedItem().get(),
+		        				patientItemGrid.getSelectedItems().iterator().next(), Double.parseDouble(txtDose.getValue()));
+						
+						
+						if(result.getResult()) {
+							this.windowPatient.close();
+						} else {
+							// Notification.show("The selected drug has already been prescribed to the patient!");
+							Notification.show(result.getMessage());
+						}
 					}
-					else {
-						Notification.show("The selected drug has already been prescribed to the patient!");
-					}
+				} else {
+					Notification.show("Entered Dose is no valid Double Value!");
 				}
-	        		
 			} else {
 				Notification.show("Input Data Incomplete");
 			}
@@ -247,6 +257,17 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		txtSearch.addShortcutListener(enterSearchListener);
 		btnSearch.addShortcutListener(enterSearchListener);
 	}
+	
+	private boolean isDouble(String str) {
+		  try{
+		    Double.parseDouble(str);
+		    return true;
+		    
+		  } catch(Exception e) {
+		    return false;
+		  }
+	}
+	
 
 	@Override
 	public void addListener(DrugViewListener listener) {
