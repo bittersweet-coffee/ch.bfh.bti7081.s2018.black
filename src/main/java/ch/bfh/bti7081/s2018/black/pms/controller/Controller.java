@@ -45,14 +45,14 @@ public class Controller {
 		return docList;
 	}
 	
-	public static void setLocationCombobox(GridLayout grid, List<PatientViewListener> listeners, int col, int row) {
-		cmbLocs.setItems(getLocation(listeners));
+	public static void setLocationCombobox(GridLayout grid, int col, int row) {
+		cmbLocs.setItems(getLocation());
 		cmbLocs.setItemCaptionGenerator(LocationModel::getName);
 		grid.addComponent(cmbLocs, col, row);
 	}
 	
-	public static void setDoctorCombobox(GridLayout grid, List<PatientViewListener> listeners, int col, int row) {
-		cmbDocs.setItems(getDoctors(listeners));
+	public static void setDoctorCombobox(GridLayout grid, int col, int row) {
+		cmbDocs.setItems(getDoctors());
 		cmbDocs.setItemCaptionGenerator(DoctorModel::getLastname);
 		grid.addComponent(cmbDocs, col, row);
 	}
@@ -74,10 +74,10 @@ public class Controller {
 		return addictionNames;
 	}
 	
-	public static List<DrugModel> parseSelectedDrugs(Set<String> selectedItems, List<PatientViewListener> listeners) {
+	public static List<DrugModel> parseSelectedDrugs(Set<String> selectedItems) {
 		LinkedList<DrugModel> drugList = new LinkedList<DrugModel>();
 		List<DrugModel> allDrugsList = new LinkedList<DrugModel>();
-		allDrugsList = getDrugs(listeners);
+		allDrugsList = getDrugs();
 		for (String string : selectedItems) {
 			for (DrugModel drugModel : allDrugsList) {
 				if (string.equals(drugModel.getName())) {
@@ -88,10 +88,10 @@ public class Controller {
 		return drugList;
 	}
 
-	public static List<AddictionModel> parseSelectedAddictions(Set<String> set, List<PatientViewListener> listeners) {
+	public static List<AddictionModel> parseSelectedAddictions(Set<String> set) {
 		LinkedList<AddictionModel> addicList = new LinkedList<AddictionModel>();
 		List<AddictionModel> allAddictsList = new LinkedList<AddictionModel>();
-		allAddictsList = getAddictions(listeners);
+		allAddictsList = getAddictions();
 		for (String string : set) {
 			for (AddictionModel addictionModel : allAddictsList) {
 				if (string.equals(addictionModel.getName())) {
@@ -102,36 +102,39 @@ public class Controller {
 		return addicList;
 	}
 	
-	public static List<DoctorModel> getDoctors(List<PatientViewListener> listeners) {
-		List<DoctorModel> docList = new LinkedList<DoctorModel>();
-		for (PatientViewListener listener : listeners) {
-			docList = listener.getDoctors();
-		}
-		return docList;
-	}
 
-	public static List<LocationModel> getLocation(List<PatientViewListener> listeners) {
-		List<LocationModel> locList = new LinkedList<LocationModel>();
-		for (PatientViewListener listener : listeners) {
-			locList = listener.getLocation();
-		}
-		return locList;
-	}
 
-	public static List<AddictionModel> getAddictions(List<PatientViewListener> listeners) {
-		List<AddictionModel> addicList = new LinkedList<AddictionModel>();
-		for (PatientViewListener listener : listeners) {
-			addicList = listener.getAddictions();
-		}
-		return addicList;
-	}
+
 
 	public static List<DrugModel> getDrugs(List<PatientViewListener> listeners) {
-		List<DrugModel> drugList = new LinkedList<DrugModel>();
-		for (PatientViewListener listener : listeners) {
-			drugList = listener.getDrugs();
-		}
+		List<DrugModel> drugList = getDrugs();
 		return drugList;
+	}
+	
+
+	public static List<DoctorModel> getDoctors() {
+		JpaUtility transaction = new JpaUtility();
+		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
+		return objects.findAll(DoctorModel.class);
+	}
+
+
+	public static List<LocationModel> getLocation() {
+		JpaUtility transaction = new JpaUtility();
+		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
+		return objects.findAll(LocationModel.class);
+	}
+
+	public static List<AddictionModel> getAddictions() {
+		JpaUtility transaction = new JpaUtility();
+		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
+		return objects.findAll(AddictionModel.class);
+	}
+
+	public static List<DrugModel> getDrugs() {
+		JpaUtility transaction = new JpaUtility();
+		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
+		return objects.findAll(DrugModel.class);
 	}
 	
 }

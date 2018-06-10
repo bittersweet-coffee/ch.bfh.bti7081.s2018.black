@@ -127,7 +127,7 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 	}
 
 	protected void patientNewWindow() {
-		final PatientNewWindow window = new PatientNewWindow(this, new PatientItem(), listeners);
+		final PatientNewWindow window = new PatientNewWindow(this, new PatientItem());
 		window.setModal(true);
 		super.getUI().getUI().addWindow(window);
 	}

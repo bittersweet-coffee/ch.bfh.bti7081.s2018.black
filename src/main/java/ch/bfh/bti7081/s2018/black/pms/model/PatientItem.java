@@ -160,5 +160,9 @@ public class PatientItem {
 		this.model = model;
 	}
 	
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+	
 	
 }
