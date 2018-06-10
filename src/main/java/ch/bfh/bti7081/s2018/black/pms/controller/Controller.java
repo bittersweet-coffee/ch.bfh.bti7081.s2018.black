@@ -15,6 +15,7 @@ import ch.bfh.bti7081.s2018.black.pms.model.AppointmentModel;
 import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
 import ch.bfh.bti7081.s2018.black.pms.model.DrugModel;
 import ch.bfh.bti7081.s2018.black.pms.model.LocationModel;
+import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
@@ -149,7 +150,21 @@ public class Controller {
 		List<AppointmentModel> appointmentList = new LinkedList<AppointmentModel>();
 		AppointmentModel appointment = new AppointmentModel();
 		appointment.setDescription(appointmentItem.getDescription());
-		return null;
+		appointment.setStart(appointmentItem.getStart().toLocalDateTime());
+		appointment.setEnd(appointmentItem.getEnd().toLocalDateTime());
+		appointment.setName(appointmentItem.getCaption());
+		appointmentList.add(appointment);
+		return appointmentList;
+	}
+
+	public static void mergePatientToAppointment(PatientModel patient) {
+		List<PatientModel> pmList = new LinkedList<PatientModel>();
+		pmList.add(patient);
+		for (AppointmentModel a  : patient.getAppointments()) {
+			a.setPatients(pmList);			
+		}
+		patient.setAppointments(patient.getAppointments());
+		
 	}
 	
 }

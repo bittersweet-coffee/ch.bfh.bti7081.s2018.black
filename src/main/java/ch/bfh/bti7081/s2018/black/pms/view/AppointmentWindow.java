@@ -19,13 +19,20 @@ import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
 public class AppointmentWindow extends Window {
 	
 	View view;
+	PatientNewWindow window;
 
-	public AppointmentWindow(View view, AppointmentItem appointmentItem) {
+	public AppointmentWindow(AgendaViewImpl view, AppointmentItem appointmentItem) {
 		super("New Appointment");
 		this.view = view;
 		buildWindow(appointmentItem);
 	}
 	
+	public AppointmentWindow(PatientNewWindow patientNewWindow, AppointmentItem appointmentItem) {
+		super("New Appointment");
+		this.window = patientNewWindow;
+		buildWindow(appointmentItem);
+	}
+
 	private void buildWindow(AppointmentItem appointmentItem) {
 		setWidth(500.0f, Unit.PIXELS);
 
@@ -48,6 +55,7 @@ public class AppointmentWindow extends Window {
 		Label endDatePanel = new Label("End Date");
 		Label namePanel = new Label("Name");
 		Label descriptionPanel = new Label("Description");
+		
 		Button btnSave = new Button("Save", new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -55,12 +63,11 @@ public class AppointmentWindow extends Window {
 				appointmentItem.setDescription(descriptionField.getValue());
 				appointmentItem.setStart(ZonedDateTime.of(startDateTimeField.getValue(), ZoneId.systemDefault()));
 				appointmentItem.setEnd(ZonedDateTime.of(endDateTimeField.getValue(), ZoneId.systemDefault()));
-				if (view.equals(AgendaViewImpl.class)) {
+				if (view != null) {
 					((AgendaViewImpl) view).saveAppointment(appointmentItem);
-				} else if (view.equals(PatientNewWindow.class)) {
-					((PatientNewWindow) view).saveAppointment(appointmentItem);
+				} else if (window != null) {
+					((PatientNewWindow) window).saveAppointment(appointmentItem);
 				}
-				
 				close();
 			}
 		});

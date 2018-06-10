@@ -3,6 +3,7 @@ package ch.bfh.bti7081.s2018.black.pms.presenter;
 import java.util.LinkedList;
 import java.util.List;
 
+import ch.bfh.bti7081.s2018.black.pms.controller.Controller;
 import ch.bfh.bti7081.s2018.black.pms.model.NoticeModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
@@ -26,7 +27,8 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 	public void saveButtonClick(PatientModel patient) {
 		JpaUtility transaction = new JpaUtility();
 		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		this.patientModelList = objects.findAll(PatientModel.class);
+		Controller.mergePatientToAppointment(patient);
+		this.patientModelList = objects.findAll(PatientModel.class);getClass();
 		objects.store(patient);
 		this.patientItemList = new LinkedList<>();
 		for (PatientModel p : this.patientModelList) {
