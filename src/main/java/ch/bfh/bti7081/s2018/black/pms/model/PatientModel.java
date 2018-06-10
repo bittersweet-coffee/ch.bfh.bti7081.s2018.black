@@ -49,13 +49,8 @@ public class PatientModel extends EntityModel {
 	
 	// list of the drugs that the patient needs
 	// this is a many-to-many relation so we need a relation table
-	@ManyToMany
-    @JoinTable(name="patient_drug",
-        joinColumns=
-            @JoinColumn(name="patient_id", referencedColumnName="id"),
-        inverseJoinColumns=
-            @JoinColumn(name="drug_id", referencedColumnName="id"))
-	private List<DrugModel> drugs;
+	@OneToMany(mappedBy="drug", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<PatientDrugModel> drugs;
 	
 	// list of the addictions that the patient has
 	// this is a many-to-many relation so we need a relation table
@@ -198,7 +193,7 @@ public class PatientModel extends EntityModel {
 	 * getter of the drugs
 	 * @return a list of the drugs that the patient has to take
 	 */
-	public List<DrugModel> getDrugs() {
+	public List<PatientDrugModel> getDrugs() {
 		return this.drugs;
 	}
 
@@ -206,7 +201,7 @@ public class PatientModel extends EntityModel {
 	 * setter of the drugs
 	 * @param drugs that the patient has to take
 	 */
-	public void setDrugs(List<DrugModel> drugs) {
+	public void setDrugs(List<PatientDrugModel> drugs) {
 		this.drugs = drugs;
 	}
 

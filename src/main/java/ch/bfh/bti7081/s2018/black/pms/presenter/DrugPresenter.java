@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import ch.bfh.bti7081.s2018.black.pms.model.DrugModel;
 import ch.bfh.bti7081.s2018.black.pms.model.Pair;
+import ch.bfh.bti7081.s2018.black.pms.model.PatientDrugModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
@@ -116,14 +117,18 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 	}
 	
 	private boolean allocateDrugToPatient(DrugModel drug, PatientModel patient) {
-		Optional<DrugModel> drugList = patient.getDrugs().stream()
-				.filter(d -> d.getId() == drug.getId())
+		Optional<PatientDrugModel> drugList = patient.getDrugs().stream()
+				.filter(d -> d.getDrug().getId() == drug.getId())
 				.findFirst();
+		System.out.println(drugList);
 		if(!drugList.isPresent()) {
-			patient.getDrugs().add(drug);
+			PatientDrugModel test = new PatientDrugModel();
+			test.setPatient(patient);
+			test.setDrug(drug);
+			test.setDose(3);
 			JpaUtility transaction = new JpaUtility();
 			JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-			objects.update(patient);
+			objects.store2(test);
 			return true;
 		}
 		return false;

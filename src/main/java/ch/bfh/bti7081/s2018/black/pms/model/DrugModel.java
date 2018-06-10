@@ -2,8 +2,11 @@ package ch.bfh.bti7081.s2018.black.pms.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -28,6 +31,7 @@ public class DrugModel extends EntityModel {
 	private Double maxDose;
 	
 	// measure of the drug
+	@Column(columnDefinition="VARCHAR(40)")
 	private Measurement measure;
 	
 	// ENUM containing all possible measures for our drugs
@@ -164,8 +168,8 @@ public class DrugModel extends EntityModel {
 	
 	// list of the patients that have to take the drug
 	// is mapped with the variable drugs of the class PatientModel
-    @ManyToMany(mappedBy="drugs")
-	private List<PatientModel> patients;
+    @OneToMany(mappedBy="patient", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<PatientDrugModel> patients;
     
     
     /**
@@ -229,7 +233,7 @@ public class DrugModel extends EntityModel {
 	 * getter of the patients
 	 * @return a list of the patient that have to take the drug
 	 */
-	public List<PatientModel> getPatients() {
+	public List<PatientDrugModel> getPatients() {
 		return this.patients;
 	}
 
@@ -237,7 +241,7 @@ public class DrugModel extends EntityModel {
 	 * setter of the patients
 	 * @param patients that have to take the drug
 	 */
-	public void setPatients(List<PatientModel> patients) {
+	public void setPatients(List<PatientDrugModel> patients) {
 		this.patients = patients;
 	}
 
