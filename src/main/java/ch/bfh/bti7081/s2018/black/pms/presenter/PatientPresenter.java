@@ -59,7 +59,7 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 		objects.store(nDummy);
 		nmDummy.add(nDummy);
 		patient.setNotes(nmDummy);
-		patient.setNotice("Dummy notice");
+		//patient.setNotice("Dummy notice");
 		patient.setPostCode(1234);
 		patient.setStreet("Dummy Street");
 		patient.setTelephone("Dummy Phone");
