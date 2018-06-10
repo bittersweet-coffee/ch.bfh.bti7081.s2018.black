@@ -1,7 +1,5 @@
 package ch.bfh.bti7081.s2018.black.pms.view;
 
-import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.vaadin.server.Page;
