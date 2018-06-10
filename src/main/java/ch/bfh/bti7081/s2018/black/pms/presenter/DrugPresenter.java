@@ -126,6 +126,8 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 			test.setPatient(patient);
 			test.setDrug(drug);
 			test.setDose(3);
+			patient.getDrugs().add(test);
+			drug.getPatients().add(test);
 			JpaUtility transaction = new JpaUtility();
 			JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
 			objects.store2(test);
