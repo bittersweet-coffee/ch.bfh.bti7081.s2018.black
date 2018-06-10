@@ -3,6 +3,7 @@ package ch.bfh.bti7081.s2018.black.pms.view;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
@@ -18,6 +19,8 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import ch.bfh.bti7081.s2018.black.pms.controller.Controller;
+import ch.bfh.bti7081.s2018.black.pms.model.Appointment;
+import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 
 import com.vaadin.ui.Button.ClickEvent;
@@ -79,9 +82,6 @@ public class PatientNewWindow extends Window {
 				patient.setPostcode(Integer.parseInt(postodeField.getValue())); //TO-DO: Check if int!!
 				patient.setTelephone(phoneField.getValue());
 				Date birthdayUnformatted = Date.from(birthdayField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-				int year = birthdayField.getValue().getYear();
-				int month = birthdayField.getValue().getMonthValue();
-				int day = birthdayField.getValue().getDayOfMonth();
 				patient.setBirthday(birthdayUnformatted);
 				patient.setDoctors(Controller.getSelectedDoctor());
 				patient.setLocation(Controller.getSelectedLocation());
@@ -96,7 +96,10 @@ public class PatientNewWindow extends Window {
 		Button btnAppointment = new Button("New Appointment", new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				// TO DO
+				AppointmentItem appointmentItem = new AppointmentItem(new Appointment(LocalDateTime.now(), LocalDateTime.now()));
+				final AppointmentWindow window = new AppointmentWindow(view, appointmentItem);
+				window.setModal(true);
+				getUI().getUI().addWindow(window);
 			}
 		});
 
@@ -142,6 +145,10 @@ public class PatientNewWindow extends Window {
 		tileGrid.setMargin(true);
 		
 		setContent(mainOpenWindow);
+	}
+
+	public void saveAppointment(AppointmentItem appointmentItem) {
+		//patient.setAppointments(Controller.createAppointments(appointmentItem));
 	}
 
 }

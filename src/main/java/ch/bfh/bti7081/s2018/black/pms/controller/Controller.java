@@ -10,9 +10,12 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.GridLayout;
 
 import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
+import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
+import ch.bfh.bti7081.s2018.black.pms.model.AppointmentModel;
 import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
 import ch.bfh.bti7081.s2018.black.pms.model.DrugModel;
 import ch.bfh.bti7081.s2018.black.pms.model.LocationModel;
+import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 import ch.bfh.bti7081.s2018.black.pms.view.PatientView.PatientViewListener;
@@ -102,8 +105,7 @@ public class Controller {
 		return addicList;
 	}
 	
-
-
+	
 
 
 	public static List<DrugModel> getDrugs(List<PatientViewListener> listeners) {
@@ -135,6 +137,19 @@ public class Controller {
 		JpaUtility transaction = new JpaUtility();
 		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
 		return objects.findAll(DrugModel.class);
+	}
+	
+	public static List<PatientModel> getPatients() {
+		JpaUtility transaction = new JpaUtility();
+		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
+		return objects.findAll(PatientModel.class);
+	}
+
+	public static List<AppointmentModel> createAppointments(AppointmentItem appointmentItem) {
+		List<AppointmentModel> appointmentList = new LinkedList<AppointmentModel>();
+		AppointmentModel appointment = new AppointmentModel();
+		appointment.setDescription(appointmentItem.getDescription());
+		return null;
 	}
 	
 }

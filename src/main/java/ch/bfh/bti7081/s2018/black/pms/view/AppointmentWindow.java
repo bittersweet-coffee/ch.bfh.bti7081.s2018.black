@@ -3,6 +3,7 @@ package ch.bfh.bti7081.s2018.black.pms.view;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
+import com.vaadin.navigator.View;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -17,9 +18,9 @@ import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
 
 public class AppointmentWindow extends Window {
 	
-	AgendaViewImpl view;
+	View view;
 
-	public AppointmentWindow(AgendaViewImpl view, AppointmentItem appointmentItem) {
+	public AppointmentWindow(View view, AppointmentItem appointmentItem) {
 		super("New Appointment");
 		this.view = view;
 		buildWindow(appointmentItem);
@@ -54,14 +55,21 @@ public class AppointmentWindow extends Window {
 				appointmentItem.setDescription(descriptionField.getValue());
 				appointmentItem.setStart(ZonedDateTime.of(startDateTimeField.getValue(), ZoneId.systemDefault()));
 				appointmentItem.setEnd(ZonedDateTime.of(endDateTimeField.getValue(), ZoneId.systemDefault()));
-				view.saveAppointment(appointmentItem);
+				if (view.equals(AgendaViewImpl.class)) {
+					((AgendaViewImpl) view).saveAppointment(appointmentItem);
+				} else if (view.equals(PatientNewWindow.class)) {
+					((PatientNewWindow) view).saveAppointment(appointmentItem);
+				}
+				
 				close();
 			}
 		});
 		Button btnDelete = new Button("Delete", new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				view.deleteAppointment(appointmentItem);
+				if (view.equals(AgendaViewImpl.class)) {
+					((AgendaViewImpl) view).deleteAppointment(appointmentItem);
+				} 
 				close();
 			}
 		});
