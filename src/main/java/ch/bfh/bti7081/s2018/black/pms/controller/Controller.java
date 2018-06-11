@@ -12,7 +12,7 @@ import com.vaadin.ui.GridLayout;
 import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
 import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
 import ch.bfh.bti7081.s2018.black.pms.model.DrugModel;
-import ch.bfh.bti7081.s2018.black.pms.model.LocationModel;
+import ch.bfh.bti7081.s2018.black.pms.model.ClinicModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
@@ -20,15 +20,15 @@ import ch.bfh.bti7081.s2018.black.pms.view.PatientView.PatientViewListener;
 
 public class Controller {
 	
-	private static ComboBox<LocationModel> cmbLocs = new ComboBox<LocationModel>("Select a Location:");
+	private static ComboBox<ClinicModel> cmbLocs = new ComboBox<ClinicModel>("Select a Location:");
 	private static ComboBox<DoctorModel> cmbDocs = new ComboBox<DoctorModel>("Select your doctor:");
 
 	
-	public static LocationModel getSelectedLocation() {
-		Optional<LocationModel> optional = cmbLocs.getSelectedItem();
-		LocationModel loc = new LocationModel();
+	public static ClinicModel getSelectedLocation() {
+		Optional<ClinicModel> optional = cmbLocs.getSelectedItem();
+		ClinicModel loc = new ClinicModel();
 		if (optional.isPresent()) {
-			loc = (LocationModel) optional.get();
+			loc = (ClinicModel) optional.get();
 		} else {
 			loc = null;
 		}
@@ -48,7 +48,7 @@ public class Controller {
 	
 	public static void setLocationCombobox(GridLayout grid, int col, int row) {
 		cmbLocs.setItems(getLocation());
-		cmbLocs.setItemCaptionGenerator(LocationModel::getName);
+		cmbLocs.setItemCaptionGenerator(ClinicModel::getName);
 		grid.addComponent(cmbLocs, col, row);
 	}
 	
@@ -96,10 +96,10 @@ public class Controller {
 	}
 
 
-	public static List<LocationModel> getLocation() {
+	public static List<ClinicModel> getLocation() {
 		JpaUtility transaction = new JpaUtility();
 		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		return objects.findAll(LocationModel.class);
+		return objects.findAll(ClinicModel.class);
 	}
 
 	public static List<AddictionModel> getAddictions() {
