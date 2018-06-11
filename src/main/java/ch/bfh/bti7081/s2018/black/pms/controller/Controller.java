@@ -59,15 +59,6 @@ public class Controller {
 		cmbDocs.setItemCaptionGenerator(DoctorModel::getLastname);
 		grid.addComponent(cmbDocs, col, row);
 	}
-	
-	
-	public static Collection<String> getDrugNames(List<DrugModel> drugList) {
-		List<String> drugNames = new LinkedList<String>();
-		for (DrugModel drugModel : drugList) {
-			drugNames.add(drugModel.getName());
-		}
-		return drugNames;
-	}
 
 	public static Collection<String> getAddictionNames(List<AddictionModel> addicList) {
 		List<String> addictionNames = new LinkedList<String>();
@@ -75,20 +66,6 @@ public class Controller {
 			addictionNames.add(addictionModel.getName());
 		}
 		return addictionNames;
-	}
-	
-	public static List<DrugModel> parseSelectedDrugs(Set<String> selectedItems) {
-		LinkedList<DrugModel> drugList = new LinkedList<DrugModel>();
-		List<DrugModel> allDrugsList = new LinkedList<DrugModel>();
-		allDrugsList = getDrugs();
-		for (String string : selectedItems) {
-			for (DrugModel drugModel : allDrugsList) {
-				if (string.equals(drugModel.getName())) {
-					drugList.add(drugModel);
-				}
-			}
-		}
-		return drugList;
 	}
 
 	public static List<AddictionModel> parseSelectedAddictions(Set<String> set) {
