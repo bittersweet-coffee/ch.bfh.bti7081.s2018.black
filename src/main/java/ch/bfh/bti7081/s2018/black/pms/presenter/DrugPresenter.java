@@ -29,7 +29,6 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 		this.drugModelList = new LinkedList<>();
 		this.fillDrugList();
 		
-		System.out.println("(0): " + this.drugModelList.get(0).getName());
 		/*System.out.println("(0): " + this.drugModelList.get(0).getName());
 		this.drugModelList.get(0).setMeasure("Integer");
 		this.drugModelList.get(0).setMinDose(new Double(1));
@@ -44,11 +43,10 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 		this.drugModelList.get(2).setMeasure("Double");
 		this.drugModelList.get(2).setMinDose(new Double(0.125));
 		this.drugModelList.get(2).setMaxDose(new Double(1.75));
-
 */
 
 		Pair result = this.drugModelList.get(0).checkDose(new Double(3.2));
-		System.out.println("\nFailure expected");
+		System.out.println("Failure expected");
 		System.out.println("\tResult: " + result.getResult() + "\n\tMessage: " + result.getMessage());
 		
 		result = this.drugModelList.get(0).checkDose(new Double(3.0));
@@ -120,18 +118,13 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 		if(optionalDrug.isPresent()) {
 			result = optionalDrug.get().checkDose(dose);
 			
-			// Check if dose is within DoseBounds
 			if (result.getResult()) {
-				
-				// Check if Drug can be successfully allocated to the patient
-				if(allocateDrugToPatient(optionalDrug.get(), patientItem.getModel())) {
 				// dose is within DoseBounds
 				if(allocateDrugToPatient(optionalDrug.get(), patientItem.getModel(), dose)) {
 					// Drug has been successfully allocated to the patient
 					return result;
-					
-				// Drug couldn't be allocated to the patient
 				} else {
+					// Drug couldn't be allocated to the patient
 					result.put(false, "The selected drug has already been prescribed to the patient!");
 				}
 			} 
@@ -141,7 +134,6 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 	}
 	
 	
-	private boolean allocateDrugToPatient(DrugModel drug, PatientModel patient) {
 	private boolean allocateDrugToPatient(DrugModel drug, PatientModel patient, Double dose) {
 		Optional<PatientDrugModel> drugList = patient.getDrugs().stream()
 				.filter(d -> d.getDrug().getId() == drug.getId())
@@ -149,6 +141,12 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 		
 		System.out.println(drugList);
 		if(!drugList.isPresent()) {
+			PatientDrugModel model = new PatientDrugModel();
+			model.setPatient(patient);
+			model.setDrug(drug);
+			model.setDose(dose);
+			patient.getDrugs().add(model);
+			drug.getPatients().add(model);
 			JpaUtility transaction = new JpaUtility();
 			JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
 			objects.store(model);
