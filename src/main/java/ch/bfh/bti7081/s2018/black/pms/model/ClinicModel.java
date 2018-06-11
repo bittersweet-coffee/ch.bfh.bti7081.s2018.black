@@ -3,6 +3,9 @@ package ch.bfh.bti7081.s2018.black.pms.model;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -43,6 +46,16 @@ public class ClinicModel extends EntityModel {
 	// is mapped with the variable location of the class AppointmentModel
 	@OneToMany(mappedBy = "location")
 	private List<AppointmentModel> appointments;
+	
+	// list of the addictions that the clinic treats
+	// this is a many-to-many relation so we need a relation table
+	@ManyToMany
+    @JoinTable(name="clinic_addiction",
+        joinColumns=
+            @JoinColumn(name="clinic_id", referencedColumnName="id"),
+        inverseJoinColumns=
+            @JoinColumn(name="addiction_id", referencedColumnName="id"))
+	private List<AddictionModel> addictions;
 	
 	/**
 	 * getter of the name
@@ -171,4 +184,37 @@ public class ClinicModel extends EntityModel {
 	public void setAppointments(List<AppointmentModel> appointments) {
 		this.appointments = appointments;
 	}
+
+	/**
+	 * getter of the email address
+	 * @return the email address of the clinic
+	 */
+	public String getEmail() {
+		return email;
+	}
+
+	/**
+	 * setter of the email address
+	 * @param email address of the clinic
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	/**
+	 * getter of the addictions
+	 * @return the addictions that the clinic treats
+	 */
+	public List<AddictionModel> getAddictions() {
+		return addictions;
+	}
+
+	/**
+	 * setter of the addictions
+	 * @param addictions that the clinic treats
+	 */
+	public void setAddictions(List<AddictionModel> addictions) {
+		this.addictions = addictions;
+	}
+	
 }
