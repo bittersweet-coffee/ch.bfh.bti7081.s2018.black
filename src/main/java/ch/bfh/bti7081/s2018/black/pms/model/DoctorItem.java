@@ -1,6 +1,5 @@
 package ch.bfh.bti7081.s2018.black.pms.model;
 
-import java.util.LinkedList;
 
 public class DoctorItem {
 	
@@ -52,5 +51,4 @@ public class DoctorItem {
 	public String getFullName() {
 		return firstName + " " + lastName; 
 	}
-
 }

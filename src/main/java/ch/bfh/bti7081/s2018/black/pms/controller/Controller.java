@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.GridLayout;
 
 import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
 import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
@@ -20,42 +19,58 @@ import ch.bfh.bti7081.s2018.black.pms.view.PatientView.PatientViewListener;
 
 public class Controller {
 	
-	private static ComboBox<LocationModel> cmbLocs = new ComboBox<LocationModel>("Select a Location:");
-	private static ComboBox<DoctorModel> cmbDocs = new ComboBox<DoctorModel>("Select your doctor:");
-
 	
-	public static LocationModel getSelectedLocation() {
-		Optional<LocationModel> optional = cmbLocs.getSelectedItem();
-		LocationModel loc = new LocationModel();
+	public static LocationModel getSelectedLocation(ComboBox<String> cmbLocs) {
+		List<LocationModel> locModelList = getLocation();
+		Optional<String> optional = cmbLocs.getSelectedItem();
 		if (optional.isPresent()) {
-			loc = (LocationModel) optional.get();
+			for (LocationModel locationModel : locModelList) {
+				if (optional.get().equals(locationModel.getName())) {
+					return locationModel;
+				}
+			}
 		} else {
-			loc = null;
+			return null;
 		}
-		return loc;
+		return null;
 	}
 	
-	public static LinkedList<DoctorModel> getSelectedDoctor() {
-		Optional<DoctorModel> selectedItem = cmbDocs.getSelectedItem();
+	public static LinkedList<DoctorModel> getSelectedDoctor(ComboBox<String> cmbDocs) {
+		List<DoctorModel> docModelList = getDoctors();
+		Optional<String> selectedItem = cmbDocs.getSelectedItem();
 		LinkedList<DoctorModel> docList = new LinkedList<DoctorModel>();
 		if (selectedItem.isPresent()) {
-			docList.add(selectedItem.get());
+			for (DoctorModel doctorModel : docModelList) {
+				if (selectedItem.get().equals(doctorModel.getLastname())) {
+					docList.add(doctorModel);
+				}
+			}
 		} else {
 			docList.addAll(null);
 		}
 		return docList;
 	}
 	
-	public static void setLocationCombobox(GridLayout grid, int col, int row) {
-		cmbLocs.setItems(getLocation());
-		cmbLocs.setItemCaptionGenerator(LocationModel::getName);
-		grid.addComponent(cmbLocs, col, row);
+	public static void setupLocations(ComboBox<String> cmbLocs) {
+		List<LocationModel> locModelList = getLocation();
+		List<String> locNameList = new LinkedList<String>();
+		for (LocationModel loc : locModelList) {
+			locNameList.add(loc.getName());
+		}
+		cmbLocs.setItems(locNameList);
+		cmbLocs.setItemCaptionGenerator(String::toString);
+		
 	}
-	
-	public static void setDoctorCombobox(GridLayout grid, int col, int row) {
-		cmbDocs.setItems(getDoctors());
-		cmbDocs.setItemCaptionGenerator(DoctorModel::getLastname);
-		grid.addComponent(cmbDocs, col, row);
+
+	public static void setupDoctors(ComboBox<String> cmbDocs) {
+		List<DoctorModel> docModelList = getDoctors();
+		List<String> docNameList = new LinkedList<String>();
+		for (DoctorModel doc : docModelList) {
+			docNameList.add(doc.getLastname());
+		}
+		cmbDocs.setItems(docNameList);
+		cmbDocs.setItemCaptionGenerator(String::toString);
+		
 	}
 
 	public static Collection<String> getAddictionNames(List<AddictionModel> addicList) {
