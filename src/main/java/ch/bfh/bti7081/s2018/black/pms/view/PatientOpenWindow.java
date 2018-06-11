@@ -66,9 +66,7 @@ public class PatientOpenWindow extends Window {
 		
 		//Appointment Part
 		List<AppointmentModel> appointmentList =  patientItem.getModel().getAppointments();
-		System.out.println(patientItem.getAppointments());
-		System.out.println(patientItem.getModel().getAppointments());
-        List<String> dataAppointment = new LinkedList<String>();
+		List<String> dataAppointment = new LinkedList<String>();
         for (AppointmentModel a: appointmentList) {
         	dataAppointment.add(a.getName() + "Strart: " + a.getStart() + "End: " + a.getEnd());
 		}

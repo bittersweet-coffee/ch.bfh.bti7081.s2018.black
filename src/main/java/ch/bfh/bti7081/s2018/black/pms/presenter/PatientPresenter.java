@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ch.bfh.bti7081.s2018.black.pms.controller.Controller;
+import ch.bfh.bti7081.s2018.black.pms.model.AppointmentModel;
 import ch.bfh.bti7081.s2018.black.pms.model.NoticeModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
@@ -86,6 +87,8 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 	
 	@Override
 	public void saveButtonClicked(PatientItem patientItem, String newNote) {
+		JpaUtility t2 = new JpaUtility();
+		JpaDataAccessObject ob2 = new JpaDataAccessObject(t2);
 		PatientModel patient = new PatientModel();
 		patient.setFirstname(patientItem.getFirstName());
 		patient.setLastname(patientItem.getLastName());
@@ -97,7 +100,11 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 		patient.setDoctors(patientItem.getDoctors());
 		patient.setDrugs(patientItem.getDrugs());
 		patient.setLocation(patientItem.getLocation());
-		//patient.setAppointments(patientItem.getAppointments());
+		patient.setAppointments(patientItem.getAppointments());
+		
+		for (AppointmentModel appModel : patient.getAppointments()) {
+			ob2.store(appModel);
+		}
 		
 		NoticeModel note = new NoticeModel();
 		note.setNote(newNote);
@@ -106,8 +113,7 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 		notes.add(note);
 		patient.setNotes(notes);
 
-		JpaUtility t2 = new JpaUtility();
-		JpaDataAccessObject ob2 = new JpaDataAccessObject(t2);
+		
 		ob2.store(patient);
 	}
 
