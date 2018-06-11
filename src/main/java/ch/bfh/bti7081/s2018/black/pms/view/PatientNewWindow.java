@@ -18,8 +18,6 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import ch.bfh.bti7081.s2018.black.pms.controller.Controller;
-import ch.bfh.bti7081.s2018.black.pms.model.Appointment;
-import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 
 import com.vaadin.ui.Button.ClickEvent;
@@ -50,7 +48,6 @@ public class PatientNewWindow extends Window {
 		Label lblPhone = new Label("Phone: ");
 		Label lblNotes = new Label("Notes: ");
 		Label lblDoctors = new Label("Doctors: ");
-		Label lblAppointment = new Label("Appointments: ");
 		Label lblLocation = new Label("Location: ");
 		Label lblBirthday = new Label("Birthday: ");
 	
@@ -66,14 +63,7 @@ public class PatientNewWindow extends Window {
 		TextField postodeField = new TextField();
 		TextField streetField = new TextField();
 		DateField birthdayField = new DateField();
-		
-		
-		this.appointmentsList = new TextArea();
-		appointmentsList.setReadOnly(true);
-		appointmentsList.setRows(1);
-		appointmentsList.setWidth("250px");
-		
-		
+			
 		
 	
 		TextArea descriptionField = new TextArea();
@@ -98,16 +88,6 @@ public class PatientNewWindow extends Window {
 			}
 		});
 
-		Button btnAppointment = new Button("New Appointment", new ClickListener() {
-			@Override
-			public void buttonClick(ClickEvent event) {
-				AppointmentItem appointmentItem = new AppointmentItem(new Appointment(LocalDateTime.now(), LocalDateTime.now()));
-				final AppointmentWindow window = new AppointmentWindow(getPatientNewWindow(), appointmentItem);
-				window.setModal(true);
-				getUI().getUI().addWindow(window);
-			}
-		});
-
 		Button btnDummyData = new Button("Load Dummy Data", new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -122,7 +102,7 @@ public class PatientNewWindow extends Window {
 
 		Button btnCancel = new Button("Cancel", event -> this.close());
 
-		GridLayout tileGrid = new GridLayout(2, 10);
+		GridLayout tileGrid = new GridLayout(2, 8);
 		tileGrid.addComponent(lblfirstName, 0, 0);
 		tileGrid.addComponent(firstNameField, 1, 0);
 		tileGrid.addComponent(lblLastName, 0, 1);
@@ -139,9 +119,6 @@ public class PatientNewWindow extends Window {
 		Controller.setDoctorCombobox(tileGrid, 1, 6);
 		tileGrid.addComponent(lblLocation, 0, 7);
 		Controller.setLocationCombobox(tileGrid, 1, 7);
-		tileGrid.addComponent(lblAppointment, 0, 8);
-		tileGrid.addComponent(btnAppointment, 1, 8);
-		tileGrid.addComponent(appointmentsList, 1, 9);
 		
 		VerticalLayout rightComponentBox = new VerticalLayout(addictionselect, lblNotes, descriptionField);
 		HorizontalLayout navigationButtons = new HorizontalLayout(btnSave, btnDummyData, btnCancel);
@@ -151,14 +128,6 @@ public class PatientNewWindow extends Window {
 		tileGrid.setMargin(true);
 		
 		setContent(mainOpenWindow);
-	}
-
-	public void saveAppointment(AppointmentItem appointmentItem) {
-		patient.setAppointments(Controller.createAppointments(appointmentItem));
-		dataAppointment.add(appointmentItem.getCaption());
-		for (String appointment : dataAppointment) {
-			appointmentsList.setValue(appointment + '\n');
-		}
 	}
 	
 	public PatientNewWindow getPatientNewWindow() {

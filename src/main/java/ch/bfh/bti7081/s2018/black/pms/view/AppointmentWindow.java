@@ -2,10 +2,8 @@ package ch.bfh.bti7081.s2018.black.pms.view;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.LinkedList;
 import java.util.List;
 
-import com.vaadin.navigator.View;
 import com.vaadin.data.provider.DataProvider;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.ui.Button;
@@ -22,12 +20,10 @@ import com.vaadin.ui.Window;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
 import ch.bfh.bti7081.s2018.black.pms.model.DoctorItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
-import ch.bfh.bti7081.s2018.black.pms.presenter.PatientPresenter;
 
 public class AppointmentWindow extends Window {
 	
-	View view;
-	PatientNewWindow window;
+	AgendaViewImpl view;
 	private List<PatientItem> patientItemList;
 	private ListDataProvider<PatientItem> patientProvider;
 	
@@ -42,12 +38,6 @@ public class AppointmentWindow extends Window {
 		this.view = view;
 		this.patientItemList = patientItemList;
 		this.doctorItemList = doctorItemList;
-		buildWindow(appointmentItem);
-	}
-	
-	public AppointmentWindow(PatientNewWindow patientNewWindow, AppointmentItem appointmentItem) {
-		super("New Appointment");
-		this.window = patientNewWindow;
 		buildWindow(appointmentItem);
 	}
 	
@@ -86,8 +76,6 @@ public class AppointmentWindow extends Window {
 				appointmentItem.getAppointment().setDoctorItem(comboBoxDoctor.getValue());
 				if (view != null) {
 					((AgendaViewImpl) view).saveAppointment(appointmentItem);
-				} else if (window != null) {
-					((PatientNewWindow) window).saveAppointment(appointmentItem);
 				}
 				close();
 			}
