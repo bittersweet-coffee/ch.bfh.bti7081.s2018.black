@@ -85,8 +85,8 @@ public class PatientModel extends EntityModel {
 	// location of the patient
 	// location_id is the foreign key. Can not be null
 	@ManyToOne
-	@JoinColumn(name="location_id", nullable=false)
-	private ClinicModel location;
+	@JoinColumn(name="clinic_id", nullable=false)
+	private ClinicModel clinic;
 
 	/**
 	 * getter of the first name
@@ -252,16 +252,16 @@ public class PatientModel extends EntityModel {
 	 * getter of the location
 	 * @return the location where the patient gets cured
 	 */
-	public ClinicModel getLocation() {
-		return this.location;
+	public ClinicModel getClinic() {
+		return this.clinic;
 	}
 
 	/**
 	 * seeter of the location
 	 * @param location where the patient gets cured
 	 */
-	public void setLocation(ClinicModel location) {
-		this.location = location;
+	public void setClinic(ClinicModel clinic) {
+		this.clinic = clinic;
 	}
 
 	/**

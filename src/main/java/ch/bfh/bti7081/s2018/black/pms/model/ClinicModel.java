@@ -39,12 +39,12 @@ public class ClinicModel extends EntityModel {
 	
 	// list of patients that are cured in the location
 	// is mapped with the variable location of the class PatientModel
-	@OneToMany(mappedBy = "location")
+	@OneToMany(mappedBy = "clinic")
 	private List<PatientModel> patients;
 	
 	// list of the appointments of the location
 	// is mapped with the variable location of the class AppointmentModel
-	@OneToMany(mappedBy = "location")
+	@OneToMany(mappedBy = "clinic")
 	private List<AppointmentModel> appointments;
 	
 	// list of the addictions that the clinic treats

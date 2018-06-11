@@ -78,7 +78,7 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 		patient.setBirthday(patientItem.getBirthday());
 		patient.setAddictions(patientItem.getAddictions());
 		patient.setDoctors(patientItem.getDoctors());
-		patient.setLocation(patientItem.getLocation());	
+		patient.setClinic(patientItem.getClinic());	
 		
 		NoticeModel note = new NoticeModel();
 		note.setNote(newNote);

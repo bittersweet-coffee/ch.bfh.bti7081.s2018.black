@@ -2,10 +2,8 @@ package ch.bfh.bti7081.s2018.black.pms.model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -57,8 +55,8 @@ public class AppointmentModel extends EntityModel{
 	// location where the appointment will take place
 	// location_id is the foreign key. Can not be null
 	@ManyToOne
-	@JoinColumn(name="location_id", nullable=true)
-	private ClinicModel location;
+	@JoinColumn(name="clinic_id", nullable=true)
+	private ClinicModel clinic;
 	
 	// Do we really need this constructor
 	public AppointmentModel() {
@@ -187,15 +185,15 @@ public class AppointmentModel extends EntityModel{
 	 * getter of the location
 	 * @return the location where the appointment takes place
 	 */
-	public ClinicModel getLocation() {
-		return this.location;
+	public ClinicModel getClinic() {
+		return this.clinic;
 	}
 
 	/**
 	 * setter of the location
 	 * @param location where the appointment takes place
 	 */
-	public void setLocation(ClinicModel location) {
-		this.location = location;
+	public void setLocation(ClinicModel clinic) {
+		this.clinic = clinic;
 	}
 }

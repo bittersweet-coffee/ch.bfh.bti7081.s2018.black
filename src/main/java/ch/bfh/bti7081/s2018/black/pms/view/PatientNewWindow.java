@@ -83,7 +83,7 @@ public class PatientNewWindow extends Window {
 				patient.setPostcode(Integer.parseInt(postodeField.getValue())); //TO-DO: Check if int!!
 				patient.setTelephone(phoneField.getValue());
 				patient.setDoctors(Controller.getSelectedDoctor(cmbDocs));
-				patient.setLocation(Controller.getSelectedLocation(cmbLocs));
+				patient.setClinic(Controller.getSelectedLocation(cmbLocs));
 				patient.setAddictions(Controller.parseSelectedAddictions(addictionselect.getSelectedItems()));
 				
 				if (isValid(birthdayField.getValue())) {

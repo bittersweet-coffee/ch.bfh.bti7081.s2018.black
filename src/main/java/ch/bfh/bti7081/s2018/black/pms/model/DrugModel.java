@@ -3,11 +3,9 @@ package ch.bfh.bti7081.s2018.black.pms.model;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -36,26 +34,31 @@ public class DrugModel extends EntityModel {
 	@Enumerated(EnumType.STRING)
 	private Measurement measure;
 	
-	// ENUM containing all possible measures for our drugs
-	private enum Measurement {
-		DOSE_INTEGER("Integer"), 
-		DOSE_DOUBLE("Double"),
-		DOSE_HALVES("Halves");
-		;
-		
-		private final String enumMeasure;
-		
-		Measurement(String enumMeasure) {
-			this.enumMeasure = enumMeasure;
-		}
-		
-		public String getMeasureString() {
-			return this.enumMeasure;
-		}
-		
-	};
-	
-	/**
+	// list of the patients that have to take the drug
+	// is mapped with the variable drugs of the class PatientModel
+    @OneToMany(mappedBy="patient", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<PatientDrugModel> patients;
+    
+ // ENUM containing all possible measures for our drugs
+ 	private enum Measurement {
+ 		DOSE_INTEGER("Integer"), 
+ 		DOSE_DOUBLE("Double"),
+ 		DOSE_HALVES("Halves");
+ 		;
+ 		
+ 		private final String enumMeasure;
+ 		
+ 		Measurement(String enumMeasure) {
+ 			this.enumMeasure = enumMeasure;
+ 		}
+ 		
+ 		public String getMeasureString() {
+ 			return this.enumMeasure;
+ 		}
+ 		
+ 	};
+ 	
+ 	/**
 	 * Method to check if the entered Dose has the correct Type and is in the Drugs Bounds
 	 * @param enteredDose Dose entered by the Doctor
 	 * @return Pair containing the result and its corresponding message
@@ -177,12 +180,6 @@ public class DrugModel extends EntityModel {
 		}
 		return false;
 	}
-	
-	// list of the patients that have to take the drug
-	// is mapped with the variable drugs of the class PatientModel
-    @OneToMany(mappedBy="patient", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<PatientDrugModel> patients;
-    
     
     /**
      * getter of the measurement
@@ -256,9 +253,4 @@ public class DrugModel extends EntityModel {
 	public void setPatients(List<PatientDrugModel> patients) {
 		this.patients = patients;
 	}
-
-
-
-
-
 }
