@@ -3,6 +3,7 @@ package ch.bfh.bti7081.s2018.black.pms.persistence;
 import java.util.List;
 
 import ch.bfh.bti7081.s2018.black.pms.model.EntityModel;
+import ch.bfh.bti7081.s2018.black.pms.model.PatientDrugModel;
 
 /**
  * class JpaDataAccessObject
@@ -47,7 +48,7 @@ public class JpaDataAccessObject {
 				}
 		);
 	}
-	 
+	
 	/**
 	 * anonymous class to update an entity from the database
 	 * @param entity: the updated entity 
@@ -65,7 +66,7 @@ public class JpaDataAccessObject {
 	    		}
 	    );
 	}
-	  
+	
 	/**
 	 * anonymous class to remove an entity from the database
 	 * @param entity: the entity that shall be removed from the database

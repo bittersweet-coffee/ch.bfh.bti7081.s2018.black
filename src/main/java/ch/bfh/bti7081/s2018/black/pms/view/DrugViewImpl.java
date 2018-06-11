@@ -24,6 +24,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Grid.SelectionMode;
 
+import ch.bfh.bti7081.s2018.black.pms.model.Pair;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 
 
@@ -115,6 +116,7 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 	    VerticalLayout allocateContent = new VerticalLayout();
 	    VerticalLayout marginLayout = new VerticalLayout();
 	    HorizontalLayout patientLayout = new HorizontalLayout();
+	    HorizontalLayout doseLayout = new HorizontalLayout();
 	    
 		this.patientItemGrid = new Grid<>();
 		this.patientItemList = new LinkedList<>();
@@ -122,6 +124,7 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		patientItemGrid.addColumn(PatientItem::getId).setCaption("ID");
 		patientItemGrid.addColumn(PatientItem::getFirstName).setCaption("Firstname");
 		patientItemGrid.addColumn(PatientItem::getLastName).setCaption("Lastname");
+		patientItemGrid.addColumn(PatientItem::getBirthdayAsString).setCaption("Birthday");
 	    
 		updatePatientItemList();
 		patientProvider = DataProvider.ofCollection(patientItemList);
@@ -150,13 +153,23 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 	    Label lblPatient = new Label("Patient:");
 	    Label lblSelectedDrug = new Label();
 	    
+	    Label lblDose = new Label("Enter Dose:");
+	    Label lblMeasurement = new Label("Measurement:");
+	    
+	    TextField txtDose = new TextField();
+	    txtDose.setPlaceholder("Dose");
+	    txtDose.setRequiredIndicatorVisible(true);
+	    
+	    doseLayout.addComponents(lblDose, txtDose);
+	    doseLayout.setMargin(new MarginInfo(true, false, false, false));
+	    
 	    patientLayout.addComponents(lblPatient, txtFilter);
 	    patientLayout.setMargin(new MarginInfo(true, false, false, false));
 	    
-	    Button btnPatient = new Button("Allocate");
-	    btnPatient.setEnabled(false);
+	    Button btnAllocatePatient = new Button("Allocate");
+	    btnAllocatePatient.setEnabled(false);
 	    
-	    marginLayout.addComponents(lblSelectedDrug, patientLayout, patientItemGrid, btnPatient);
+	    marginLayout.addComponents(lblSelectedDrug, lblMeasurement, doseLayout, patientLayout, patientItemGrid, btnAllocatePatient);
 	    marginLayout.setMargin(true);
 	    
 	    allocateContent.addComponent(marginLayout);
@@ -201,18 +214,25 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 			btnAddTo.setEnabled(true);
 		});
 		
-		btnPatient.addClickListener(click -> {
+		btnAllocatePatient.addClickListener(click -> {
 			if (patientItemGrid.getSelectedItems().iterator().hasNext()) {
-				for (DrugViewListener listener: listeners) {
-					if(listener.allocateButtonClicked(nativeDrug.getSelectedItem().get(),
-	        				patientItemGrid.getSelectedItems().iterator().next())) {
-						this.windowPatient.close();
+				System.out.println(patientItemGrid.getSelectedItems().iterator().next().getFirstName());
+				if(isDouble(txtDose.getValue())) {
+					for (DrugViewListener listener: listeners) {
+						
+						Pair result = listener.allocateButtonClicked(nativeDrug.getSelectedItem().get(),
+		        				patientItemGrid.getSelectedItems().iterator().next(), Double.parseDouble(txtDose.getValue()));
+						
+						
+						if(result.getResult()) {
+							this.windowPatient.close();
+						} else {
+							Notification.show("Warning", result.getMessage(), Notification.TYPE_ERROR_MESSAGE);
+						}
 					}
-					else {
-						Notification.show("The selected drug has already been prescribed to the patient!");
-					}
+				} else {
+					Notification.show("Warning", "Please enter a Dose of type Double!", Notification.TYPE_ERROR_MESSAGE);
 				}
-	        		
 			} else {
 				Notification.show("Input Data Incomplete");
 			}
@@ -220,9 +240,9 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		
 		patientItemGrid.addSelectionListener(selection -> {
 			if (patientItemGrid.getSelectedItems().iterator().hasNext()) {
-				btnPatient.setEnabled(true);
+				btnAllocatePatient.setEnabled(true);
 			} else {
-				btnPatient.setEnabled(false);
+				btnAllocatePatient.setEnabled(false);
 			}
 		});
 		
@@ -236,6 +256,17 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		txtSearch.addShortcutListener(enterSearchListener);
 		btnSearch.addShortcutListener(enterSearchListener);
 	}
+	
+	private boolean isDouble(String str) {
+		  try{
+		    Double.parseDouble(str);
+		    return true;
+		    
+		  } catch(Exception e) {
+		    return false;
+		  }
+	}
+	
 
 	@Override
 	public void addListener(DrugViewListener listener) {

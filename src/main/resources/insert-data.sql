@@ -131,9 +131,9 @@ INSERT INTO patient (firstname, lastname, birthday, post_code, street, telephone
 INSERT INTO patient (firstname, lastname, birthday, post_code, street, telephone, location_id) VALUES('Shawn','Roth','1991-11-25',1025,'Bienenstrasse','044 814 27 74',4)
 
 INSERT INTO appointment (name, description, start, end) VALUES ('test','test','2008-01-01 00:00:01','2008-01-01 00:00:01')
-INSERT INTO drug (name, description) values ('Amlodipine', 'Amlodipine is a calcium channel blocker that dilates (widens) blood vessels and improves blood flow.')
-INSERT INTO drug (name, description) values ('Aspirin', 'Aspirin is a salicylate (sa-LIS-il-ate). It works by reducing substances in the body that cause pain, fever, and inflammation.')
-INSERT INTO drug (name, description) values ('Austedo', 'Austedo (deutetrabenazine) reduces the amount of certain chemicals in the body that are overly active in people with Huntingtons disease.')
+INSERT INTO drug (name, description, minDose, maxDose, measure) values ('Amlodipine', 'Amlodipine is a calcium channel blocker that dilates (widens) blood vessels and improves blood flow.', 0.5, 2.5, 'DOSE_DOUBLE')
+INSERT INTO drug (name, description, minDose, maxDose, measure) values ('Aspirin', 'Aspirin is a salicylate (sa-LIS-il-ate). It works by reducing substances in the body that cause pain, fever, and inflammation.', 2, 5, 'DOSE_INTEGER')
+INSERT INTO drug (name, description, minDose, maxDose, measure) values ('Austedo', 'Austedo (deutetrabenazine) reduces the amount of certain chemicals in the body that are overly active in people with Huntingtons disease.', 4.5, 9.5,'DOSE_HALVES')
 INSERT INTO patient_addiction (patient_id, addiction_id) values (1, 1)
 INSERT INTO patient_doctor (patient_id, doctor_id) values (1, 1)
 INSERT INTO patient_appointment (patient_id, appointment_id) values (1, 1)

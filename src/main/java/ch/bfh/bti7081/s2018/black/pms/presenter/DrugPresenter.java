@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import ch.bfh.bti7081.s2018.black.pms.model.DrugModel;
+import ch.bfh.bti7081.s2018.black.pms.model.Pair;
+import ch.bfh.bti7081.s2018.black.pms.model.PatientDrugModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
@@ -27,7 +29,6 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 		this.drugModelList = new LinkedList<>();
 		this.fillDrugList();
 	}
-	
 	
 	public void fillDrugList() {
 		
@@ -65,47 +66,67 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 		for (PatientModel patient : this.patientModelList) {
 			patientList.add(patient.getFirstname() + " " + patient.getLastname());
      	}
-
-	// These are Mock Objects because Patient Management isn't ready yet
-		//patientList.add("Toni Donato");
-		//patientList.add("Nico Schlup");
-		//patientList.add("Cederik Bielmann");
-		//patientList.add("Michi Hofer");
-		//patientList.add("Jan Henzi");
-		
-		//
-		//
-		// Put Logic in here once Patient Management is ready
-		//
-		//
 		
 		return patientList;
 	}
 	
 	@Override
-	public boolean allocateButtonClicked(String drugName, PatientItem patientItem) {
+	public Pair allocateButtonClicked(String drugName, PatientItem patientItem, Double dose) {
 		Optional<DrugModel> optionalDrug = this.drugModelList.stream()
 				.filter(drug -> drug.getName().equals(drugName))
 				.findFirst();
 		
+		Pair result = new Pair();
+		
 		if(optionalDrug.isPresent()) {
-			return allocateDrugToPatient(optionalDrug.get(), patientItem.getModel());
+			
+			result = optionalDrug.get().checkDose(dose);
+			
+			// check whether the patient has already allocated the selected drug 
+			if (checkAllocation(optionalDrug.get(), patientItem.getModel())) {
+				
+				// Check if dose is within DoseBounds
+				if(result.getResult()) {
+					allocateDrugToPatient(optionalDrug.get(), patientItem.getModel(), dose);
+					
+					// Drug has been successfully allocated to the patient
+					return result;
+				} else {
+					// Drug isn't within DoseBounds
+					return result;
+				}
+			} else {
+				// Drug couldn't be allocated to the patient
+				result.put(false, "The selected drug has already been prescribed to the patient!");
+			}
 		}
-		return false;
+		return result;
 	}
 	
-	private boolean allocateDrugToPatient(DrugModel drug, PatientModel patient) {
-		Optional<DrugModel> drugList = patient.getDrugs().stream()
-				.filter(d -> d.getId() == drug.getId())
+	private boolean checkAllocation(DrugModel drug, PatientModel patient) {
+		Optional<PatientDrugModel> drugList = patient.getDrugs().stream()
+				.filter(d -> d.getDrug().getId() == drug.getId())
 				.findFirst();
-		if(!drugList.isPresent()) {
-			patient.getDrugs().add(drug);
-			JpaUtility transaction = new JpaUtility();
-			JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-			objects.update(patient);
+		
+		if(drugList.isPresent()) {
+			return false;
+		} else {
 			return true;
 		}
-		return false;
+	}
+	
+	private boolean allocateDrugToPatient(DrugModel drug, PatientModel patient, Double dose) {
+		
+		PatientDrugModel model = new PatientDrugModel();
+		model.setPatient(patient);
+		model.setDrug(drug);
+		model.setDose(dose);
+		patient.getDrugs().add(model);
+		drug.getPatients().add(model);
+		JpaUtility transaction = new JpaUtility();
+		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
+		objects.store(model);
+		return true;
 	}
 	
 	public void addDrug(DrugModel drug) {
