@@ -13,6 +13,8 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 	}
 	
 	public void enter(ViewChangeEvent event) {
+		super.bC.makeCrumbs(DrugViewImpl.NAME);
+		super.bC.visibleBreadcrumbs();
 		Label test = new Label("Drug here");
         super.contentPanel.setContent(test);
 	}

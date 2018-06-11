@@ -13,6 +13,8 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
 	}
 	
 	public void enter(ViewChangeEvent event) {
+		super.bC.makeCrumbs(ClinicViewImpl.NAME);
+		super.bC.visibleBreadcrumbs();
 		Label test = new Label("Clinic here");
         super.contentPanel.setContent(test);
 	}

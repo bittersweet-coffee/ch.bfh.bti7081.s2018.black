@@ -26,6 +26,8 @@ public class AgendaViewImpl extends PmsCustomComponent implements View, AgendaVi
 	}
 	
 	public void enter(ViewChangeEvent event) {
+		super.bC.makeCrumbs(AgendaViewImpl.NAME);
+		super.bC.visibleBreadcrumbs();
 		//cal.setWidth(super.contentPanel.getWidth(), super.contentPanel.getWidthUnits());
 		cal.setWidth("1200px");
 		addCalendarEventListeners();

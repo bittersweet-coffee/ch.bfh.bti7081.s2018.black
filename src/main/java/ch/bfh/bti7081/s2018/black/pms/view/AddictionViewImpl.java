@@ -39,6 +39,8 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 	}
 	
 	public void enter(ViewChangeEvent event) {
+		super.bC.makeCrumbs(AddictionViewImpl.NAME);
+    	super.bC.visibleBreadcrumbs();
 		this.nativeAddict = new NativeSelect<>();
 		this.patientList = new LinkedList<>();
 		

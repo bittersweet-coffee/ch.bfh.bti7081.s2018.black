@@ -15,13 +15,14 @@ import com.vaadin.ui.VerticalLayout;
 public class PmsCustomComponent extends CustomComponent {
 
     protected Panel contentPanel = new Panel();
+    protected BreadCrumbMaker bC = new BreadCrumbMaker();
 	
 	public PmsCustomComponent() {
 
         MenuBar.Command pmsCommand = new MenuBar.Command() {
         	@Override
 			public void menuSelected(MenuItem selectedItem) {
-				UI.getCurrent().getNavigator().navigateTo("");
+        		Notification.show("PMS is awesome!");
 			}
 		};
 
@@ -31,7 +32,7 @@ public class PmsCustomComponent extends CustomComponent {
 				Notification.show("kthxbye!");
 			}
 		};
-
+		
     	MenuBar menuBar = new MenuBar();
     	menuBar.setWidth("1200px");
     	menuBar.addStyleName("main-menubar");
@@ -47,9 +48,7 @@ public class PmsCustomComponent extends CustomComponent {
     	logoutItem.setDescription("Logout");
     	logoutItem.setStyleName("main-menubar-logout");
     	
-    	//Make BreadCrumb Object and add it to the Vertical Layout content
-    	BreadCrumbs bC = new BreadCrumbs();
-    	Component breadCrumb = bC.getContent();
+    	MenuBar breadcrumbs = bC.visibleBreadcrumbs();
     	
     	HorizontalLayout contentBody = new HorizontalLayout();
     	contentBody.setSizeFull();
@@ -59,7 +58,7 @@ public class PmsCustomComponent extends CustomComponent {
 
         VerticalLayout content = new VerticalLayout();
 		content.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
-		content.addComponents(menuBar,breadCrumb , contentBody);
+		content.addComponents(menuBar, breadcrumbs, contentBody);
 		
 		setCompositionRoot(content);
 	}
