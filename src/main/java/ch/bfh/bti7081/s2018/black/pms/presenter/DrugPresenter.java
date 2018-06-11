@@ -104,9 +104,15 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 	}
 	
 	private boolean checkAllocation(DrugModel drug, PatientModel patient) {
-		Optional<PatientDrugModel> drugList = patient.getDrugs().stream()
-				.filter(d -> d.getDrug().getId() == drug.getId())
-				.findFirst();
+		Optional<PatientDrugModel> drugList = Optional.empty();
+		
+		if (patient.getDrugs() == null) {
+			return true;
+		}
+		
+		drugList = patient.getDrugs().stream()
+				   .filter(d -> d.getDrug().getId() == drug.getId())
+				   .findFirst();
 		
 		if(drugList.isPresent()) {
 			return false;
@@ -116,12 +122,18 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 	}
 	
 	private boolean allocateDrugToPatient(DrugModel drug, PatientModel patient, Double dose) {
-		
 		PatientDrugModel model = new PatientDrugModel();
 		model.setPatient(patient);
 		model.setDrug(drug);
 		model.setDose(dose);
-		patient.getDrugs().add(model);
+		if(patient.getDrugs() == null) {
+			List<PatientDrugModel> list = new LinkedList<>();
+			list.add(model);
+			patient.setDrugs(list);
+		}
+		else {
+			patient.getDrugs().add(model);
+		}
 		drug.getPatients().add(model);
 		JpaUtility transaction = new JpaUtility();
 		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);

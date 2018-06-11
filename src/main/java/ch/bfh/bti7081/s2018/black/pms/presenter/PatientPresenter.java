@@ -3,7 +3,6 @@ package ch.bfh.bti7081.s2018.black.pms.presenter;
 import java.util.LinkedList;
 import java.util.List;
 
-import ch.bfh.bti7081.s2018.black.pms.model.AppointmentModel;
 import ch.bfh.bti7081.s2018.black.pms.model.NoticeModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
@@ -79,7 +78,6 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 		patient.setBirthday(patientItem.getBirthday());
 		patient.setAddictions(patientItem.getAddictions());
 		patient.setDoctors(patientItem.getDoctors());
-		patient.setDrugs(patientItem.getDrugs());
 		patient.setLocation(patientItem.getLocation());	
 		
 		NoticeModel note = new NoticeModel();
