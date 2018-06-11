@@ -1,6 +1,6 @@
 package ch.bfh.bti7081.s2018.black.pms.view;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.LinkedList;
@@ -8,9 +8,11 @@ import java.util.List;
 
 import com.vaadin.server.Page;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.TwinColSelect;
@@ -63,9 +65,12 @@ public class PatientNewWindow extends Window {
 		TextField postodeField = new TextField();
 		TextField streetField = new TextField();
 		DateField birthdayField = new DateField();
-			
 		
-	
+		ComboBox<String> cmbLocs = new ComboBox<String>("Select a Location:");
+		Controller.setupLocations(cmbLocs);
+		ComboBox<String> cmbDocs = new ComboBox<String>("Select your doctor:");
+		Controller.setupDoctors(cmbDocs);
+		
 		TextArea descriptionField = new TextArea();
 		descriptionField.setRows(5);
 
@@ -77,14 +82,30 @@ public class PatientNewWindow extends Window {
 				patient.setStreet(streetField.getValue());
 				patient.setPostcode(Integer.parseInt(postodeField.getValue())); //TO-DO: Check if int!!
 				patient.setTelephone(phoneField.getValue());
-				Date birthdayUnformatted = Date.from(birthdayField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-				patient.setBirthday(birthdayUnformatted);
-				patient.setDoctors(Controller.getSelectedDoctor());
-				patient.setLocation(Controller.getSelectedLocation());
+				patient.setDoctors(Controller.getSelectedDoctor(cmbDocs));
+				patient.setLocation(Controller.getSelectedLocation(cmbLocs));
 				patient.setAddictions(Controller.parseSelectedAddictions(addictionselect.getSelectedItems()));
-				view.save(patient, descriptionField.getValue());
-				Page.getCurrent().reload();
-				close();
+				
+				if (isValid(birthdayField.getValue())) {
+					Date birthdaydate = Date.from(birthdayField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+					patient.setBirthday(birthdaydate);
+					view.save(patient, descriptionField.getValue());
+					close();
+					Page.getCurrent().reload();
+				} else {
+					Notification.show("Warning", "Birthday is not Valid! Please check the selected Date", Notification.TYPE_ERROR_MESSAGE);
+					birthdayField.setValue(birthdayField.getValue());
+					birthdayField.setRequiredIndicatorVisible(true);
+				}
+				
+			}
+
+			private boolean isValid(LocalDate localDate) {
+				if (localDate.isAfter(LocalDate.now()) || localDate == null) {
+					return false;
+				} else {
+					return true;
+				}
 			}
 		});
 
@@ -116,9 +137,9 @@ public class PatientNewWindow extends Window {
 		tileGrid.addComponent(lblPhone, 0, 5);
 		tileGrid.addComponent(phoneField, 1, 5);
 		tileGrid.addComponent(lblDoctors, 0, 6);
-		Controller.setDoctorCombobox(tileGrid, 1, 6);
+		tileGrid.addComponent(cmbDocs, 1, 6);
 		tileGrid.addComponent(lblLocation, 0, 7);
-		Controller.setLocationCombobox(tileGrid, 1, 7);
+		tileGrid.addComponent(cmbLocs, 1, 7);
 		
 		VerticalLayout rightComponentBox = new VerticalLayout(addictionselect, lblNotes, descriptionField);
 		HorizontalLayout navigationButtons = new HorizontalLayout(btnSave, btnDummyData, btnCancel);
