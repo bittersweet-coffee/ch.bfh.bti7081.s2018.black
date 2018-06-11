@@ -124,3 +124,13 @@ INSERT INTO patient_appointment (patient_id, appointment_id) values (1, 1)
 
 INSERT INTO notice(note, patient_id) values ('Test', 1)
 INSERT INTO notice(note, patient_id) values ('Nochmals ein Test', 1)
+
+INSERT INTO clinic_addiction(clinic_id, addiction_id) values (1, 1)
+INSERT INTO clinic_addiction(clinic_id, addiction_id) values (2, 1)
+INSERT INTO clinic_addiction(clinic_id, addiction_id) values (3, 1)
+INSERT INTO clinic_addiction(clinic_id, addiction_id) values (4, 1)
+INSERT INTO clinic_addiction(clinic_id, addiction_id) values (1, 1)
+INSERT INTO clinic_addiction(clinic_id, addiction_id) values (1, 2)
+INSERT INTO clinic_addiction(clinic_id, addiction_id) values (1, 3)
+INSERT INTO clinic_addiction(clinic_id, addiction_id) values (1, 4)
+INSERT INTO clinic_addiction(clinic_id, addiction_id) values (1, 5)
