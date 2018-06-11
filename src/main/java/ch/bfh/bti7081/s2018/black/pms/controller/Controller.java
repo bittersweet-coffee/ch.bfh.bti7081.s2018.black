@@ -155,15 +155,5 @@ public class Controller {
 		appointmentList.add(appointment);
 		return appointmentList;
 	}
-
-	public static void mergePatientToAppointment(PatientModel patient) {
-		List<PatientModel> pmList = new LinkedList<PatientModel>();
-		pmList.add(patient);
-		for (AppointmentModel a  : patient.getAppointments()) {
-			a.setPatients(pmList);			
-		}
-		patient.setAppointments(patient.getAppointments());
-		
-	}
 	
 }

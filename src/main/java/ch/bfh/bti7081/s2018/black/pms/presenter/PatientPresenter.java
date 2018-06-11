@@ -24,19 +24,6 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 		this.patientModelList = new LinkedList<>();
 	}
 
-	@Override
-	public void saveButtonClick(PatientModel patient) {
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		Controller.mergePatientToAppointment(patient);
-		this.patientModelList = objects.findAll(PatientModel.class);getClass();
-		objects.store(patient);
-		this.patientItemList = new LinkedList<>();
-		for (PatientModel p : this.patientModelList) {
-			this.patientItemList.add(new PatientItem(p));
-		}
-	}
-
 	public void fillPatientList() {
 		JpaUtility transaction = new JpaUtility();
 		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
