@@ -14,7 +14,10 @@ import com.vaadin.ui.UI;
 import ch.bfh.bti7081.s2018.black.pms.presenter.AddictionPresenter;
 import ch.bfh.bti7081.s2018.black.pms.presenter.AgendaPresenter;
 import ch.bfh.bti7081.s2018.black.pms.presenter.LoginPresenter;
+import ch.bfh.bti7081.s2018.black.pms.presenter.ClinicPresenter;
+import ch.bfh.bti7081.s2018.black.pms.presenter.DrugPresenter;
 import ch.bfh.bti7081.s2018.black.pms.presenter.PatientPresenter;
+import ch.bfh.bti7081.s2018.black.pms.presenter.ReportPresenter;
 import ch.bfh.bti7081.s2018.black.pms.view.*;
 
 // Load the default mytheme which also includes the Valo theme
@@ -47,6 +50,9 @@ public class Main extends UI {
     	new AddictionPresenter(addictionView);
     	new PatientPresenter(patientView);
     	new LoginPresenter(loginView);
+    	new ClinicPresenter(clinicView);
+    	new ReportPresenter(reportView);
+    	new DrugPresenter(drugView);
 
     	navigator.addView(DashboardViewImpl.NAME, dashboardView);
     	navigator.addView(AddictionViewImpl.NAME, addictionView);

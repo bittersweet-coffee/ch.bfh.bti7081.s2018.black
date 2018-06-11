@@ -89,6 +89,36 @@
     		<artifactId>spring-security-crypto</artifactId>
     		<version>5.0.5.RELEASE</version>
 		</dependency>
+		<dependency>
+    		<groupId>com.itextpdf</groupId>
+    		<artifactId>itextpdf</artifactId>
+    		<version>5.0.6</version>
+		</dependency>
+		<dependency>         
+        	<groupId>com.itextpdf</groupId>         
+        	<artifactId>kernel</artifactId>         
+        	<version>7.0.2</version>     
+      	</dependency>  
+      	<dependency>         
+      	   <groupId>com.itextpdf</groupId>         
+      	   <artifactId>io</artifactId>         
+      	   <version>7.0.2</version>     
+      	</dependency>  
+      	<dependency>         
+      	   <groupId>com.itextpdf</groupId>         
+      	   <artifactId>layout</artifactId>         
+      	   <version>7.0.2</version>
+      	</dependency>  
+      	<dependency>         
+      	   <groupId>com.itextpdf</groupId>         
+      	   <artifactId>forms</artifactId>         
+      	   <version>7.0.2</version>    
+      	</dependency>  
+      	<dependency>         
+      		<groupId>com.itextpdf</groupId>         
+        	<artifactId>pdfa</artifactId>         
+        	<version>7.0.2</version>     
+      	</dependency> 
 	</dependencies>
 
 	<build>

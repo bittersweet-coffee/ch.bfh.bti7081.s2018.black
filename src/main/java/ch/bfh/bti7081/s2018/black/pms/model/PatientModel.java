@@ -1,5 +1,6 @@
 package ch.bfh.bti7081.s2018.black.pms.model;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,6 +13,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * Patient class
@@ -37,21 +40,17 @@ public class PatientModel extends EntityModel {
 	@Column(name="post_code")
 	private int postCode;
 	
+	// birthday of the patient
+	@Temporal(TemporalType.DATE)
+	private Date birthday;
+	
 	// telephone number of the patient
 	private String telephone;
 	
-	// a notice for the patient
-	private String notice;
-	
 	// list of the drugs that the patient needs
 	// this is a many-to-many relation so we need a relation table
-	@ManyToMany
-    @JoinTable(name="patient_drug",
-        joinColumns=
-            @JoinColumn(name="patient_id", referencedColumnName="id"),
-        inverseJoinColumns=
-            @JoinColumn(name="drug_id", referencedColumnName="id"))
-	private List<DrugModel> drugs;
+	@OneToMany(mappedBy="drug", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<PatientDrugModel> drugs;
 	
 	// list of the addictions that the patient has
 	// this is a many-to-many relation so we need a relation table
@@ -75,12 +74,7 @@ public class PatientModel extends EntityModel {
 	
 	// list of the appointments of the patient
 	// this is a many-to-many relation so we need a relation table
-	@ManyToMany
-    @JoinTable(name="patient_appointment",
-        joinColumns=
-            @JoinColumn(name="patient_id", referencedColumnName="id"),
-        inverseJoinColumns=
-            @JoinColumn(name="appointment_id", referencedColumnName="id"))
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "patient")
 	private List<AppointmentModel> appointments;
 	
 	// list of notes of the patient.
@@ -92,7 +86,7 @@ public class PatientModel extends EntityModel {
 	// location_id is the foreign key. Can not be null
 	@ManyToOne
 	@JoinColumn(name="location_id", nullable=false)
-	private LocationModel location;
+	private ClinicModel location;
 
 	/**
 	 * getter of the first name
@@ -159,19 +153,19 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the notice
-	 * @return the notice that belongs to the patient
+	 * getter of the birthday
+	 * @return the birthday of the patient
 	 */
-	public String getNotice() {
-		return this.notice;
+	public Date getBirthday() {
+		return this.birthday;
 	}
 
 	/**
-	 * setter of the notice
-	 * @param notice that belongs to the patient
+	 * setter of the birthday
+	 * @param birthday of the patient
 	 */
-	public void setNotice(String notice) {
-		this.notice = notice;
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
 	}
 
 	/**
@@ -194,7 +188,7 @@ public class PatientModel extends EntityModel {
 	 * getter of the drugs
 	 * @return a list of the drugs that the patient has to take
 	 */
-	public List<DrugModel> getDrugs() {
+	public List<PatientDrugModel> getDrugs() {
 		return this.drugs;
 	}
 
@@ -202,7 +196,7 @@ public class PatientModel extends EntityModel {
 	 * setter of the drugs
 	 * @param drugs that the patient has to take
 	 */
-	public void setDrugs(List<DrugModel> drugs) {
+	public void setDrugs(List<PatientDrugModel> drugs) {
 		this.drugs = drugs;
 	}
 
@@ -258,7 +252,7 @@ public class PatientModel extends EntityModel {
 	 * getter of the location
 	 * @return the location where the patient gets cured
 	 */
-	public LocationModel getLocation() {
+	public ClinicModel getLocation() {
 		return this.location;
 	}
 
@@ -266,7 +260,7 @@ public class PatientModel extends EntityModel {
 	 * seeter of the location
 	 * @param location where the patient gets cured
 	 */
-	public void setLocation(LocationModel location) {
+	public void setLocation(ClinicModel location) {
 		this.location = location;
 	}
 

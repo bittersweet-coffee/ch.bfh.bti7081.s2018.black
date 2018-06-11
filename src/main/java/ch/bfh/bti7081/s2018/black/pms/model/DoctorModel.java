@@ -1,10 +1,12 @@
 package ch.bfh.bti7081.s2018.black.pms.model;
 
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -23,12 +25,7 @@ public class DoctorModel extends UserModel {
 	
 	// list of the appointments of the doctor
 	// this is a many-to-many relation so we need a relation table
-	@ManyToMany
-    @JoinTable(name="doctor_appointment",
-        joinColumns=
-            @JoinColumn(name="doctor_id", referencedColumnName="id"),
-        inverseJoinColumns=
-            @JoinColumn(name="appointment_id", referencedColumnName="id"))
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "doctor")
 	private List<AppointmentModel> appointments;
 	
 	/**

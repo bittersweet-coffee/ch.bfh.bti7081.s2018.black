@@ -44,19 +44,21 @@ public class AppointmentModel extends EntityModel{
 	
 	// list of patients with the same appointment
 	// is mapped with the variable appointments in the class PatientModel
-	@ManyToMany(mappedBy="appointments")
-	private List<PatientModel> patients;
+	@ManyToOne
+	@JoinColumn(name="patient_id")
+	private PatientModel patient;
 	
 	// list of doctors with the same appointment
 	// is mapped with the variable appointments in the class DoctorModel
-	@ManyToMany(mappedBy="appointments")
-	private List<DoctorModel> doctors;
+	@ManyToOne
+	@JoinColumn(name="doctor_id")
+	private DoctorModel doctor;
 	
 	// location where the appointment will take place
 	// location_id is the foreign key. Can not be null
 	@ManyToOne
 	@JoinColumn(name="location_id", nullable=true)
-	private LocationModel location;
+	private ClinicModel location;
 	
 	// Do we really need this constructor
 	public AppointmentModel() {
@@ -153,39 +155,39 @@ public class AppointmentModel extends EntityModel{
 	 * getter of the patients
 	 * @return a list of the patients with the same appointment
 	 */
-	public List<PatientModel> getPatients() {
-		return this.patients;
+	public PatientModel getPatient() {
+		return this.patient;
 	}
 
 	/**
 	 * setter of the patients
 	 * @param patients with the same appointment
 	 */
-	public void setPatients(List<PatientModel> patients) {
-		this.patients = patients;
+	public void setPatient(PatientModel patient) {
+		this.patient = patient;
 	}
 
 	/**
 	 * getter of the doctors
 	 * @return a list of the doctors with the same appointment
 	 */
-	public List<DoctorModel> getDoctors() {
-		return this.doctors;
+	public DoctorModel getDoctor() {
+		return this.doctor;
 	}
 
 	/**
 	 * setter of the doctors
 	 * @param doctors with the same appointment
 	 */
-	public void setDoctors(List<DoctorModel> doctors) {
-		this.doctors = doctors;
+	public void setDoctor(DoctorModel doctor) {
+		this.doctor = doctor;
 	}
 
 	/**
 	 * getter of the location
 	 * @return the location where the appointment takes place
 	 */
-	public LocationModel getLocation() {
+	public ClinicModel getLocation() {
 		return this.location;
 	}
 
@@ -193,7 +195,7 @@ public class AppointmentModel extends EntityModel{
 	 * setter of the location
 	 * @param location where the appointment takes place
 	 */
-	public void setLocation(LocationModel location) {
+	public void setLocation(ClinicModel location) {
 		this.location = location;
 	}
 }
