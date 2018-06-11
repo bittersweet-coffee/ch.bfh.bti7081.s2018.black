@@ -79,12 +79,7 @@ public class PatientModel extends EntityModel {
 	
 	// list of the appointments of the patient
 	// this is a many-to-many relation so we need a relation table
-	@ManyToMany
-    @JoinTable(name="patient_appointment",
-        joinColumns=
-            @JoinColumn(name="patient_id", referencedColumnName="id"),
-        inverseJoinColumns=
-            @JoinColumn(name="appointment_id", referencedColumnName="id"))
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "patient")
 	private List<AppointmentModel> appointments;
 	
 	// list of notes of the patient.
