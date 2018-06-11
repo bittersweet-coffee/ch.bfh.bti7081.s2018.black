@@ -46,7 +46,7 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 
 
 		Pair result = this.drugModelList.get(0).checkDose(new Double(3.2));
-		System.out.println("Failure expected");
+		System.out.println("\nFailure expected");
 		System.out.println("\tResult: " + result.getResult() + "\n\tMessage: " + result.getMessage());
 		
 		result = this.drugModelList.get(0).checkDose(new Double(3.0));
@@ -118,13 +118,15 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 		if(optionalDrug.isPresent()) {
 			result = optionalDrug.get().checkDose(dose);
 			
+			// Check if dose is within DoseBounds
 			if (result.getResult()) {
-				// dose is within DoseBounds
+				
+				// Check if Drug can be successfully allocated to the patient
 				if(allocateDrugToPatient(optionalDrug.get(), patientItem.getModel())) {
-					// Drug has been successfully allocated to the patient
 					return result;
+					
+				// Drug couldn't be allocated to the patient
 				} else {
-					// Drug couldn't be allocated to the patient
 					result.put(false, "The selected drug has already been prescribed to the patient!");
 				}
 			} 
