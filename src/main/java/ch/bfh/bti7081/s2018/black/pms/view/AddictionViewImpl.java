@@ -8,6 +8,7 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -39,6 +40,7 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 	}
 	
 	public void enter(ViewChangeEvent event) {
+		super.menuBar.getItems().get(1).setText((String) VaadinSession.getCurrent().getAttribute("username"));
 		this.nativeAddict = new NativeSelect<>();
 		this.patientList = new LinkedList<>();
 		

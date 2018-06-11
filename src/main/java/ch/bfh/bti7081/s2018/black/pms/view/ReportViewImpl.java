@@ -2,6 +2,7 @@ package ch.bfh.bti7081.s2018.black.pms.view;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Label;
 
 public class ReportViewImpl extends PmsCustomComponent implements View, ReportView {
@@ -13,6 +14,7 @@ public class ReportViewImpl extends PmsCustomComponent implements View, ReportVi
 	}
 	
 	public void enter(ViewChangeEvent event) {
+		super.menuBar.getItems().get(1).setText((String) VaadinSession.getCurrent().getAttribute("username"));
 		Label test = new Label("Report here");
         super.contentPanel.setContent(test);
 	}

@@ -1,12 +1,12 @@
 package ch.bfh.bti7081.s2018.black.pms.view;
 
 import com.vaadin.server.ThemeResource;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.MenuBar.MenuItem;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -14,8 +14,13 @@ import com.vaadin.ui.VerticalLayout;
 public class PmsCustomComponent extends CustomComponent {
 
     protected Panel contentPanel = new Panel();
+    protected MenuBar menuBar = new MenuBar();
+    private String username = "Anonymous";
 	
 	public PmsCustomComponent() {
+		if (!checkLogin()) {
+			UI.getCurrent().getNavigator().navigateTo("login");
+		}
 
         MenuBar.Command pmsCommand = new MenuBar.Command() {
         	@Override
@@ -27,18 +32,18 @@ public class PmsCustomComponent extends CustomComponent {
         MenuBar.Command logoutCommand = new MenuBar.Command() {
         	@Override
 			public void menuSelected(MenuItem selectedItem) {
-				Notification.show("kthxbye!");
+        		VaadinSession.getCurrent().close();
+        		UI.getCurrent().getNavigator().navigateTo("login");
 			}
 		};
 
-    	MenuBar menuBar = new MenuBar();
     	menuBar.setWidth("1200px");
     	menuBar.addStyleName("main-menubar");
 
     	MenuItem pmsItem = menuBar.addItem("PATIENT MANAGEMENT SYSTEM", new ThemeResource("img/pms_32px.png"), pmsCommand);
     	pmsItem.setDescription("PMS");
     	
-    	MenuItem userItem = menuBar.addItem("Anonymous", null, null);
+    	MenuItem userItem = menuBar.addItem(this.username, null, null);
     	userItem.setEnabled(false);
     	userItem.setStyleName("main-menubar-user");
 
@@ -57,5 +62,15 @@ public class PmsCustomComponent extends CustomComponent {
 		content.addComponents(menuBar, contentBody);
 		
 		setCompositionRoot(content);
+	}
+	
+	private boolean checkLogin() {
+		String username = (String) VaadinSession.getCurrent().getAttribute("username");
+
+		if (username != null && !username.isEmpty()) {
+			return true;
+		}
+
+		return false;
 	}
 }
