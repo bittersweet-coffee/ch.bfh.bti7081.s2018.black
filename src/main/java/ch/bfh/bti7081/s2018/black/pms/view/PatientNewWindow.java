@@ -59,9 +59,6 @@ public class PatientNewWindow extends Window {
 		addictionselect.setItems(Controller.getAddictionNames(Controller.getAddictions()));
 		addictionselect.setRows(5);
 
-		TwinColSelect<String> drugselect = new TwinColSelect<>("Current medication: ");
-		drugselect.setItems(Controller.getDrugNames(Controller.getDrugs()));
-		drugselect.setRows(5);
 
 		TextField firstNameField = new TextField();
 		TextField lastNameField = new TextField();
@@ -94,7 +91,6 @@ public class PatientNewWindow extends Window {
 				patient.setBirthday(birthdayUnformatted);
 				patient.setDoctors(Controller.getSelectedDoctor());
 				patient.setLocation(Controller.getSelectedLocation());
-				//patient.setDrugs(Controller.parseSelectedDrugs(drugselect.getSelectedItems()));
 				patient.setAddictions(Controller.parseSelectedAddictions(addictionselect.getSelectedItems()));
 				view.save(patient, descriptionField.getValue());
 				Page.getCurrent().reload();
@@ -147,7 +143,7 @@ public class PatientNewWindow extends Window {
 		tileGrid.addComponent(btnAppointment, 1, 8);
 		tileGrid.addComponent(appointmentsList, 1, 9);
 		
-		VerticalLayout rightComponentBox = new VerticalLayout(addictionselect, lblNotes, descriptionField, drugselect);
+		VerticalLayout rightComponentBox = new VerticalLayout(addictionselect, lblNotes, descriptionField);
 		HorizontalLayout navigationButtons = new HorizontalLayout(btnSave, btnDummyData, btnCancel);
 		VerticalLayout leftComponentBox = new VerticalLayout(tileGrid, navigationButtons);
 		HorizontalLayout mainOpenWindow = new HorizontalLayout(leftComponentBox, rightComponentBox);

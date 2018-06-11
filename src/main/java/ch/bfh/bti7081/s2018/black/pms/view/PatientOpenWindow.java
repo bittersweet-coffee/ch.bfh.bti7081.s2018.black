@@ -2,8 +2,6 @@ package ch.bfh.bti7081.s2018.black.pms.view;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -123,7 +121,9 @@ public class PatientOpenWindow extends Window {
 		tileGridAddiction.addComponent(lsAddiction, 0, 0);
 		
 		//Medication Part
-		//List<DrugModel> dataMediObjects = patientItem.getModel().getDrugs();
+		/**
+		 * --> FOR SCHLUP TO FIX!!!!
+		 * List<DrugModel> dataMediObjects = patientItem.getModel().getDrugs();
 		List<String> dataMedication = new LinkedList<String>();
 		for (DrugModel drugs : dataMediObjects) {
 			dataMedication.add(drugs.getName());
@@ -131,13 +131,13 @@ public class PatientOpenWindow extends Window {
         ListSelect lsMedication = new ListSelect<>("Medications", dataMedication);
         lsMedication.setRows(4);
         lsMedication.setWidth("500px");
-        lsMedication.setStyleName("select.v-select-select");
+        lsMedication.setStyleName("select.v-select-select");**/
         
         //lsPatient.addValueChangeListener(event -> System.out.println("Value changed"));
          
         
 		GridLayout tileGridMedication = new GridLayout(1,2);
-		tileGridMedication.addComponent(lsMedication, 0, 0);
+		//tileGridMedication.addComponent(lsMedication, 0, 0);
 	
 		VerticalLayout vBoxLeft = new VerticalLayout();
 		vBoxLeft.setWidth("600px");
