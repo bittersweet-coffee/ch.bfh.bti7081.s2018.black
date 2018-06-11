@@ -16,7 +16,7 @@ public class PatientItem {
 	private List<AddictionModel> addictions;
 	private List<DoctorModel> doctors;
 	private LocationModel location;
-	private List<DrugModel> drugs;
+	private List<PatientDrugModel> drugs;
 	
 	private String firstName, lastName;
 	private Date birthday;
@@ -148,11 +148,11 @@ public class PatientItem {
 		this.location = location;
 	}
 
-	public List<DrugModel> getDrugs() {
+	public List<PatientDrugModel> getDrugs() {
 		return drugs;
 	}
 
-	public void setDrugs(List<DrugModel> drugs) {
+	public void setDrugs(List<PatientDrugModel> drugs) {
 		this.drugs = drugs;
 	}
 

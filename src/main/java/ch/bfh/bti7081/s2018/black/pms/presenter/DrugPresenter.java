@@ -29,7 +29,7 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 		this.drugModelList = new LinkedList<>();
 		this.fillDrugList();
 		
-		System.out.println("(0): " + this.drugModelList.get(0).getName());
+		/*System.out.println("(0): " + this.drugModelList.get(0).getName());
 		this.drugModelList.get(0).setMeasure("Integer");
 		this.drugModelList.get(0).setMinDose(new Double(1));
 		this.drugModelList.get(0).setMaxDose(new Double(10));
@@ -43,7 +43,7 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 		this.drugModelList.get(2).setMeasure("Double");
 		this.drugModelList.get(2).setMinDose(new Double(0.125));
 		this.drugModelList.get(2).setMaxDose(new Double(1.75));
-
+*/
 
 		Pair result = this.drugModelList.get(0).checkDose(new Double(3.2));
 		System.out.println("Failure expected");
