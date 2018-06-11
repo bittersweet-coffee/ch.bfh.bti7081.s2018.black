@@ -3,10 +3,7 @@ package ch.bfh.bti7081.s2018.black.pms.presenter;
 import java.util.LinkedList;
 import java.util.List;
 
-import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
-import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
-import ch.bfh.bti7081.s2018.black.pms.model.DrugModel;
-import ch.bfh.bti7081.s2018.black.pms.model.LocationModel;
+import ch.bfh.bti7081.s2018.black.pms.controller.Controller;
 import ch.bfh.bti7081.s2018.black.pms.model.NoticeModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
@@ -30,40 +27,13 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 	public void saveButtonClick(PatientModel patient) {
 		JpaUtility transaction = new JpaUtility();
 		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		this.patientModelList = objects.findAll(PatientModel.class);
+		Controller.mergePatientToAppointment(patient);
+		this.patientModelList = objects.findAll(PatientModel.class);getClass();
 		objects.store(patient);
 		this.patientItemList = new LinkedList<>();
 		for (PatientModel p : this.patientModelList) {
 			this.patientItemList.add(new PatientItem(p));
 		}
-	}
-
-	/**
-	 * Not used Anymore but left for debug, checks and junittests to get infos
-	 * 
-	 * @param patient
-	 * @param objects
-	 */
-	private void addDummyData(PatientModel patient, JpaDataAccessObject objects) {
-		List<PatientModel> pml = objects.findAll(PatientModel.class);
-		PatientModel pmDummy = pml.get(0);
-		patient.setAddictions(pmDummy.getAddictions());
-		patient.setAppointments(pmDummy.getAppointments());
-		patient.setDoctors(pmDummy.getDoctors());
-		patient.setDrugs(pmDummy.getDrugs());
-		patient.setLocation(pmDummy.getLocation());
-		List<NoticeModel> nmDummy = new LinkedList<NoticeModel>();
-		NoticeModel nDummy = new NoticeModel();
-		nDummy.setNote("Dummy Note");
-		nDummy.setPatient(patient);
-		objects.store(nDummy);
-		nmDummy.add(nDummy);
-		patient.setNotes(nmDummy);
-		patient.setNotice("Dummy notice");
-		patient.setPostCode(1234);
-		patient.setStreet("Dummy Street");
-		patient.setTelephone("Dummy Phone");
-
 	}
 
 	public void fillPatientList() {
@@ -122,10 +92,12 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 		patient.setStreet(patientItem.getStreet());
 		patient.setTelephone(patientItem.getTelephone());
 		patient.setPostCode(patientItem.getPostcode());
+		patient.setBirthday(patientItem.getBirthday());
 		patient.setAddictions(patientItem.getAddictions());
 		patient.setDoctors(patientItem.getDoctors());
 		patient.setDrugs(patientItem.getDrugs());
 		patient.setLocation(patientItem.getLocation());
+		//patient.setAppointments(patientItem.getAppointments());
 		
 		NoticeModel note = new NoticeModel();
 		note.setNote(newNote);
@@ -143,33 +115,5 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 	public List<String> getNotesForPatient(Integer patientId) {
 		List<String> patientNotes = new LinkedList<>(); // fetch DB for Patient Notes
 		return patientNotes;
-	}
-
-	@Override
-	public List<DoctorModel> getDoctors() {
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		return objects.findAll(DoctorModel.class);
-	}
-
-	@Override
-	public List<LocationModel> getLocation() {
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		return objects.findAll(LocationModel.class);
-	}
-
-	@Override
-	public List<AddictionModel> getAddictions() {
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		return objects.findAll(AddictionModel.class);
-	}
-
-	@Override
-	public List<DrugModel> getDrugs() {
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		return objects.findAll(DrugModel.class);
 	}
 }

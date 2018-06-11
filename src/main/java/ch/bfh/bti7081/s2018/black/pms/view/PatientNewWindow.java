@@ -1,10 +1,10 @@
 package ch.bfh.bti7081.s2018.black.pms.view;
 
-import java.util.Collection;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 import com.vaadin.server.Page;
 import com.vaadin.ui.Button;
@@ -17,27 +17,27 @@ import com.vaadin.ui.TwinColSelect;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
-import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
-import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
-import ch.bfh.bti7081.s2018.black.pms.model.DrugModel;
-import ch.bfh.bti7081.s2018.black.pms.model.LocationModel;
+import ch.bfh.bti7081.s2018.black.pms.controller.Controller;
+import ch.bfh.bti7081.s2018.black.pms.model.Appointment;
+import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.DateField;
 
 public class PatientNewWindow extends Window {
 
 	PatientViewImpl view;
 	PatientItem patient;
-	LocationModel location;
+	List<String> dataAppointment;
+	TextArea appointmentsList;
 	
-	public PatientNewWindow(PatientViewImpl view, PatientItem patientItem, LocationModel location) {
+	public PatientNewWindow(PatientViewImpl view, PatientItem patientItem) {
 		super("New Patient");
 		this.view = view;
 		this.patient = patientItem;
-		this.location = location;
+		this.dataAppointment = new LinkedList<String>();
 		buildWindow();
 	}
 
@@ -48,39 +48,19 @@ public class PatientNewWindow extends Window {
 		Label lblStreet = new Label("Street: ");
 		Label lblpostCode = new Label("Post Code: ");
 		Label lblPhone = new Label("Phone: ");
-		
 		Label lblNotes = new Label("Notes: ");
 		Label lblDoctors = new Label("Doctors: ");
 		Label lblAppointment = new Label("Appointments: ");
 		Label lblLocation = new Label("Location: ");
-		
-
-		List<DoctorModel> docList = new LinkedList<DoctorModel>();
-		List<LocationModel> locList = new LinkedList<LocationModel>();
-		List<AddictionModel> addicList = new LinkedList<AddictionModel>();
-		List<DrugModel> drugList = new LinkedList<DrugModel>();
-
-		docList = view.getDoctors(docList);
-		locList = view.getLocations(locList);
-		addicList = view.getAddictions(addicList);
-		drugList = view.getDrugs(drugList);
-		
-		
-		
-		ComboBox<DoctorModel> cmbDocs = new ComboBox<DoctorModel>("Select your doctor:");
-		cmbDocs.setItems(docList);
-		cmbDocs.setItemCaptionGenerator(DoctorModel::getLastname);
-
-		ComboBox<LocationModel> cmbLocs = new ComboBox<LocationModel>("Select a Location:");
-		cmbLocs.setItems(locList);
-		cmbLocs.setItemCaptionGenerator(LocationModel::getName);
+		Label lblBirthday = new Label("Birthday: ");
+	
 		
 		TwinColSelect<String> addictionselect = new TwinColSelect<>("Addictions: ");
-		addictionselect.setItems(getAddictionNames(addicList));
+		addictionselect.setItems(Controller.getAddictionNames(Controller.getAddictions()));
 		addictionselect.setRows(5);
 
 		TwinColSelect<String> drugselect = new TwinColSelect<>("Current medication: ");
-		drugselect.setItems(getDrugNames(drugList));
+		drugselect.setItems(Controller.getDrugNames(Controller.getDrugs()));
 		drugselect.setRows(5);
 
 		TextField firstNameField = new TextField();
@@ -88,6 +68,15 @@ public class PatientNewWindow extends Window {
 		TextField phoneField = new TextField();
 		TextField postodeField = new TextField();
 		TextField streetField = new TextField();
+		DateField birthdayField = new DateField();
+		
+		
+		this.appointmentsList = new TextArea();
+		appointmentsList.setReadOnly(true);
+		appointmentsList.setRows(1);
+		appointmentsList.setWidth("250px");
+		
+		
 		
 	
 		TextArea descriptionField = new TextArea();
@@ -101,11 +90,12 @@ public class PatientNewWindow extends Window {
 				patient.setStreet(streetField.getValue());
 				patient.setPostcode(Integer.parseInt(postodeField.getValue())); //TO-DO: Check if int!!
 				patient.setTelephone(phoneField.getValue());
-				patient.setDoctors(getSelectedDoctors(cmbDocs.getSelectedItem()));
-				patient.setAddictions(parseSelectedAddictions(addictionselect.getSelectedItems()));
-				patient.setDrugs(parseSelectedDrugs(drugselect.getSelectedItems()));
-				patient.setLocation(getSelectedLocation(cmbLocs.getSelectedItem()));
-				//patient.setNotes(noticeList);
+				Date birthdayUnformatted = Date.from(birthdayField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+				patient.setBirthday(birthdayUnformatted);
+				patient.setDoctors(Controller.getSelectedDoctor());
+				patient.setLocation(Controller.getSelectedLocation());
+				patient.setDrugs(Controller.parseSelectedDrugs(drugselect.getSelectedItems()));
+				patient.setAddictions(Controller.parseSelectedAddictions(addictionselect.getSelectedItems()));
 				view.save(patient, descriptionField.getValue());
 				Page.getCurrent().reload();
 				close();
@@ -115,7 +105,10 @@ public class PatientNewWindow extends Window {
 		Button btnAppointment = new Button("New Appointment", new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				// TO DO
+				AppointmentItem appointmentItem = new AppointmentItem(new Appointment(LocalDateTime.now(), LocalDateTime.now()));
+				final AppointmentWindow window = new AppointmentWindow(getPatientNewWindow(), appointmentItem);
+				window.setModal(true);
+				getUI().getUI().addWindow(window);
 			}
 		});
 
@@ -133,23 +126,26 @@ public class PatientNewWindow extends Window {
 
 		Button btnCancel = new Button("Cancel", event -> this.close());
 
-		GridLayout tileGrid = new GridLayout(2, 8);
+		GridLayout tileGrid = new GridLayout(2, 10);
 		tileGrid.addComponent(lblfirstName, 0, 0);
 		tileGrid.addComponent(firstNameField, 1, 0);
 		tileGrid.addComponent(lblLastName, 0, 1);
 		tileGrid.addComponent(lastNameField, 1, 1);
-		tileGrid.addComponent(lblStreet, 0, 2);
-		tileGrid.addComponent(streetField, 1, 2);
-		tileGrid.addComponent(lblpostCode, 0, 3);
-		tileGrid.addComponent(postodeField, 1, 3);
-		tileGrid.addComponent(lblPhone, 0, 4);
-		tileGrid.addComponent(phoneField, 1, 4);
-		tileGrid.addComponent(lblDoctors, 0, 5);
-		tileGrid.addComponent(cmbDocs, 1, 5);
-		tileGrid.addComponent(lblLocation, 0, 6);
-		tileGrid.addComponent(cmbLocs, 1, 6);
-		tileGrid.addComponent(lblAppointment, 0, 7);
-		tileGrid.addComponent(btnAppointment, 1, 7);
+		tileGrid.addComponent(lblBirthday, 0, 2);
+		tileGrid.addComponent(birthdayField, 1, 2);
+		tileGrid.addComponent(lblStreet, 0, 3);
+		tileGrid.addComponent(streetField, 1, 3);
+		tileGrid.addComponent(lblpostCode, 0, 4);
+		tileGrid.addComponent(postodeField, 1, 4);
+		tileGrid.addComponent(lblPhone, 0, 5);
+		tileGrid.addComponent(phoneField, 1, 5);
+		tileGrid.addComponent(lblDoctors, 0, 6);
+		Controller.setDoctorCombobox(tileGrid, 1, 6);
+		tileGrid.addComponent(lblLocation, 0, 7);
+		Controller.setLocationCombobox(tileGrid, 1, 7);
+		tileGrid.addComponent(lblAppointment, 0, 8);
+		tileGrid.addComponent(btnAppointment, 1, 8);
+		tileGrid.addComponent(appointmentsList, 1, 9);
 		
 		VerticalLayout rightComponentBox = new VerticalLayout(addictionselect, lblNotes, descriptionField, drugselect);
 		HorizontalLayout navigationButtons = new HorizontalLayout(btnSave, btnDummyData, btnCancel);
@@ -161,67 +157,15 @@ public class PatientNewWindow extends Window {
 		setContent(mainOpenWindow);
 	}
 
-	protected LocationModel getSelectedLocation(Optional<LocationModel> selectedItem) {
-		LocationModel loc = new LocationModel();
-		if (selectedItem.isPresent()) {
-			loc = selectedItem.get();
-		} else {
-			loc = null;
+	public void saveAppointment(AppointmentItem appointmentItem) {
+		patient.setAppointments(Controller.createAppointments(appointmentItem));
+		dataAppointment.add(appointmentItem.getCaption());
+		for (String appointment : dataAppointment) {
+			appointmentsList.setValue(appointment + '\n');
 		}
-		return loc;
 	}
-
-	protected List<DrugModel> parseSelectedDrugs(Set<String> selectedItems) {
-		LinkedList<DrugModel> drugList = new LinkedList<DrugModel>();
-		List<DrugModel> allDrugsList = new LinkedList<DrugModel>();
-		allDrugsList = view.getDrugs(allDrugsList);
-		for (String string : selectedItems) {
-			for (DrugModel drugModel : allDrugsList) {
-				if (string.equals(drugModel.getName())) {
-					drugList.add(drugModel);
-				}
-			}
-		}
-		return drugList;
-	}
-
-	protected List<AddictionModel> parseSelectedAddictions(Set<String> set) {
-		LinkedList<AddictionModel> addicList = new LinkedList<AddictionModel>();
-		List<AddictionModel> allAddictsList = new LinkedList<AddictionModel>();
-		allAddictsList = view.getAddictions(allAddictsList);
-		for (String string : set) {
-			for (AddictionModel addictionModel : allAddictsList) {
-				if (string.equals(addictionModel.getName())) {
-					addicList.add(addictionModel);
-				}
-			}
-		}
-		return addicList;
-	}
-
-	protected List<DoctorModel> getSelectedDoctors(Optional<DoctorModel> selectedItem) {
-		LinkedList<DoctorModel> docList = new LinkedList<DoctorModel>();
-		if (selectedItem.isPresent()) {
-			docList.add(selectedItem.get());
-		} else {
-			docList.addAll(null);
-		}
-		return docList;
-	}
-
-	private Collection<String> getDrugNames(List<DrugModel> drugList) {
-		List<String> drugNames = new LinkedList<String>();
-		for (DrugModel drugModel : drugList) {
-			drugNames.add(drugModel.getName());
-		}
-		return drugNames;
-	}
-
-	private Collection<String> getAddictionNames(List<AddictionModel> addicList) {
-		List<String> addictionNames = new LinkedList<String>();
-		for (AddictionModel addictionModel : addicList) {
-			addictionNames.add(addictionModel.getName());
-		}
-		return addictionNames;
+	
+	public PatientNewWindow getPatientNewWindow() {
+		return this;
 	}
 }
