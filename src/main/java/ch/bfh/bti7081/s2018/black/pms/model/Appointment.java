@@ -10,6 +10,9 @@ public class Appointment {
 	private String title;
 	private String description;
 	
+	private DoctorItem doctorItem;
+	private PatientItem patientItem;
+	
 	public Appointment() {
 	}
 	
@@ -57,4 +60,21 @@ public class Appointment {
 	public void setId(int id) {
 		this.id = id;
 	}
+
+	public DoctorItem getDoctorItem() {
+		return doctorItem;
+	}
+
+	public void setDoctorItem(DoctorItem doctorItem) {
+		this.doctorItem = doctorItem;
+	}
+
+	public PatientItem getPatientItem() {
+		return patientItem;
+	}
+
+	public void setPatientItem(PatientItem patientItem) {
+		this.patientItem = patientItem;
+	}
+	
 }

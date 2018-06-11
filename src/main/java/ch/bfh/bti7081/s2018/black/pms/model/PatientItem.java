@@ -90,6 +90,10 @@ public class PatientItem {
 		this.lastName = lastName;
 	}
 	
+	public String getFullName() {
+		return firstName + " " + lastName; 
+	}
+	
 	public Date getBirthday() {
 		return this.birthday;
 	}
