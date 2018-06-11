@@ -58,7 +58,7 @@ public class AppointmentModel extends EntityModel{
 	// location_id is the foreign key. Can not be null
 	@ManyToOne
 	@JoinColumn(name="location_id", nullable=true)
-	private LocationModel location;
+	private ClinicModel location;
 	
 	// Do we really need this constructor
 	public AppointmentModel() {
@@ -187,7 +187,7 @@ public class AppointmentModel extends EntityModel{
 	 * getter of the location
 	 * @return the location where the appointment takes place
 	 */
-	public LocationModel getLocation() {
+	public ClinicModel getLocation() {
 		return this.location;
 	}
 
@@ -195,7 +195,7 @@ public class AppointmentModel extends EntityModel{
 	 * setter of the location
 	 * @param location where the appointment takes place
 	 */
-	public void setLocation(LocationModel location) {
+	public void setLocation(ClinicModel location) {
 		this.location = location;
 	}
 }
