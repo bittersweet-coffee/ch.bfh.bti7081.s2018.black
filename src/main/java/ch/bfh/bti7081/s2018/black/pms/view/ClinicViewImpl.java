@@ -12,6 +12,7 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
@@ -47,6 +48,9 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
 	}
 	
 	public void enter(ViewChangeEvent event) {
+		super.menuBar.getItems().get(1).setText((String) VaadinSession.getCurrent().getAttribute("username"));
+		Label test = new Label("Clinic here");
+        super.contentPanel.setContent(test);
 		this.nativeClinic = new NativeSelect<>();
 		this.patientList = new LinkedList<>();
 		

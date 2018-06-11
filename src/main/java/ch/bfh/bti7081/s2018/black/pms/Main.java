@@ -13,6 +13,7 @@ import com.vaadin.ui.UI;
 
 import ch.bfh.bti7081.s2018.black.pms.presenter.AddictionPresenter;
 import ch.bfh.bti7081.s2018.black.pms.presenter.AgendaPresenter;
+import ch.bfh.bti7081.s2018.black.pms.presenter.LoginPresenter;
 import ch.bfh.bti7081.s2018.black.pms.presenter.ClinicPresenter;
 import ch.bfh.bti7081.s2018.black.pms.presenter.DrugPresenter;
 import ch.bfh.bti7081.s2018.black.pms.presenter.PatientPresenter;
@@ -31,6 +32,10 @@ public class Main extends UI {
 	
     @Override
     protected void init(VaadinRequest vaadinRequest) {
+    	// Initialize the LoginView first in order to handle the user session
+    	LoginViewImpl loginView = new LoginViewImpl();
+    	Navigator navigator = new Navigator(this, this);
+    	navigator.addView(LoginViewImpl.NAME, loginView);
 
     	// TODO: This should actually create an instance of *View and not *ViewImpl to be independent of VAADIN
     	AddictionViewImpl addictionView = new AddictionViewImpl();
@@ -44,11 +49,11 @@ public class Main extends UI {
     	new AgendaPresenter(agendaView);
     	new AddictionPresenter(addictionView);
     	new PatientPresenter(patientView);
+    	new LoginPresenter(loginView);
     	new ClinicPresenter(clinicView);
     	new ReportPresenter(reportView);
     	new DrugPresenter(drugView);
 
-    	Navigator navigator = new Navigator(this, this);
     	navigator.addView(DashboardViewImpl.NAME, dashboardView);
     	navigator.addView(AddictionViewImpl.NAME, addictionView);
     	navigator.addView(AgendaViewImpl.NAME, agendaView);
@@ -56,6 +61,8 @@ public class Main extends UI {
     	navigator.addView(DrugViewImpl.NAME, drugView);
     	navigator.addView(PatientViewImpl.NAME, patientView);
     	navigator.addView(ReportViewImpl.NAME, reportView);
+    	
+    	navigator.navigateTo("login");
     }
 
     @WebServlet(urlPatterns = "/*", name = "MainServlet", asyncSupported = true)

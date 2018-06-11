@@ -9,6 +9,7 @@ import com.vaadin.data.provider.DataProvider;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.server.BrowserWindowOpener;
 import com.vaadin.server.StreamResource;
 import com.vaadin.server.StreamResource.StreamSource;
@@ -43,6 +44,9 @@ public class ReportViewImpl extends PmsCustomComponent implements View, ReportVi
 	}
 	
 	public void enter(ViewChangeEvent event) {
+		super.menuBar.getItems().get(1).setText((String) VaadinSession.getCurrent().getAttribute("username"));
+		Label test = new Label("Report here");
+        super.contentPanel.setContent(test);
 		this.patientItemGrid = new Grid<>();
 		this.patientItemList = new LinkedList<>();
 		

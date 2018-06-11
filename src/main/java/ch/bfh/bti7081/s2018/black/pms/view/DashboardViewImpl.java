@@ -3,6 +3,7 @@ package ch.bfh.bti7081.s2018.black.pms.view;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Image;
@@ -17,6 +18,7 @@ public class DashboardViewImpl extends PmsCustomComponent implements View, Dashb
 	}
 	
 	public void enter(ViewChangeEvent event) {
+		super.menuBar.getItems().get(1).setText((String) VaadinSession.getCurrent().getAttribute("username"));
         Image addictionIcon = new Image("", new ThemeResource("img/addiction.svg"));
         addictionIcon.setAlternateText("Addiction");
         addictionIcon.setDescription("Addiction");

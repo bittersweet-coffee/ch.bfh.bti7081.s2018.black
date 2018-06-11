@@ -10,6 +10,7 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -54,6 +55,9 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 	}
 	
 	public void enter(ViewChangeEvent event) {
+		super.menuBar.getItems().get(1).setText((String) VaadinSession.getCurrent().getAttribute("username"));
+		Label test = new Label("Drug here");
+        super.contentPanel.setContent(test);
 		this.nativeDrug = new NativeSelect<>();
 		
 		for (DrugViewListener listener: listeners) {
