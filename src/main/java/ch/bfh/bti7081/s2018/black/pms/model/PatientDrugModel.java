@@ -12,22 +12,20 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="patient_drug")
-public class PatientDrugModel implements Serializable {
+public class PatientDrugModel extends EntityModel implements Serializable {
 
-	@Id
 	@ManyToOne
 	@JoinColumn(name="patient_id")
 	private PatientModel patient;
 	
-	@Id
 	@ManyToOne
 	@JoinColumn(name="drug_id")
 	private DrugModel drug;
 	
-	private int dose;
+	private Double dose;
 
 	public PatientModel getPatient() {
-		return patient;
+		return this.patient;
 	}
 
 	public void setPatient(PatientModel patient) {
@@ -35,18 +33,18 @@ public class PatientDrugModel implements Serializable {
 	}
 
 	public DrugModel getDrug() {
-		return drug;
+		return this.drug;
 	}
 
 	public void setDrug(DrugModel drug) {
 		this.drug = drug;
 	}
 
-	public int getDose() {
-		return dose;
+	public Double getDose() {
+		return this.dose;
 	}
 
-	public void setDose(int dose) {
+	public void setDose(Double dose) {
 		this.dose = dose;
 	}
 }

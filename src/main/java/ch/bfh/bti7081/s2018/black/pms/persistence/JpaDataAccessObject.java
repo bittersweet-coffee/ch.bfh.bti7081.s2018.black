@@ -49,21 +49,6 @@ public class JpaDataAccessObject {
 		);
 	}
 	
-	public void store2(PatientDrugModel entity) {
-		// execute method of the JpaUtility class with our block of code
-		transaction.execute(
-				// lambda for writing the anonymous class
-				(entityManager) -> { 
-					// the object will be stored in the database
-					entityManager.persist(entity);
-					entityManager.flush();
-					//lastId = entity.getId();
-					// the method does not return an object
-					return null;
-				}
-		);
-	}
-	 
 	/**
 	 * anonymous class to update an entity from the database
 	 * @param entity: the updated entity 
@@ -82,19 +67,6 @@ public class JpaDataAccessObject {
 	    );
 	}
 	
-	public void update2(PatientDrugModel entity) {
-		// execute method of the JpaUtility class with our block of code
-	    transaction.execute(
-	    		// lambda for writing the anonymous class
-	    		(entityManager) -> { 
-	    			// update the passed entity
-	    			entityManager.merge(entity);
-	    			// the method does not return an object
-	    			return null;
-	    		}
-	    );
-	}
-	  
 	/**
 	 * anonymous class to remove an entity from the database
 	 * @param entity: the entity that shall be removed from the database

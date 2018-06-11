@@ -120,7 +120,7 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 			
 			if (result.getResult()) {
 				// dose is within DoseBounds
-				if(allocateDrugToPatient(optionalDrug.get(), patientItem.getModel())) {
+				if(allocateDrugToPatient(optionalDrug.get(), patientItem.getModel(), dose)) {
 					// Drug has been successfully allocated to the patient
 					return result;
 				} else {
@@ -134,23 +134,24 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 	}
 	
 	
-	private boolean allocateDrugToPatient(DrugModel drug, PatientModel patient) {
+	private boolean allocateDrugToPatient(DrugModel drug, PatientModel patient, Double dose) {
 		Optional<PatientDrugModel> drugList = patient.getDrugs().stream()
 				.filter(d -> d.getDrug().getId() == drug.getId())
 				.findFirst();
 		
 		System.out.println(drugList);
 		if(!drugList.isPresent()) {
-			PatientDrugModel test = new PatientDrugModel();
-			test.setPatient(patient);
-			test.setDrug(drug);
-			test.setDose(3);
-			patient.getDrugs().add(test);
-			drug.getPatients().add(test);
+			PatientDrugModel model = new PatientDrugModel();
+			model.setPatient(patient);
+			model.setDrug(drug);
+			model.setDose(dose);
+			patient.getDrugs().add(model);
+			drug.getPatients().add(model);
 			JpaUtility transaction = new JpaUtility();
 			JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-			objects.store2(test);
+			objects.store(model);
 			return true;
+			
 		}
 		return false;
 	}
