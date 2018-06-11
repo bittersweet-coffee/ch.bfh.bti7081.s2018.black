@@ -364,3 +364,43 @@
 
 * Vorbereitung Sprintreview für Freitag
 * Planung Sprint 3
+
+## 2018-06-06
+
+### Teilnehmer
+
+* Aleksander
+* Amin
+* Antonio
+* Cedric
+* Jan
+* Michael
+* Nicola
+
+### Agenda
+
+* Offene Punkte wegen der Patientenerfasung
+
+### Beschlüsse
+
+* Auf Github die Besprochenen Punkte als Issues auflisten
+
+## 2018-06-08
+
+### Teilnehmer
+
+* Aleksander
+* Amin
+* Antonio
+* Cedric
+* Jan
+* Michael
+* Nicola
+
+### Agenda
+
+* Weitere Arbeiten nach Sprintlog
+
+### Beschlüsse
+
+* Master branch auf neuesten Stand bringen

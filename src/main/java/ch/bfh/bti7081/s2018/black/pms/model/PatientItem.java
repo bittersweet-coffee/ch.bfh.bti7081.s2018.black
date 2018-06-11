@@ -1,5 +1,6 @@
 package ch.bfh.bti7081.s2018.black.pms.model;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,8 +10,20 @@ public class PatientItem {
 	
 	private List<String> notes;
 	private PatientModel model;
+	private String street;
+	private int postcode;
+	private String telephone;
+	private List<AddictionModel> addictions;
+	private List<DoctorModel> doctors;
+	private LocationModel location;
+	private List<DrugModel> drugs;
 	
 	private String firstName, lastName;
+	private Date birthday;
+	
+	public PatientItem() {
+		
+	}
 	
 	public PatientItem(PatientModel model) {
 		this.model = model;
@@ -21,6 +34,7 @@ public class PatientItem {
 		this.id = model.getId();
 		this.firstName = model.getFirstname();
 		this.lastName = model.getLastname();
+		this.birthday = model.getBirthday();
 
 		this.notes = new LinkedList<>();
 		for (NoticeModel note : model.getNotes()) {
@@ -73,8 +87,78 @@ public class PatientItem {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+	
+	public Date getBirthday() {
+		return this.birthday;
+	}
 
+	public String getBirthdayAsString() {
+		return String.valueOf(this.birthday);
+	}
+	
 	public PatientModel getModel() {
 		return this.model;
 	}
+
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
+	public int getPostcode() {
+		return postcode;
+	}
+
+	public void setPostcode(int postcode) {
+		this.postcode = postcode;
+	}
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+
+	public List<AddictionModel> getAddictions() {
+		return addictions;
+	}
+
+	public void setAddictions(List<AddictionModel> addictions) {
+		this.addictions = addictions;
+	}
+
+	public List<DoctorModel> getDoctors() {
+		return doctors;
+	}
+
+	public void setDoctors(List<DoctorModel> doctors) {
+		this.doctors = doctors;
+	}
+
+	public LocationModel getLocation() {
+		return location;
+	}
+
+	public void setLocation(LocationModel location) {
+		this.location = location;
+	}
+
+	public List<DrugModel> getDrugs() {
+		return drugs;
+	}
+
+	public void setDrugs(List<DrugModel> drugs) {
+		this.drugs = drugs;
+	}
+
+	public void setModel(PatientModel model) {
+		this.model = model;
+	}
+	
+	
 }

@@ -8,6 +8,7 @@ import com.vaadin.data.provider.DataProvider;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.Page;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -15,12 +16,19 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window.CloseEvent;
+import com.vaadin.ui.Window.CloseListener;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
 
+import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
+import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
+import ch.bfh.bti7081.s2018.black.pms.model.DrugModel;
+import ch.bfh.bti7081.s2018.black.pms.model.LocationModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
+import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 
 public class PatientViewImpl extends PmsCustomComponent implements View, PatientView {
 
@@ -46,6 +54,7 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 		patientItemGrid.addColumn(PatientItem::getId).setCaption("ID");
 		patientItemGrid.addColumn(PatientItem::getFirstName).setCaption("Firstname");
 		patientItemGrid.addColumn(PatientItem::getLastName).setCaption("Lastname");
+		patientItemGrid.addColumn(PatientItem::getBirthday).setCaption("Birthday");
 		
 		updatePatientItemList();
 		patientProvider = DataProvider.ofCollection(patientItemList);
@@ -126,7 +135,7 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 	}
 
 	protected void patientNewWindow() {
-		final PatientNewWindow window = new PatientNewWindow(this);
+		final PatientNewWindow window = new PatientNewWindow(this, new PatientItem(), new LocationModel());
 		window.setModal(true);
 		super.getUI().getUI().addWindow(window);
 	}
@@ -138,7 +147,10 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 		super.getUI().getUI().addWindow(window);
 	}
 
-	public void save(PatientItem newPatient) {
+	public void save(PatientItem patientItem, String note) {
+		for (PatientViewListener listener : listeners) {
+			listener.saveButtonClicked(patientItem, note);
+		}
 	}
 	
 	@Override
@@ -153,5 +165,33 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 		}
 		patientItem.reloadFromModel();
 		patientProvider.refreshItem(patientItem);
+	}
+
+	public List<DoctorModel> getDoctors(List<DoctorModel> docList) {
+		for (PatientViewListener listener : listeners) {
+			docList = listener.getDoctors();
+		}
+		return docList;
+	}
+
+	public List<LocationModel> getLocations(List<LocationModel> locList) {
+		for (PatientViewListener listener : listeners) {
+			locList = listener.getLocation();
+		}
+		return locList;
+	}
+
+	public List<AddictionModel> getAddictions(List<AddictionModel> addicList) {
+		for (PatientViewListener listener : listeners) {
+			addicList = listener.getAddictions();
+		}
+		return addicList;
+	}
+
+	public List<DrugModel> getDrugs(List<DrugModel> drugList) {
+		for (PatientViewListener listener : listeners) {
+			drugList = listener.getDrugs();
+		}
+		return drugList;
 	}
 }

@@ -15,7 +15,7 @@ public class NoticeModel extends EntityModel {
 	// Patients that are associated with the note
 	// patient_id is the foreign key. Can not be null
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="patient_id", nullable=false)
+	@JoinColumn(name="patient_id")
 	private PatientModel patient;
 	
 	/**

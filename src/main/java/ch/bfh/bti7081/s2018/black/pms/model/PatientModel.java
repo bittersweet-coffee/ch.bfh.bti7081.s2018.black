@@ -1,5 +1,6 @@
 package ch.bfh.bti7081.s2018.black.pms.model;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,6 +13,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * Patient class
@@ -37,11 +40,12 @@ public class PatientModel extends EntityModel {
 	@Column(name="post_code")
 	private int postCode;
 	
+	// birthday of the patient
+	@Temporal(TemporalType.DATE)
+	private Date birthday;
+	
 	// telephone number of the patient
 	private String telephone;
-	
-	// a notice for the patient
-	private String notice;
 	
 	// list of the drugs that the patient needs
 	// this is a many-to-many relation so we need a relation table
@@ -159,19 +163,19 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the notice
-	 * @return the notice that belongs to the patient
+	 * getter of the birthday
+	 * @return the birthday of the patient
 	 */
-	public String getNotice() {
-		return this.notice;
+	public Date getBirthday() {
+		return this.birthday;
 	}
 
 	/**
-	 * setter of the notice
-	 * @param notice that belongs to the patient
+	 * setter of the birthday
+	 * @param birthday of the patient
 	 */
-	public void setNotice(String notice) {
-		this.notice = notice;
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
 	}
 
 	/**
