@@ -94,7 +94,7 @@ public class PatientNewWindow extends Window {
 				patient.setBirthday(birthdayUnformatted);
 				patient.setDoctors(Controller.getSelectedDoctor());
 				patient.setLocation(Controller.getSelectedLocation());
-				patient.setDrugs(Controller.parseSelectedDrugs(drugselect.getSelectedItems()));
+				//patient.setDrugs(Controller.parseSelectedDrugs(drugselect.getSelectedItems()));
 				patient.setAddictions(Controller.parseSelectedAddictions(addictionselect.getSelectedItems()));
 				view.save(patient, descriptionField.getValue());
 				Page.getCurrent().reload();

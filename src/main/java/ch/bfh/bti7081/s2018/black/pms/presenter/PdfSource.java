@@ -22,6 +22,7 @@ import com.vaadin.server.StreamResource.StreamSource;
 import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
 import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
 import ch.bfh.bti7081.s2018.black.pms.model.DrugModel;
+import ch.bfh.bti7081.s2018.black.pms.model.PatientDrugModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
@@ -108,8 +109,8 @@ public class PdfSource implements StreamSource {
         
         Paragraph pDrugs = new Paragraph("Drugs:");
         List lDrugs = new List();
-        for (DrugModel dm : patientModel.getDrugs()) {
-        	lDrugs.add(dm.getName());
+        for (PatientDrugModel dm : patientModel.getDrugs()) {
+        	lDrugs.add(dm.getDrug().getName());
 		}
         doc.add(pDrugs);
         doc.add(lDrugs);

@@ -123,7 +123,7 @@ public class PatientOpenWindow extends Window {
 		tileGridAddiction.addComponent(lsAddiction, 0, 0);
 		
 		//Medication Part
-		List<DrugModel> dataMediObjects = patientItem.getModel().getDrugs();
+		//List<DrugModel> dataMediObjects = patientItem.getModel().getDrugs();
 		List<String> dataMedication = new LinkedList<String>();
 		for (DrugModel drugs : dataMediObjects) {
 			dataMedication.add(drugs.getName());
