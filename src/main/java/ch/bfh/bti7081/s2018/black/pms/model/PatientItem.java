@@ -17,6 +17,8 @@ public class PatientItem {
 	private List<DoctorModel> doctors;
 	private LocationModel location;
 	private List<PatientDrugModel> drugs;
+	private List<AppointmentModel> appointments;
+	
 	
 	private String firstName, lastName;
 	private Date birthday;
@@ -158,6 +160,18 @@ public class PatientItem {
 
 	public void setModel(PatientModel model) {
 		this.model = model;
+	}
+	
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+
+	public List<AppointmentModel> getAppointments() {
+		return appointments;
+	}
+
+	public void setAppointments(List<AppointmentModel> appointments) {
+		this.appointments = appointments;
 	}
 	
 	

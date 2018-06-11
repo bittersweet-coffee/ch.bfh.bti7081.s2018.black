@@ -3,6 +3,7 @@ package ch.bfh.bti7081.s2018.black.pms.view;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
+import com.vaadin.navigator.View;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -17,7 +18,8 @@ import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
 
 public class AppointmentWindow extends Window {
 	
-	AgendaViewImpl view;
+	View view;
+	PatientNewWindow window;
 
 	public AppointmentWindow(AgendaViewImpl view, AppointmentItem appointmentItem) {
 		super("New Appointment");
@@ -25,6 +27,12 @@ public class AppointmentWindow extends Window {
 		buildWindow(appointmentItem);
 	}
 	
+	public AppointmentWindow(PatientNewWindow patientNewWindow, AppointmentItem appointmentItem) {
+		super("New Appointment");
+		this.window = patientNewWindow;
+		buildWindow(appointmentItem);
+	}
+
 	private void buildWindow(AppointmentItem appointmentItem) {
 		setWidth(500.0f, Unit.PIXELS);
 
@@ -47,6 +55,7 @@ public class AppointmentWindow extends Window {
 		Label endDatePanel = new Label("End Date");
 		Label namePanel = new Label("Name");
 		Label descriptionPanel = new Label("Description");
+		
 		Button btnSave = new Button("Save", new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -54,14 +63,20 @@ public class AppointmentWindow extends Window {
 				appointmentItem.setDescription(descriptionField.getValue());
 				appointmentItem.setStart(ZonedDateTime.of(startDateTimeField.getValue(), ZoneId.systemDefault()));
 				appointmentItem.setEnd(ZonedDateTime.of(endDateTimeField.getValue(), ZoneId.systemDefault()));
-				view.saveAppointment(appointmentItem);
+				if (view != null) {
+					((AgendaViewImpl) view).saveAppointment(appointmentItem);
+				} else if (window != null) {
+					((PatientNewWindow) window).saveAppointment(appointmentItem);
+				}
 				close();
 			}
 		});
 		Button btnDelete = new Button("Delete", new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				view.deleteAppointment(appointmentItem);
+				if (view.equals(AgendaViewImpl.class)) {
+					((AgendaViewImpl) view).deleteAppointment(appointmentItem);
+				} 
 				close();
 			}
 		});

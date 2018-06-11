@@ -117,4 +117,13 @@ public class JpaDataAccessObject {
 	public void setLastId(int lastId) {
 		this.lastId = lastId;
 	}
+	
+	public <T> EntityModel byid(Class<T> entityClass, int id) {
+		return transaction.execute(
+		// lambda for writing the anonymous class
+				(entityManager) -> { 
+				// remove the passed entity
+		        return entityManager.find(entityClass, id);
+		});
+	}
 }
