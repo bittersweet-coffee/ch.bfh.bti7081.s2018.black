@@ -20,6 +20,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.RadioButtonGroup;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -39,7 +40,7 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
 	
 	private Label lblClinicNameTitle, lblCity, lblPostCode, lblStreet, lblTelephone;
 	
-	private TextArea txtClinicName, txtCityName, txtPostCode, txtStreet, txtTelephone;
+	private TextArea txtClinicName, txtCityName, txtPostCode, txtStreet, txtTelephone, txtAddictions;
 
 	public ClinicViewImpl() {
 		super();
@@ -55,13 +56,23 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
 		}
 		
 		
-        TextField txtSearch = new TextField("Filter:");
-        txtSearch.setTabIndex(1);
-        txtSearch.focus();
+        TextField txtSearchClinic = new TextField("Enter Clinic Name");
+        txtSearchClinic.setTabIndex(1);
+        txtSearchClinic.focus();
+        
+        TextField txtSearchAddiction = new TextField("Enter Addiction Name");
+        txtSearchAddiction.setEnabled(false);
+        
+        
         Button btnSearch = new Button("Search");
         btnSearch.setTabIndex(2);
+        
+        RadioButtonGroup<String> searchMode = new RadioButtonGroup<>();
+        searchMode.setItems("Clinic", "Addiction");
+        searchMode.setSelectedItem("Clinic");
+        
         HorizontalLayout searchLayout = new HorizontalLayout();
-        searchLayout.addComponents(txtSearch, btnSearch);
+        searchLayout.addComponents(searchMode, txtSearchClinic, txtSearchAddiction, btnSearch);
         searchLayout.setComponentAlignment(btnSearch, Alignment.BOTTOM_CENTER);
         searchLayout.setMargin(new MarginInfo(false, false, true, true));
         
@@ -105,31 +116,39 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
         this.txtTelephone.setWidth("100%");
         
         addictDetails.addComponents(
-        		lblClinicNameTitle,
-        		txtClinicName,
-        		lblStreet,
-        		txtStreet,
-        		lblCity,
-        		txtCityName,
-        		lblPostCode,
-        		txtPostCode,
-        		lblTelephone,
-        		txtTelephone
+        		this.lblClinicNameTitle,
+        		this.txtClinicName,
+        		this.lblStreet,
+        		this.txtStreet,
+        		this.lblCity,
+        		this.txtCityName,
+        		this.lblPostCode,
+        		this.txtPostCode,
+        		this.lblTelephone,
+        		this.txtTelephone
         		);
         addictDetails.setMargin(false);
         
+        this.txtAddictions = new TextArea();
+        this.txtAddictions.setEnabled(false);
+        this.txtAddictions.setWidth("100%");
+        this.txtAddictions.setReadOnly(true);
+        
         Button btnMailTo = new Button("Mail To");
-        btnMailTo.setEnabled(true);
+        btnMailTo.setEnabled(false);
+        
+        VerticalLayout addictMailTo = new VerticalLayout();
+        addictMailTo.addComponents(txtAddictions, btnMailTo);
+        addictMailTo.setComponentAlignment(btnMailTo, Alignment.BOTTOM_RIGHT);
         
         hLayout.addComponents(
         		nativeClinic, 
-        		addictDetails, 
-        		btnMailTo
+        		addictDetails,
+        		addictMailTo
         		);
         
         hLayout.setWidth("100%");
         hLayout.setMargin(new MarginInfo(false, true, true, true));
-        hLayout.setComponentAlignment(btnMailTo, Alignment.BOTTOM_RIGHT);
         hLayout.setComponentAlignment(nativeClinic, Alignment.TOP_LEFT);
         hLayout.setComponentAlignment(addictDetails, Alignment.TOP_CENTER);
         
@@ -166,6 +185,21 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
         // Set content
         super.contentPanel.setContent(vLayout);
         
+        
+
+        searchMode.addValueChangeListener(change -> {
+        	
+        	if(String.valueOf(change.getValue()).equals("Clinic")) {
+        		txtSearchClinic.setEnabled(true);
+        		txtSearchAddiction.setEnabled(false);
+        		txtSearchAddiction.setValue("");
+        	} else {
+        		txtSearchAddiction.setEnabled(true);
+        		txtSearchClinic.setEnabled(false);
+        		txtSearchClinic.setValue("");
+        	}
+        });
+        
         btnMailTo.addClickListener(click -> {
             Desktop desktop;
             if (Desktop.isDesktopSupported() 
@@ -193,21 +227,29 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
         
         
         btnSearch.addClickListener(click -> {
-        	if (this.nativeClinic.getSelectedItem().isPresent() || !txtSearch.isEmpty()) {
+        	if (this.nativeClinic.getSelectedItem().isPresent() || (txtSearchClinic.isEnabled() && !txtSearchClinic.isEmpty()) || (txtSearchAddiction.isEnabled() && !txtSearchAddiction.isEmpty())) {
         		this.nativeClinic.setSelectedItem(null);
         	}
+        	
         	btnMailTo.setEnabled(false);
         	this.txtClinicName.setValue("");
         	this.txtCityName.setValue("");
         	this.txtPostCode.setValue("");
         	this.txtStreet.setValue("");
         	this.txtTelephone.setValue("");
+        	this.txtAddictions.setValue("");
+        	
         	for (ClinicViewListener listener: listeners) {
-        		this.nativeClinic.setItems(listener.searchButtonClicked(txtSearch.getValue()));
+        		
+        		if(txtSearchClinic.isEnabled()) {
+        			this.nativeClinic.setItems(listener.searchButtonClicked(txtSearchClinic.getValue(), searchMode.getSelectedItem().get()));
+        		} else if(txtSearchAddiction.isEnabled()) {
+        			this.nativeClinic.setItems(listener.searchButtonClicked(txtSearchAddiction.getValue(), searchMode.getSelectedItem().get()));
+        		}
+        		
+        		
         	}
         });
-        
-
     
 		this.nativeClinic.addValueChangeListener(selected -> {
 			for (ClinicViewListener listener: listeners) {
@@ -220,21 +262,11 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
         			this.txtStreet.setValue(clinicDetailList.get(2));
         			this.txtTelephone.setValue(clinicDetailList.get(3));
         			this.email = clinicDetailList.get(4);
+        			this.txtAddictions.setValue(clinicDetailList.get(5));
 
         		}
 			}	
 			btnMailTo.setEnabled(true);
-		});
-		
-		btnPatient.addClickListener(click -> {
-			if (nativePatient.getSelectedItem().isPresent()) {
-				for (ClinicViewListener listener: listeners)
-	        		listener.allocateButtonClicked(nativeClinic.getSelectedItem().get(),
-	        				nativePatient.getSelectedItem().get());
-			} else {
-				Notification.show("Input Data Incomplete");
-			}
-			
 		});
 		
 		ShortcutListener enterSearchListener = new ShortcutListener("Enter Search Listener", ShortcutAction.KeyCode.ENTER, null) {
@@ -244,7 +276,7 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
 			}
 		};
 		
-		txtSearch.addShortcutListener(enterSearchListener);
+		txtSearchClinic.addShortcutListener(enterSearchListener);
 		btnSearch.addShortcutListener(enterSearchListener);
 	}
 	

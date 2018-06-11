@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
 import ch.bfh.bti7081.s2018.black.pms.model.ClinicModel;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
@@ -42,26 +43,40 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
 	}
 
 	@Override
-	public List<String> searchButtonClicked(String searchTerm) {
-		List<String> optionalClinic = this.clinicModelList.stream()
-				.filter(clinic -> clinic.getName().toLowerCase().contains(searchTerm.toLowerCase()))
-				.map(ClinicModel::getName)
-				.collect(Collectors.toList());
-			
-		return optionalClinic;
-	}
-
-	@Override
-	public List<String> addToButtonClicked() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void allocateButtonClicked(String clinicName, String patientName) {
-		// TODO Auto-generated method stub
+	public List<String> searchButtonClicked(String searchTerm, String searchMode) {
 		
+		List<String> optionalClinic = new LinkedList<>();
+		
+		if (!searchTerm.isEmpty()) {
+			if(searchMode.equals("Clinic")) {
+				optionalClinic = this.clinicModelList.stream()
+						.filter(clinic -> clinic.getName().toLowerCase().contains(searchTerm.toLowerCase()))
+						.map(ClinicModel::getName)
+						.collect(Collectors.toList());
+				
+			} else if(searchMode.equals("Addiction")) {
+				
+				List<AddictionModel> addictionList = new LinkedList<>();
+				
+				for (ClinicModel clinic : this.clinicModelList) {
+					addictionList = clinic.getAddictions().stream()
+							.filter(addiction -> addiction.getName().toLowerCase().contains(searchTerm.toLowerCase()))
+							.collect(Collectors.toList());
+					
+					if (!addictionList.isEmpty()) {
+						optionalClinic.add(clinic.getName());
+					}
+				}
+				
+			}
+				
+			return optionalClinic;
+
+		} else {
+			return this.clinicNameList;
+		}
 	}
+
 
 	@Override
 	public List<String> selectListChanged(String clinicName) {
@@ -77,12 +92,14 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
 				clinicDetails.add(optionalClinic.get().getStreet());
 				clinicDetails.add(optionalClinic.get().getTelephone());
 				clinicDetails.add(optionalClinic.get().getemail());
+				clinicDetails.add(optionalClinic.get().getAddictionsAsString());
 			} else {
 				clinicDetails.add("No City present");
 				clinicDetails.add("No PostCode present");
 				clinicDetails.add("No Street present");
 				clinicDetails.add("No Telephone present");
 				clinicDetails.add("No E-Mail present");
+				clinicDetails.add("No Addictions present");
 			}
 			
 			return clinicDetails;

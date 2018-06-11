@@ -217,4 +217,16 @@ public class ClinicModel extends EntityModel {
 		this.addictions = addictions;
 	}
 	
+	public String getAddictionsAsString() {
+		String addictString = "";
+		for (AddictionModel addict : this.addictions) {
+			addictString = addictString.concat("- " + addict.getDescription() + "\n\n");
+		}
+		
+		if(addictString.length() > 2) // cut the ending line feeds
+			return addictString.substring(0, addictString.length()-2);
+		else 
+			return addictString;
+	}
+	
 }
