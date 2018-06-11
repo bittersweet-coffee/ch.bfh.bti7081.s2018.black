@@ -11,7 +11,7 @@ import com.vaadin.ui.ComboBox;
 import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
 import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
 import ch.bfh.bti7081.s2018.black.pms.model.DrugModel;
-import ch.bfh.bti7081.s2018.black.pms.model.LocationModel;
+import ch.bfh.bti7081.s2018.black.pms.model.ClinicModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
@@ -19,14 +19,13 @@ import ch.bfh.bti7081.s2018.black.pms.view.PatientView.PatientViewListener;
 
 public class Controller {
 	
-	
-	public static LocationModel getSelectedLocation(ComboBox<String> cmbLocs) {
-		List<LocationModel> locModelList = getLocation();
+	public static ClinicModel getSelectedLocation(ComboBox<String> cmbLocs) {
+		List<ClinicModel> locModelList = getLocation();
 		Optional<String> optional = cmbLocs.getSelectedItem();
 		if (optional.isPresent()) {
-			for (LocationModel locationModel : locModelList) {
-				if (optional.get().equals(locationModel.getName())) {
-					return locationModel;
+			for (ClinicModel clinicModel : locModelList) {
+				if (optional.get().equals(clinicModel.getName())) {
+					return clinicModel;
 				}
 			}
 		} else {
@@ -52,14 +51,13 @@ public class Controller {
 	}
 	
 	public static void setupLocations(ComboBox<String> cmbLocs) {
-		List<LocationModel> locModelList = getLocation();
+		List<ClinicModel> locModelList = getLocation();
 		List<String> locNameList = new LinkedList<String>();
-		for (LocationModel loc : locModelList) {
+		for (ClinicModel loc : locModelList) {
 			locNameList.add(loc.getName());
 		}
 		cmbLocs.setItems(locNameList);
 		cmbLocs.setItemCaptionGenerator(String::toString);
-		
 	}
 
 	public static void setupDoctors(ComboBox<String> cmbDocs) {
@@ -111,10 +109,10 @@ public class Controller {
 	}
 
 
-	public static List<LocationModel> getLocation() {
+	public static List<ClinicModel> getLocation() {
 		JpaUtility transaction = new JpaUtility();
 		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		return objects.findAll(LocationModel.class);
+		return objects.findAll(ClinicModel.class);
 	}
 
 	public static List<AddictionModel> getAddictions() {
