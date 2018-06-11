@@ -220,7 +220,7 @@ public class ClinicModel extends EntityModel {
 	public String getAddictionsAsString() {
 		String addictString = "";
 		for (AddictionModel addict : this.addictions) {
-			addictString = addictString.concat("- " + addict.getDescription() + "\n\n");
+			addictString = addictString.concat("- " + addict.getName() + "\n\n");
 		}
 		
 		if(addictString.length() > 2) // cut the ending line feeds

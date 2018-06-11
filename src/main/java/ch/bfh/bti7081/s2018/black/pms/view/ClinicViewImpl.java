@@ -38,7 +38,7 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
 	
 	private NativeSelect<String> nativeClinic;
 	
-	private Label lblClinicNameTitle, lblCity, lblPostCode, lblStreet, lblTelephone;
+	private Label lblClinicNameTitle, lblCity, lblPostCode, lblStreet, lblTelephone, lblAddictions;
 	
 	private TextArea txtClinicName, txtCityName, txtPostCode, txtStreet, txtTelephone, txtAddictions;
 
@@ -130,16 +130,20 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
         addictDetails.setMargin(false);
         
         this.txtAddictions = new TextArea();
-        this.txtAddictions.setEnabled(false);
         this.txtAddictions.setWidth("100%");
         this.txtAddictions.setReadOnly(true);
+        
+        this.lblAddictions = new Label("Addictions treated:");
         
         Button btnMailTo = new Button("Mail To");
         btnMailTo.setEnabled(false);
         
         VerticalLayout addictMailTo = new VerticalLayout();
-        addictMailTo.addComponents(txtAddictions, btnMailTo);
+        addictMailTo.setHeight("100%");
+        addictMailTo.addComponents(this.lblAddictions, this.txtAddictions, btnMailTo);
         addictMailTo.setComponentAlignment(btnMailTo, Alignment.BOTTOM_RIGHT);
+        addictMailTo.setComponentAlignment(this.lblAddictions, Alignment.TOP_LEFT);
+        addictMailTo.setComponentAlignment(this.txtAddictions, Alignment.TOP_LEFT);
         
         hLayout.addComponents(
         		nativeClinic, 
@@ -151,6 +155,7 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
         hLayout.setMargin(new MarginInfo(false, true, true, true));
         hLayout.setComponentAlignment(nativeClinic, Alignment.TOP_LEFT);
         hLayout.setComponentAlignment(addictDetails, Alignment.TOP_CENTER);
+        hLayout.setComponentAlignment(addictMailTo, Alignment.TOP_RIGHT);	
         
         VerticalLayout vLayout = new VerticalLayout();
         vLayout.addComponents(searchLayout, hLayout);
