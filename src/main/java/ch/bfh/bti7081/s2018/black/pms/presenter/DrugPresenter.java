@@ -30,6 +30,7 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 		this.fillDrugList();
 		
 		System.out.println("(0): " + this.drugModelList.get(0).getName());
+		/*System.out.println("(0): " + this.drugModelList.get(0).getName());
 		this.drugModelList.get(0).setMeasure("Integer");
 		this.drugModelList.get(0).setMinDose(new Double(1));
 		this.drugModelList.get(0).setMaxDose(new Double(10));
@@ -44,6 +45,7 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 		this.drugModelList.get(2).setMinDose(new Double(0.125));
 		this.drugModelList.get(2).setMaxDose(new Double(1.75));
 
+*/
 
 		Pair result = this.drugModelList.get(0).checkDose(new Double(3.2));
 		System.out.println("\nFailure expected");
@@ -123,6 +125,9 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 				
 				// Check if Drug can be successfully allocated to the patient
 				if(allocateDrugToPatient(optionalDrug.get(), patientItem.getModel())) {
+				// dose is within DoseBounds
+				if(allocateDrugToPatient(optionalDrug.get(), patientItem.getModel(), dose)) {
+					// Drug has been successfully allocated to the patient
 					return result;
 					
 				// Drug couldn't be allocated to the patient
@@ -137,22 +142,18 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 	
 	
 	private boolean allocateDrugToPatient(DrugModel drug, PatientModel patient) {
+	private boolean allocateDrugToPatient(DrugModel drug, PatientModel patient, Double dose) {
 		Optional<PatientDrugModel> drugList = patient.getDrugs().stream()
 				.filter(d -> d.getDrug().getId() == drug.getId())
 				.findFirst();
 		
 		System.out.println(drugList);
 		if(!drugList.isPresent()) {
-			PatientDrugModel test = new PatientDrugModel();
-			test.setPatient(patient);
-			test.setDrug(drug);
-			test.setDose(3);
-			patient.getDrugs().add(test);
-			drug.getPatients().add(test);
 			JpaUtility transaction = new JpaUtility();
 			JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-			objects.store2(test);
+			objects.store(model);
 			return true;
+			
 		}
 		return false;
 	}

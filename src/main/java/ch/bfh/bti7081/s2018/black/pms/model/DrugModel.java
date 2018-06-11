@@ -5,6 +5,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -31,7 +33,7 @@ public class DrugModel extends EntityModel {
 	private Double maxDose;
 	
 	// measure of the drug
-	@Column(columnDefinition="VARCHAR(40)")
+	@Enumerated(EnumType.STRING)
 	private Measurement measure;
 	
 	// ENUM containing all possible measures for our drugs
