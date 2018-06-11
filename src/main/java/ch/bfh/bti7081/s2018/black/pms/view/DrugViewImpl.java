@@ -227,12 +227,11 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 						if(result.getResult()) {
 							this.windowPatient.close();
 						} else {
-							// Notification.show("The selected drug has already been prescribed to the patient!");
-							Notification.show(result.getMessage());
+							Notification.show("Warning", result.getMessage(), Notification.TYPE_ERROR_MESSAGE);
 						}
 					}
 				} else {
-					Notification.show("Entered Dose is no valid Double Value!");
+					Notification.show("Warning", "Please enter a Dose of type Double!", Notification.TYPE_ERROR_MESSAGE);
 				}
 			} else {
 				Notification.show("Input Data Incomplete");

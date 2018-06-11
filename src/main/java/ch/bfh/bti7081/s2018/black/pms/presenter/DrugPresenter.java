@@ -28,30 +28,6 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 		view.addListener(this);
 		this.drugModelList = new LinkedList<>();
 		this.fillDrugList();
-		
-		/*System.out.println("(0): " + this.drugModelList.get(0).getName());
-		this.drugModelList.get(0).setMeasure("Integer");
-		this.drugModelList.get(0).setMinDose(new Double(1));
-		this.drugModelList.get(0).setMaxDose(new Double(10));
-		
-		System.out.println("(1): " + this.drugModelList.get(1).getName());
-		this.drugModelList.get(1).setMeasure("Halves");
-		this.drugModelList.get(1).setMinDose(new Double(0.5));
-		this.drugModelList.get(1).setMaxDose(new Double(15.5));
-		
-		System.out.println("(2): " + this.drugModelList.get(2).getName());
-		this.drugModelList.get(2).setMeasure("Double");
-		this.drugModelList.get(2).setMinDose(new Double(0.125));
-		this.drugModelList.get(2).setMaxDose(new Double(1.75));
-*/
-
-		Pair result = this.drugModelList.get(0).checkDose(new Double(3.2));
-		System.out.println("Failure expected");
-		System.out.println("\tResult: " + result.getResult() + "\n\tMessage: " + result.getMessage());
-		
-		result = this.drugModelList.get(0).checkDose(new Double(3.0));
-		System.out.println("\n\nSuccess expected");
-		System.out.println("\tResult: " + result.getResult() + "\n\tMessage: " + result.getMessage());
 	}
 	
 	public void fillDrugList() {
@@ -90,19 +66,6 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 		for (PatientModel patient : this.patientModelList) {
 			patientList.add(patient.getFirstname() + " " + patient.getLastname());
      	}
-
-	// These are Mock Objects because Patient Management isn't ready yet
-		//patientList.add("Toni Donato");
-		//patientList.add("Nico Schlup");
-		//patientList.add("Cederik Bielmann");
-		//patientList.add("Michi Hofer");
-		//patientList.add("Jan Henzi");
-		
-		//
-		//
-		// Put Logic in here once Patient Management is ready
-		//
-		//
 		
 		return patientList;
 	}
@@ -116,44 +79,54 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 		Pair result = new Pair();
 		
 		if(optionalDrug.isPresent()) {
+			
 			result = optionalDrug.get().checkDose(dose);
 			
-			if (result.getResult()) {
-				// dose is within DoseBounds
-				if(allocateDrugToPatient(optionalDrug.get(), patientItem.getModel(), dose)) {
+			// check whether the patient has already allocated the selected drug 
+			if (checkAllocation(optionalDrug.get(), patientItem.getModel())) {
+				
+				// Check if dose is within DoseBounds
+				if(result.getResult()) {
+					allocateDrugToPatient(optionalDrug.get(), patientItem.getModel(), dose);
+					
 					// Drug has been successfully allocated to the patient
 					return result;
 				} else {
-					// Drug couldn't be allocated to the patient
-					result.put(false, "The selected drug has already been prescribed to the patient!");
+					// Drug isn't within DoseBounds
+					return result;
 				}
-			} 
+			} else {
+				// Drug couldn't be allocated to the patient
+				result.put(false, "The selected drug has already been prescribed to the patient!");
+			}
 		}
-		
 		return result;
 	}
 	
-	
-	private boolean allocateDrugToPatient(DrugModel drug, PatientModel patient, Double dose) {
+	private boolean checkAllocation(DrugModel drug, PatientModel patient) {
 		Optional<PatientDrugModel> drugList = patient.getDrugs().stream()
 				.filter(d -> d.getDrug().getId() == drug.getId())
 				.findFirst();
 		
-		System.out.println(drugList);
-		if(!drugList.isPresent()) {
-			PatientDrugModel model = new PatientDrugModel();
-			model.setPatient(patient);
-			model.setDrug(drug);
-			model.setDose(dose);
-			patient.getDrugs().add(model);
-			drug.getPatients().add(model);
-			JpaUtility transaction = new JpaUtility();
-			JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-			objects.store(model);
+		if(drugList.isPresent()) {
+			return false;
+		} else {
 			return true;
-			
 		}
-		return false;
+	}
+	
+	private boolean allocateDrugToPatient(DrugModel drug, PatientModel patient, Double dose) {
+		
+		PatientDrugModel model = new PatientDrugModel();
+		model.setPatient(patient);
+		model.setDrug(drug);
+		model.setDose(dose);
+		patient.getDrugs().add(model);
+		drug.getPatients().add(model);
+		JpaUtility transaction = new JpaUtility();
+		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
+		objects.store(model);
+		return true;
 	}
 	
 	public void addDrug(DrugModel drug) {
