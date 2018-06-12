@@ -29,30 +29,51 @@ import ch.bfh.bti7081.s2018.black.pms.model.Pair;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 
 
-
+/**
+ * DrugViewImpl Class
+ * View Implementation of DrugView
+ * @author schaa4
+ *
+ */
 public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 
+	// identifier used for displaying the correct URL
 	public static final String NAME = "drug";
 	
+	// List containing all listeners for this object (mostly the corresponding Presenter Class)
 	private List<DrugViewListener> listeners = new ArrayList<DrugViewListener>();
 	
+	// List containing Mock Objects for the PatientModel
 	private List<PatientItem> patientItemList;
 	
+	// UI element displaying the addiction names on the left side of the UI
 	private NativeSelect<String> nativeDrug;
 	
+	// Grid displaying all patients of the PMS
+	// used for allocation of a drug to a patient
+	// provides filter capabilities
 	private Grid<PatientItem> patientItemGrid;
 	
+	// DataProvider used to populate the patientItemGrid
 	private ListDataProvider<PatientItem> patientProvider;
 	
+	// Window which pops up when an allocation is to be done
+	// contains the patientItemGrid
 	private Window windowPatient;
 	
+	// labels used for describing Drug Properties
 	private Label lblDrugNameTitle, lblDrugDescTitle;
 	
+	// TextAreas used for displaying Drug Properties
 	private TextArea txtDrugName, txtDrugDesc;
 
+	/**
+	 * Default Constructor like all other ViewImplementations to trigger the super-class constructor  
+	 */
 	public DrugViewImpl() {
 		super();
 	}
+	
 	
 	public void enter(ViewChangeEvent event) {
 		super.menuBar.getItems().get(1).setText((String) VaadinSession.getCurrent().getAttribute("username"));
@@ -220,7 +241,6 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		
 		btnAllocatePatient.addClickListener(click -> {
 			if (patientItemGrid.getSelectedItems().iterator().hasNext()) {
-				System.out.println(patientItemGrid.getSelectedItems().iterator().next().getFirstName());
 				if(isDouble(txtDose.getValue())) {
 					for (DrugViewListener listener: listeners) {
 						
@@ -261,6 +281,7 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		btnSearch.addShortcutListener(enterSearchListener);
 	}
 	
+	
 	private boolean isDouble(String str) {
 		  try{
 		    Double.parseDouble(str);
@@ -277,6 +298,9 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		this.listeners.add(listener);
 	}
 	
+	/**
+	 * Method used by the patiemtItemGrid to update its DataProvider 
+	 */
 	private void updatePatientItemList() {
 		for (DrugViewListener listener: listeners) {
 			this.patientItemList = listener.setupPatientItemList();
