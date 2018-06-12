@@ -74,7 +74,6 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		super();
 	}
 	
-	
 	public void enter(ViewChangeEvent event) {
 		super.menuBar.getItems().get(1).setText((String) VaadinSession.getCurrent().getAttribute("username"));
 		Label test = new Label("Drug here");
@@ -281,17 +280,35 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		btnSearch.addShortcutListener(enterSearchListener);
 	}
 	
-	
+	/**
+	 * Helper Method to detect whether entered Dose is a valid Double number.
+	 * Valid means: Standard Double format & less than 6 decimal places
+	 * @param str Entered Dose retrieved as String
+	 * @return boolean response whether entered Dose is a valid Double number
+	 */
 	private boolean isDouble(String str) {
 		  try{
+			// try to parse entered Dose to Double
 		    Double.parseDouble(str);
+		    
+		    // No exception thrown to this point, so it is Double-parsable
+		    // Check if entered number has less than 6 decimal places
+		    if(str.contains(".")) {
+		    	String[] splitted = str.split("\\.");
+		    	
+		    	if(splitted[1].length() < 6) {
+		    		return true;
+		    	} else {
+		    		return false;
+		    	}
+		    }
+		    	
 		    return true;
 		    
 		  } catch(Exception e) {
 		    return false;
 		  }
 	}
-	
 
 	@Override
 	public void addListener(DrugViewListener listener) {
