@@ -85,8 +85,9 @@ public class PatientNewWindow extends Window {
 				patient.setDoctors(Controller.getSelectedDoctor(cmbDocs));
 				patient.setClinic(Controller.getSelectedLocation(cmbLocs));
 				patient.setAddictions(Controller.parseSelectedAddictions(addictionselect.getSelectedItems()));
-				
-				if (isValid(birthdayField.getValue())) {
+				if (birthdayField.isEmpty()) {
+					Notification.show("Warning", "Birthday is not set!", Notification.TYPE_ERROR_MESSAGE);
+				} else if (isValid(birthdayField.getValue())) {
 					Date birthdaydate = Date.from(birthdayField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
 					patient.setBirthday(birthdaydate);
 					view.save(patient, descriptionField.getValue());
@@ -101,7 +102,7 @@ public class PatientNewWindow extends Window {
 			}
 
 			private boolean isValid(LocalDate localDate) {
-				if (localDate.isAfter(LocalDate.now()) || localDate == null) {
+				if (localDate.isAfter(LocalDate.now())) {
 					return false;
 				} else {
 					return true;
