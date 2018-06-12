@@ -119,7 +119,7 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 			this.patientItemList.add(new PatientItem(patient));
      	}
 	}
-	
+	/*
 	public void addDrug(DrugModel drug) {
 		this.drugModelList.add(drug);
 	}
@@ -127,7 +127,7 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 	public List<DrugModel> getDrugModelList() {
 		return this.drugModelList;
 	}
-	
+	*/
 	@Override
 	public List<String> searchButtonClicked(String searchTerm) {
 		List<String> optionalDrug = this.drugModelList.stream()
