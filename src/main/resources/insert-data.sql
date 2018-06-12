@@ -129,7 +129,6 @@ INSERT INTO drug (name, description, minDose, maxDose, measure) values ('Aspirin
 INSERT INTO drug (name, description, minDose, maxDose, measure) values ('Austedo', 'Austedo (deutetrabenazine) reduces the amount of certain chemicals in the body that are overly active in people with Huntingtons disease.', 4.5, 9.5,'DOSE_HALVES')
 INSERT INTO patient_addiction (patient_id, addiction_id) values (1, 1)
 INSERT INTO patient_doctor (patient_id, doctor_id) values (1, 1)
-INSERT INTO patient_appointment (patient_id, appointment_id) values (1, 1)
 
 INSERT INTO notice(note, patient_id) values ('Test', 1)
 INSERT INTO notice(note, patient_id) values ('Nochmals ein Test', 1)
