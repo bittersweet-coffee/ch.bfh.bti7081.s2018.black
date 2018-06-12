@@ -1,7 +1,5 @@
 package ch.bfh.bti7081.s2018.black.pms.model;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -9,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="patient_drug")
-public class PatientDrugModel extends EntityModel implements Serializable {
+public class PatientDrugModel extends EntityModel {
 
 	@ManyToOne
 	@JoinColumn(name="patient_id")
