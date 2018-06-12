@@ -18,7 +18,7 @@ import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 import ch.bfh.bti7081.s2018.black.pms.view.PatientView.PatientViewListener;
 
 public class Controller {
-	
+
 	public static ClinicModel getSelectedLocation(ComboBox<String> cmbLocs) {
 		List<ClinicModel> locModelList = getLocation();
 		Optional<String> optional = cmbLocs.getSelectedItem();
@@ -28,12 +28,10 @@ public class Controller {
 					return clinicModel;
 				}
 			}
-		} else {
-			return null;
 		}
 		return null;
 	}
-	
+
 	public static LinkedList<DoctorModel> getSelectedDoctor(ComboBox<String> cmbDocs) {
 		List<DoctorModel> docModelList = getDoctors();
 		Optional<String> selectedItem = cmbDocs.getSelectedItem();
@@ -44,12 +42,10 @@ public class Controller {
 					docList.add(doctorModel);
 				}
 			}
-		} else {
-			docList.addAll(null);
 		}
 		return docList;
 	}
-	
+
 	public static void setupLocations(ComboBox<String> cmbLocs) {
 		List<ClinicModel> locModelList = getLocation();
 		List<String> locNameList = new LinkedList<String>();
@@ -68,7 +64,7 @@ public class Controller {
 		}
 		cmbDocs.setItems(docNameList);
 		cmbDocs.setItemCaptionGenerator(String::toString);
-		
+
 	}
 
 	public static Collection<String> getAddictionNames(List<AddictionModel> addicList) {
@@ -92,22 +88,17 @@ public class Controller {
 		}
 		return addicList;
 	}
-	
-	
-
 
 	public static List<DrugModel> getDrugs(List<PatientViewListener> listeners) {
 		List<DrugModel> drugList = getDrugs();
 		return drugList;
 	}
-	
 
 	public static List<DoctorModel> getDoctors() {
 		JpaUtility transaction = new JpaUtility();
 		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
 		return objects.findAll(DoctorModel.class);
 	}
-
 
 	public static List<ClinicModel> getLocation() {
 		JpaUtility transaction = new JpaUtility();
@@ -126,11 +117,11 @@ public class Controller {
 		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
 		return objects.findAll(DrugModel.class);
 	}
-	
+
 	public static List<PatientModel> getPatients() {
 		JpaUtility transaction = new JpaUtility();
 		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
 		return objects.findAll(PatientModel.class);
 	}
-	
+
 }
