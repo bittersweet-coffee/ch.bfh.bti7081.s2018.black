@@ -3,6 +3,7 @@ package ch.bfh.bti7081.s2018.black.pms.model;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -21,7 +22,8 @@ public class DrugModel extends EntityModel {
 	// name of the drug
 	private String name;
 	
-	// description of the drug
+	// description of the drug size is set to 1000 characters
+	@Column(length=1000)
 	private String description;
 	
 	// minimal Dose of the drug
