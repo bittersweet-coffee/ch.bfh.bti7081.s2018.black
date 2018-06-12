@@ -33,14 +33,6 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
      		this.clinicNameList.add(clinic.getName());
      	}
 	}
-	
-	public void addClinic(ClinicModel clinic) {
-		this.clinicModelList.add(clinic);
-	}
-	
-	public List<ClinicModel> getAddictionModelList() {
-		return this.clinicModelList;
-	}
 
 	@Override
 	public List<String> searchButtonClicked(String searchTerm, String searchMode) {

@@ -83,15 +83,7 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 			this.patientItemList.add(new PatientItem(patient));
      	}
 	}
-	/*
-	public void addAddiction(AddictionModel addiction) {
-		this.addictModelList.add(addiction);
-	}
-	
-	public List<AddictionModel> getAddictionModelList() {
-		return this.addictModelList;
-	}
-*/
+
 	@Override
 	public List<String> searchButtonClicked(String searchTerm) {
 		List<String> optionalAddict = this.addictModelList.stream()
