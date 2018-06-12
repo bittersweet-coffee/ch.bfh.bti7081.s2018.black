@@ -254,7 +254,7 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 						}
 					}
 				} else {
-					Notification.show("Warning", "Please enter a Dose of type Double!", Notification.TYPE_ERROR_MESSAGE);
+					Notification.show("Warning", "Please enter a Dose of type Double and less than 7 decimal places!", Notification.TYPE_ERROR_MESSAGE);
 				}
 			} else {
 				Notification.show("Input Data Incomplete");
@@ -282,7 +282,7 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 	
 	/**
 	 * Helper Method to detect whether entered Dose is a valid Double number.
-	 * Valid means: Standard Double format & less than 6 decimal places
+	 * Valid means: Standard Double format & less than 7 decimal places
 	 * @param str Entered Dose retrieved as String
 	 * @return boolean response whether entered Dose is a valid Double number
 	 */
@@ -292,7 +292,7 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		    Double.parseDouble(str);
 		    
 		    // No exception thrown to this point, so it is Double-parsable
-		    // Check if entered number has less than 6 decimal places
+		    // Check if entered number has less than 7 decimal places
 		    if(str.contains(".")) {
 		    	String[] splitted = str.split("\\.");
 		    	
