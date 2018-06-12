@@ -69,9 +69,9 @@ public class PatientOpenWindow extends Window {
 			for (AppointmentModel a: appointmentList) {
 	        	dataAppointment.add(a.getName() + "Strart: " + a.getStart() + "End: " + a.getEnd());
 			}
-		} else
+		} else {
 			dataAppointment.add("No Appointments");
-        
+		}
         
         ListSelect lsAppointment = new ListSelect<>("Appointments", dataAppointment);
         lsAppointment.setRows(4);
