@@ -85,11 +85,11 @@ public class PatientNewWindow extends Window {
 				patient.setDoctors(Controller.getSelectedDoctor(cmbDocs));
 				patient.setClinic(Controller.getSelectedLocation(cmbLocs));
 				patient.setAddictions(Controller.parseSelectedAddictions(addictionselect.getSelectedItems()));
+				
 				if (birthdayField.isEmpty()) {
 					Notification.show("Warning", "Birthday is not set!", Notification.TYPE_ERROR_MESSAGE);
 				} else if (isValid(birthdayField.getValue())) {
-					Date birthdaydate = Date.from(birthdayField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-					patient.setBirthday(birthdaydate);
+					patient.setBirthday(birthdayField.getValue());
 					view.save(patient, descriptionField.getValue());
 					close();
 					Page.getCurrent().reload();

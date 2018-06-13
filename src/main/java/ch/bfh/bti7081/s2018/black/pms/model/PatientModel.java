@@ -1,6 +1,6 @@
 package ch.bfh.bti7081.s2018.black.pms.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,8 +13,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  * Patient class
@@ -41,8 +39,8 @@ public class PatientModel extends EntityModel {
 	private int postCode;
 	
 	// birthday of the patient
-	@Temporal(TemporalType.DATE)
-	private Date birthday;
+	@Column(columnDefinition = "DATE")
+	private LocalDate birthday;
 	
 	// telephone number of the patient
 	private String telephone;
@@ -156,7 +154,7 @@ public class PatientModel extends EntityModel {
 	 * getter of the birthday
 	 * @return the birthday of the patient
 	 */
-	public Date getBirthday() {
+	public LocalDate getBirthday() {
 		return this.birthday;
 	}
 
@@ -164,7 +162,7 @@ public class PatientModel extends EntityModel {
 	 * setter of the birthday
 	 * @param birthday of the patient
 	 */
-	public void setBirthday(Date birthday) {
+	public void setBirthday(LocalDate birthday) {
 		this.birthday = birthday;
 	}
 

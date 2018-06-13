@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
 import ch.bfh.bti7081.s2018.black.pms.model.Appointment;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentDataProvider;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
@@ -24,9 +23,6 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 	
 	private AppointmentDataProvider eventProvider = new AppointmentDataProvider();
 	private List<AppointmentModel> appointmentModelList;
-	
-	private LocalDateTime start = LocalDateTime.now();
-	private LocalDateTime end = LocalDateTime.now();
 	
 	private List<PatientItem> patientItemList = new LinkedList<>();
 	private List<PatientModel> patientModelList;
@@ -49,6 +45,7 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 		JpaUtility transaction = new JpaUtility();
 		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
 		if (appointmentItem.getAppointment().getId() == 0) {
+			
 			eventProvider.addItem(appointmentItem);
 			AppointmentModel appointmentModel = new AppointmentModel();
 			appointmentModel.setName(appointmentItem.getAppointment().getTitle());
@@ -56,13 +53,31 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 			appointmentModel.setStart(appointmentItem.getAppointment().getStart());
 			appointmentModel.setEnd(appointmentItem.getAppointment().getEnd());
 			if(appointmentItem.getAppointment().getPatientItem() != null) {
-				Optional<PatientModel> patientModel = objects.findAll(PatientModel.class).stream().filter(patien -> patien.getId() == appointmentItem.getAppointment().getPatientItem().getId()).findFirst();
+				Optional<PatientModel> patientModel = objects.findAll(PatientModel.class).stream()
+						.filter(patient -> patient.getId() == appointmentItem.getAppointment()
+						.getPatientItem().getId())
+						.findFirst();
+				
 				if(patientModel.isPresent()) {
+					
 					appointmentModel.setPatient(patientModel.get());
+					if(patientModel.get().getAppointments() == null) {
+						List<AppointmentModel> appointmentList = new LinkedList<>();
+						appointmentList.add(appointmentModel);
+						patientModel.get().setAppointments(appointmentList);
+					}
+					else {
+						patientModel.get().getAppointments().add(appointmentModel);
+					}
 				}
 			}
 			if(appointmentItem.getAppointment().getDoctorItem() != null) {
-				Optional<DoctorModel> doctorModel = objects.findAll(DoctorModel.class).stream().filter(doctor -> doctor.getId() == appointmentItem.getAppointment().getDoctorItem().getId()).findFirst();
+				
+				Optional<DoctorModel> doctorModel = objects.findAll(DoctorModel.class).stream()
+						.filter(doctor -> doctor.getId() == appointmentItem.getAppointment()
+						.getDoctorItem().getId())
+						.findFirst();
+				
 				if(doctorModel.isPresent()) {
 					appointmentModel.setDoctor(doctorModel.get());
 				}
@@ -72,15 +87,18 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 			appointmentModelList.add(appointmentModel);
 		} else {
 			for (AppointmentModel appointmentModel : this.appointmentModelList) {
+				
 				if (appointmentModel.getId() == appointmentItem.getAppointment().getId()) {
 					appointmentModel.setName(appointmentItem.getAppointment().getTitle());
 					appointmentModel.setDescription(appointmentItem.getAppointment().getDescription());
 					appointmentModel.setStart(appointmentItem.getAppointment().getStart());
 					appointmentModel.setEnd(appointmentItem.getAppointment().getEnd());
 					Optional<PatientModel> patientModel = objects.findAll(PatientModel.class).stream().filter(patien -> patien.getId() == appointmentItem.getAppointment().getPatientItem().getId()).findFirst();
+					
 					if(patientModel.isPresent()) {
 						appointmentModel.setPatient(patientModel.get());
 					}
+					
 					Optional<DoctorModel> doctorModel = objects.findAll(DoctorModel.class).stream().filter(doctor -> doctor.getId() == appointmentItem.getAppointment().getDoctorItem().getId()).findFirst();
 					if(doctorModel.isPresent()) {
 						appointmentModel.setDoctor(doctorModel.get());
