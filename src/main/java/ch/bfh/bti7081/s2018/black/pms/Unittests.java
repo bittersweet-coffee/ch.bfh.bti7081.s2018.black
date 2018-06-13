@@ -2,12 +2,21 @@ package ch.bfh.bti7081.s2018.black.pms;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.LinkedList;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinService;
+import com.vaadin.server.VaadinSession;
+import com.vaadin.ui.UI;
 
 import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentModel;
@@ -16,8 +25,13 @@ import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
 import ch.bfh.bti7081.s2018.black.pms.model.DrugModel;
 import ch.bfh.bti7081.s2018.black.pms.model.NoticeModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientDrugModel;
+import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.model.SymptomModel;
+import ch.bfh.bti7081.s2018.black.pms.presenter.LoginPresenter;
+import ch.bfh.bti7081.s2018.black.pms.presenter.PatientPresenter;
+import ch.bfh.bti7081.s2018.black.pms.view.LoginViewImpl;
+import ch.bfh.bti7081.s2018.black.pms.view.PatientViewImpl;
 
 class Unittests {
 	
@@ -29,7 +43,13 @@ class Unittests {
 	DrugModel mockDrug;
 	NoticeModel mockNote;
 	PatientDrugModel mockPatientDrugModel;
-	
+
+	@BeforeEach
+	void login() {
+		LoginPresenter lp = new LoginPresenter(new LoginViewImpl());
+		lp.loginButtonClicked("henzij", "test");
+		
+	}
 	
 	@BeforeEach
 	void setupMockObjects() {
@@ -136,8 +156,23 @@ class Unittests {
 	}
 
 	@Test
-	void test() {
-		assertTrue(true);
+	void checkPatientSave() {
+		PatientPresenter pp = new PatientPresenter(new PatientViewImpl());
+		PatientItem mockPatientItem = new PatientItem();
+		mockPatientItem.setAddictions(mockPatient.getAddictions());
+		mockPatientItem.setAppointments(mockPatient.getAppointments());
+		mockPatientItem.setBirthday(mockPatient.getBirthday());
+		mockPatientItem.setClinic(mockClinic);
+		mockPatientItem.setDoctors(mockPatient.getDoctors());
+		mockPatientItem.setDrugs(mockPatient.getDrugs());
+		mockPatientItem.setFirstName(mockPatient.getFirstname());
+		mockPatientItem.setLastName(mockPatient.getLastname());
+		mockPatientItem.setPostcode(mockPatient.getPostCode());
+		mockPatientItem.setStreet(mockPatient.getStreet());
+		mockPatientItem.setTelephone(mockPatient.getTelephone());
+		pp.saveButtonClicked(mockPatientItem, mockPatient.getNotes().get(0).getNote());
+		
+		
 	}
 
 }
