@@ -7,8 +7,6 @@ import java.util.stream.Collectors;
 
 import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
 import ch.bfh.bti7081.s2018.black.pms.model.ClinicModel;
-import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
-import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 import ch.bfh.bti7081.s2018.black.pms.view.ClinicView;
 
 public class ClinicPresenter implements ClinicView.ClinicViewListener{
@@ -25,9 +23,7 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
 	}
 	
 	private void fillClinicList() {
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		this.clinicModelList = objects.findAll(ClinicModel.class);
+		this.clinicModelList = JpaServicePresenter.findAll(ClinicModel.class);
      	
 		for (ClinicModel clinic : this.clinicModelList) {
      		this.clinicNameList.add(clinic.getName());

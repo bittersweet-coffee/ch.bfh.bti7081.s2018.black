@@ -5,8 +5,6 @@ import java.util.List;
 
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
-import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
-import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 import ch.bfh.bti7081.s2018.black.pms.view.ReportView;
 
 public class ReportPresenter implements ReportView.ReportViewListener {
@@ -28,9 +26,7 @@ public class ReportPresenter implements ReportView.ReportViewListener {
 	}
 	
 	public void fillPatientList() {
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		this.patientModelList = objects.findAll(PatientModel.class);
+		this.patientModelList = JpaServicePresenter.findAll(PatientModel.class);
      	
 		this.patientItemList = new LinkedList<>();
 		for (PatientModel patient : this.patientModelList) {

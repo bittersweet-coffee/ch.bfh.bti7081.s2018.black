@@ -1,6 +1,5 @@
 package ch.bfh.bti7081.s2018.black.pms.presenter;
 
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -13,8 +12,6 @@ import ch.bfh.bti7081.s2018.black.pms.model.DoctorItem;
 import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
-import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
-import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 import ch.bfh.bti7081.s2018.black.pms.view.AgendaView;
 
 public class AgendaPresenter implements AgendaView.AgendaViewListener {
@@ -42,8 +39,6 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 
 	@Override
 	public void saveAppointment(AppointmentItem appointmentItem) {
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
 		if (appointmentItem.getAppointment().getId() == 0) {
 			
 			eventProvider.addItem(appointmentItem);
@@ -53,7 +48,7 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 			appointmentModel.setStart(appointmentItem.getAppointment().getStart());
 			appointmentModel.setEnd(appointmentItem.getAppointment().getEnd());
 			if(appointmentItem.getAppointment().getPatientItem() != null) {
-				Optional<PatientModel> patientModel = objects.findAll(PatientModel.class).stream()
+				Optional<PatientModel> patientModel = JpaServicePresenter.findAll(PatientModel.class).stream()
 						.filter(patient -> patient.getId() == appointmentItem.getAppointment()
 						.getPatientItem().getId())
 						.findFirst();
@@ -73,7 +68,7 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 			}
 			if(appointmentItem.getAppointment().getDoctorItem() != null) {
 				
-				Optional<DoctorModel> doctorModel = objects.findAll(DoctorModel.class).stream()
+				Optional<DoctorModel> doctorModel = JpaServicePresenter.findAll(DoctorModel.class).stream()
 						.filter(doctor -> doctor.getId() == appointmentItem.getAppointment()
 						.getDoctorItem().getId())
 						.findFirst();
@@ -82,8 +77,8 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 					appointmentModel.setDoctor(doctorModel.get());
 				}
 			}
-			objects.store(appointmentModel);
-			appointmentItem.getAppointment().setId(objects.getLastId());
+			JpaServicePresenter.store(appointmentModel);
+			appointmentItem.getAppointment().setId(JpaServicePresenter.getLastId());
 			appointmentModelList.add(appointmentModel);
 		} else {
 			for (AppointmentModel appointmentModel : this.appointmentModelList) {
@@ -93,17 +88,17 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 					appointmentModel.setDescription(appointmentItem.getAppointment().getDescription());
 					appointmentModel.setStart(appointmentItem.getAppointment().getStart());
 					appointmentModel.setEnd(appointmentItem.getAppointment().getEnd());
-					Optional<PatientModel> patientModel = objects.findAll(PatientModel.class).stream().filter(patien -> patien.getId() == appointmentItem.getAppointment().getPatientItem().getId()).findFirst();
+					Optional<PatientModel> patientModel = JpaServicePresenter.findAll(PatientModel.class).stream().filter(patien -> patien.getId() == appointmentItem.getAppointment().getPatientItem().getId()).findFirst();
 					
 					if(patientModel.isPresent()) {
 						appointmentModel.setPatient(patientModel.get());
 					}
 					
-					Optional<DoctorModel> doctorModel = objects.findAll(DoctorModel.class).stream().filter(doctor -> doctor.getId() == appointmentItem.getAppointment().getDoctorItem().getId()).findFirst();
+					Optional<DoctorModel> doctorModel = JpaServicePresenter.findAll(DoctorModel.class).stream().filter(doctor -> doctor.getId() == appointmentItem.getAppointment().getDoctorItem().getId()).findFirst();
 					if(doctorModel.isPresent()) {
 						appointmentModel.setDoctor(doctorModel.get());
 					}
-					objects.update(appointmentModel);
+					JpaServicePresenter.update(appointmentModel);
 				}
 			}
 		}
@@ -118,19 +113,15 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 	}
 	
 	private void removeAppointment(Appointment appointment) {
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
 		for (AppointmentModel appointmentModel : this.appointmentModelList) {
 			if (appointmentModel.getId() == appointment.getId()) {
-				objects.remove(appointmentModel);
+				JpaServicePresenter.remove(appointmentModel);
 			}
      	}
 	}
 	
 	public void fillAppointmentList() {
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		this.appointmentModelList = objects.findAll(AppointmentModel.class);
+		this.appointmentModelList = JpaServicePresenter.findAll(AppointmentModel.class);
 		for (AppointmentModel appointmentModel : this.appointmentModelList) {
 			Appointment appointment = new Appointment();
 			appointment.setId(appointmentModel.getId());
@@ -156,9 +147,7 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 		return this.patientItemList;
 	}
 	public void fillPatientList() {
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		this.patientModelList = objects.findAll(PatientModel.class);
+		this.patientModelList = JpaServicePresenter.findAll(PatientModel.class);
 		this.patientItemList = new LinkedList<>();
 		for (PatientModel patient : this.patientModelList) {
 			this.patientItemList.add(new PatientItem(patient));
@@ -171,9 +160,7 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 		return this.doctorItemList;
 	}
 	public void fillDoctorList() {
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		this.doctorModelList = objects.findAll(DoctorModel.class);
+		this.doctorModelList = JpaServicePresenter.findAll(DoctorModel.class);
 		this.doctorItemList = new LinkedList<>();
 		for (DoctorModel doctor : this.doctorModelList) {
 			this.doctorItemList.add(new DoctorItem(doctor));
