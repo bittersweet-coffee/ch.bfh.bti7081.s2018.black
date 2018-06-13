@@ -1,5 +1,6 @@
 package ch.bfh.bti7081.s2018.black.pms.model;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -37,21 +38,17 @@ public class PatientModel extends EntityModel {
 	@Column(name="post_code")
 	private int postCode;
 	
+	// birthday of the patient
+	@Column(columnDefinition = "DATE")
+	private LocalDate birthday;
+	
 	// telephone number of the patient
 	private String telephone;
 	
-	// a notice for the patient
-	private String notice;
-	
 	// list of the drugs that the patient needs
 	// this is a many-to-many relation so we need a relation table
-	@ManyToMany
-    @JoinTable(name="patient_drug",
-        joinColumns=
-            @JoinColumn(name="patient_id", referencedColumnName="id"),
-        inverseJoinColumns=
-            @JoinColumn(name="drug_id", referencedColumnName="id"))
-	private List<DrugModel> drugs;
+	@OneToMany(mappedBy="drug", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<PatientDrugModel> drugs;
 	
 	// list of the addictions that the patient has
 	// this is a many-to-many relation so we need a relation table
@@ -75,12 +72,7 @@ public class PatientModel extends EntityModel {
 	
 	// list of the appointments of the patient
 	// this is a many-to-many relation so we need a relation table
-	@ManyToMany
-    @JoinTable(name="patient_appointment",
-        joinColumns=
-            @JoinColumn(name="patient_id", referencedColumnName="id"),
-        inverseJoinColumns=
-            @JoinColumn(name="appointment_id", referencedColumnName="id"))
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "patient")
 	private List<AppointmentModel> appointments;
 	
 	// list of notes of the patient.
@@ -91,8 +83,8 @@ public class PatientModel extends EntityModel {
 	// location of the patient
 	// location_id is the foreign key. Can not be null
 	@ManyToOne
-	@JoinColumn(name="location_id", nullable=false)
-	private LocationModel location;
+	@JoinColumn(name="clinic_id", nullable=false)
+	private ClinicModel clinic;
 
 	/**
 	 * getter of the first name
@@ -159,19 +151,19 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the notice
-	 * @return the notice that belongs to the patient
+	 * getter of the birthday
+	 * @return the birthday of the patient
 	 */
-	public String getNotice() {
-		return this.notice;
+	public LocalDate getBirthday() {
+		return this.birthday;
 	}
 
 	/**
-	 * setter of the notice
-	 * @param notice that belongs to the patient
+	 * setter of the birthday
+	 * @param birthday of the patient
 	 */
-	public void setNotice(String notice) {
-		this.notice = notice;
+	public void setBirthday(LocalDate birthday) {
+		this.birthday = birthday;
 	}
 
 	/**
@@ -194,7 +186,7 @@ public class PatientModel extends EntityModel {
 	 * getter of the drugs
 	 * @return a list of the drugs that the patient has to take
 	 */
-	public List<DrugModel> getDrugs() {
+	public List<PatientDrugModel> getDrugs() {
 		return this.drugs;
 	}
 
@@ -202,7 +194,7 @@ public class PatientModel extends EntityModel {
 	 * setter of the drugs
 	 * @param drugs that the patient has to take
 	 */
-	public void setDrugs(List<DrugModel> drugs) {
+	public void setDrugs(List<PatientDrugModel> drugs) {
 		this.drugs = drugs;
 	}
 
@@ -258,16 +250,16 @@ public class PatientModel extends EntityModel {
 	 * getter of the location
 	 * @return the location where the patient gets cured
 	 */
-	public LocationModel getLocation() {
-		return this.location;
+	public ClinicModel getClinic() {
+		return this.clinic;
 	}
 
 	/**
 	 * seeter of the location
 	 * @param location where the patient gets cured
 	 */
-	public void setLocation(LocationModel location) {
-		this.location = location;
+	public void setClinic(ClinicModel clinic) {
+		this.clinic = clinic;
 	}
 
 	/**

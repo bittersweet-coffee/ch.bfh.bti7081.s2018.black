@@ -4,13 +4,17 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.vaadin.data.provider.DataProvider;
+import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.NativeSelect;
@@ -19,21 +23,51 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.Grid.SelectionMode;
 
+import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
+
+/**
+ * AddictionViewImpl Class
+ * View Implementation of AddictionView
+ * @author schaa4
+ *
+ */
 public class AddictionViewImpl extends PmsCustomComponent implements View, AddictionView {
-
+	
+	// identifier used for displaying the correct URL
 	public static final String NAME = "addiction";
 	
+	// List containing all listeners for this object (mostly the corresponding Presenter Class)
 	private List<AddictionViewListener> listeners = new ArrayList<AddictionViewListener>();
 	
-	private List<String> patientList;
+	// List containing Mock Objects for the PatientModel
+	private List<PatientItem> patientItemList;
 	
+	// UI element displaying the addiction names on the left side of the UI
 	private NativeSelect<String> nativeAddict;
 	
+	// Grid displaying all patients of the PMS
+	// used for allocation of a drug to a patient
+	// provides filter capabilities
+	private Grid<PatientItem> patientItemGrid;
+	
+	// DataProvider used to populate the patientItemGrid
+	private ListDataProvider<PatientItem> patientProvider;
+	
+	// Window which pops up when an allocation is to be done
+	// contains the patientItemGrid
+	private Window windowPatient;
+	
+	// labels used for describing Addiction Properties
 	private Label lblAddictNameTitle, lblAddictDescTitle, lblSymptoms;
 	
+	// TextAreas used for displaying Addiction Properties
 	private TextArea txtAddictName, txtAddictDesc, txtSymptoms;
 
+	/**
+	 * Default Constructor like all other ViewImplementations to trigger the super-class constructor  
+	 */
 	public AddictionViewImpl() {
 		super();
 	}
@@ -41,8 +75,8 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 	public void enter(ViewChangeEvent event) {
 		super.bC.makeCrumbs(AddictionViewImpl.NAME);
     	super.bC.visibleBreadcrumbs();
+		super.menuBar.getItems().get(1).setText((String) VaadinSession.getCurrent().getAttribute("username"));
 		this.nativeAddict = new NativeSelect<>();
-		this.patientList = new LinkedList<>();
 		
 		for (AddictionViewListener listener: listeners) {
 			this.nativeAddict.setItems(listener.setupAddictList());
@@ -115,28 +149,58 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         VerticalLayout marginLayout = new VerticalLayout();
         HorizontalLayout patientLayout = new HorizontalLayout();
         
+		this.patientItemGrid = new Grid<>();
+		this.patientItemList = new LinkedList<>();
+		
+		patientItemGrid.addColumn(PatientItem::getId).setCaption("ID");
+		patientItemGrid.addColumn(PatientItem::getFirstName).setCaption("Firstname");
+		patientItemGrid.addColumn(PatientItem::getLastName).setCaption("Lastname");
+	    
+		updatePatientItemList();
+		patientProvider = DataProvider.ofCollection(patientItemList);
+		patientProvider.refreshAll();
+		
+		patientProvider.withConfigurableFilter();
+		
+		patientItemGrid.setDataProvider(patientProvider);
+		patientItemGrid.setSelectionMode(SelectionMode.SINGLE);
+		patientItemGrid.setWidth(800.0f, Unit.PIXELS);
+	    
+		TextField txtFilter = new TextField();
+		txtFilter.setPlaceholder("Filter by Firstname or Lastname");
+		txtFilter.setWidth(735.0f, Unit.PIXELS);
+		txtFilter.focus();
+	    
+		txtFilter.addValueChangeListener(action -> {
+			patientProvider.setFilter(name -> {
+				String firstNameLower = name.getFirstName().toLowerCase();
+				String lastNameLower = name.getLastName().toLowerCase();
+				String filterLower = action.getValue().toLowerCase();
+				patientItemGrid.deselectAll();
+				return firstNameLower.contains(filterLower) || lastNameLower.contains(filterLower);
+			});
+		});        
+        
         Label lblPatient = new Label("Patient:");
         Label lblSelectedAddict = new Label();
         
-        NativeSelect<String> nativePatient = new NativeSelect<>();
-        nativePatient.setWidth(300.0f, Unit.PIXELS);
-        nativePatient.setEmptySelectionAllowed(false);
-        
-        patientLayout.addComponents(lblPatient, nativePatient);
-        patientLayout.setMargin(new MarginInfo(true, false, true, false));
-        
-        Button btnPatient = new Button("Allocate");
-        
-        marginLayout.addComponents(lblSelectedAddict, patientLayout, btnPatient);
-        marginLayout.setMargin(true);
-        
-        allocateContent.addComponent(marginLayout);
-        allocateContent.setMargin(true);
-        
-        final Window windowPatient = new Window("Allocate to Patient");
-        windowPatient.setWidth(600.0f, Unit.PIXELS);
+	    patientLayout.addComponents(lblPatient, txtFilter);
+	    patientLayout.setMargin(new MarginInfo(true, false, false, false));
+	    
+	    Button btnAllocate = new Button("Allocate");
+	    btnAllocate.setEnabled(false);
+	    
+	    marginLayout.addComponents(lblSelectedAddict, patientLayout, patientItemGrid, btnAllocate);
+	    marginLayout.setMargin(true);
+	    
+	    allocateContent.addComponent(marginLayout);
+	    allocateContent.setMargin(true);
+	    
+        windowPatient = new Window("Allocate to Patient");
+        windowPatient.setWidth(900.0f, Unit.PIXELS);
         windowPatient.setContent(allocateContent);
         windowPatient.setModal(true);
+        
         
         // Set content
         super.contentPanel.setContent(vLayout);
@@ -155,12 +219,8 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
         });
         
         btnAddTo.addClickListener(click -> {
-			for (AddictionViewListener listener: listeners) {
-        		this.patientList = listener.addToButtonClicked();
-			}
         	super.contentPanel.getUI().getUI().addWindow(windowPatient);
         	lblSelectedAddict.setValue("Selected Addiction: " + this.nativeAddict.getSelectedItem().get());
-        	nativePatient.setItems(this.patientList);
         });
     
 		this.nativeAddict.addValueChangeListener(selected -> {
@@ -177,15 +237,29 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 			btnAddTo.setEnabled(true);
 		});
 		
-		btnPatient.addClickListener(click -> {
-			if (nativePatient.getSelectedItem().isPresent()) {
-				for (AddictionViewListener listener: listeners)
-	        		listener.allocateButtonClicked(nativeAddict.getSelectedItem().get(),
-	        				nativePatient.getSelectedItem().get());
+		btnAllocate.addClickListener(click -> {
+			if (patientItemGrid.getSelectedItems().iterator().hasNext()) {
+				for (AddictionViewListener listener: listeners) {
+					if(listener.allocateButtonClicked(nativeAddict.getSelectedItem().get(),
+	        				patientItemGrid.getSelectedItems().iterator().next())) {
+						this.windowPatient.close();
+					} else {
+						Notification.show("Warning", "The selected addiction has already been assigned to the patient!", Notification.TYPE_ERROR_MESSAGE);
+					}
+				}
+	        		
 			} else {
 				Notification.show("Input Data Incomplete");
 			}
 			
+		});
+		
+		patientItemGrid.addSelectionListener(selection -> {
+			if (patientItemGrid.getSelectedItems().iterator().hasNext()) {
+				btnAllocate.setEnabled(true);
+			} else {
+				btnAllocate.setEnabled(false);
+			}
 		});
 		
 		ShortcutListener enterSearchListener = new ShortcutListener("Enter Search Listener", ShortcutAction.KeyCode.ENTER, null) {
@@ -197,6 +271,9 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 		
 		txtSearch.addShortcutListener(enterSearchListener);
 		btnSearch.addShortcutListener(enterSearchListener);
+		
+		txtFilter.addShortcutListener(enterSearchListener);
+		btnAllocate.addShortcutListener(enterSearchListener);
 	}
 	
 	@Override
@@ -204,25 +281,12 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 		this.listeners.add(listener);
 	}
 	
-	/*
-	@Override
-	public void setupAddictList(List<String> addictionList) {
-		this.nativeAddict.setItems(addictionList);
+	/**
+	 * Method used by the patiemtItemGrid to update its DataProvider 
+	 */
+	private void updatePatientItemList() {
+		for (AddictionViewListener listener: listeners) {
+			this.patientItemList = listener.setupPatientItemList();
+		}
 	}
-	
-	@Override
-	public void setListDesc(String desc) {
-		this.txtAddictDesc.setValue(desc);
-	}
-
-	@Override
-	public void setListSymptoms(String symptoms) {
-		this.txtSymptoms.setValue(symptoms);
-	}
-
-	@Override
-	public void setupPatientList(List<String> patientList) {
-		this.patientList = patientList;
-	}
-	*/
 }

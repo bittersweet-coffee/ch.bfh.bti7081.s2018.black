@@ -2,6 +2,7 @@ package ch.bfh.bti7081.s2018.black.pms.view;
 
 import java.util.List;
 
+import com.vaadin.server.Page;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.MenuBar.MenuItem;
@@ -33,18 +34,17 @@ public class BreadCrumbMaker {
 	 * 
 	 * Method used in all ViewImpl to get access to the paths.
 	 * 
-	 * @return 
-	 * Returns the breadcrumbs MenuBar to the PmsCustomComponent class.
-	 * 
 	 * NullPointerException if there is no Navigator.
+	 * 
+	 * @return 
+	 * Returns the new breadcrumbs as MenuBar.
 	 */
 	public MenuBar visibleBreadcrumbs(){
 		try{
 			//Checks whether there exists a Navigator to controll the crumbs
 			if(UI.getCurrent().getNavigator() != null){
-				
 				String path = UI.getCurrent().getNavigator().getState();
-					if(path.equals(null) || path.equals("")){
+					if(path.equals(null) || path.equals("") || path.equals("login")){
 						this.breadcrumbs.setVisible(false);
 						removeBreadcrumbs();
 					} 
@@ -54,6 +54,7 @@ public class BreadCrumbMaker {
 			}
 		} catch (NullPointerException e){
 			Notification.show("Couldn't find correct path!");
+			Page.getCurrent().reload();
 		}
 		return this.breadcrumbs;
 	}
@@ -66,8 +67,7 @@ public class BreadCrumbMaker {
 	 * The path where the user is navigating
 	 */
 	public void makeCrumbs(String path){
-		List<MenuItem> crumbs = this.breadcrumbs.getItems();
-		String lastPath = crumbs.get(this.breadcrumbs.getSize()-1).getText();
+		String lastPath = this.breadcrumbs.getItems().get(this.breadcrumbs.getSize()-1).getText();
 		//Check for duplicate crumbs
 		if(lastPath.substring(0, lastPath.length() - 2).equals(path)){
 		} 
@@ -91,7 +91,6 @@ public class BreadCrumbMaker {
 				public void menuSelected(MenuItem selectedItem) {
 					UI.getCurrent().getNavigator().navigateTo(DASHBOARD);
 					removeBreadcrumbs();
-					homeButton();
 				}
 			};
 		this.breadcrumbs.addItem(FIRST_CRUMB + " >", breadcrumbCommand);
@@ -99,8 +98,10 @@ public class BreadCrumbMaker {
 	
 	/**
 	 * Removing all items from the Breadcrumbs MenuBar
+	 * and sets the default Breadcrumb 
 	 */
 	private void removeBreadcrumbs(){
 		this.breadcrumbs.removeItems();
+		homeButton();
 	}
 }

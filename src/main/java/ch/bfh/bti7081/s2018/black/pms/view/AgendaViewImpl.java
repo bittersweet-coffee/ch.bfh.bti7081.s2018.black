@@ -1,6 +1,7 @@
 package ch.bfh.bti7081.s2018.black.pms.view;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.vaadin.addon.calendar.Calendar;
@@ -10,9 +11,14 @@ import org.vaadin.addon.calendar.handler.BasicItemResizeHandler;
 import org.vaadin.addon.calendar.ui.CalendarComponentEvents;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.VaadinSession;
+
 import ch.bfh.bti7081.s2018.black.pms.model.Appointment;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentDataProvider;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
+import ch.bfh.bti7081.s2018.black.pms.model.DoctorItem;
+import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
+import ch.bfh.bti7081.s2018.black.pms.view.PatientView.PatientViewListener;
 
 public class AgendaViewImpl extends PmsCustomComponent implements View, AgendaView {
 
@@ -20,6 +26,9 @@ public class AgendaViewImpl extends PmsCustomComponent implements View, AgendaVi
 
 	private List<AgendaViewListener> listeners = new ArrayList<AgendaViewListener>();
 	Calendar<AppointmentItem> cal = new Calendar<>();
+	
+	private List<PatientItem> patientItemList;
+	private List<DoctorItem> doctorItemList;
 
 	public AgendaViewImpl() {
 		super();
@@ -28,23 +37,28 @@ public class AgendaViewImpl extends PmsCustomComponent implements View, AgendaVi
 	public void enter(ViewChangeEvent event) {
 		super.bC.makeCrumbs(AgendaViewImpl.NAME);
 		super.bC.visibleBreadcrumbs();
+		super.menuBar.getItems().get(1).setText((String) VaadinSession.getCurrent().getAttribute("username"));
 		//cal.setWidth(super.contentPanel.getWidth(), super.contentPanel.getWidthUnits());
 		cal.setWidth("1200px");
 		addCalendarEventListeners();
 		changeCalendarRange();
+		this.patientItemList = new LinkedList<>();
+		updatePatientItemList();
+		this.doctorItemList = new LinkedList<>();
+		updateDoctorItemList();
 		super.contentPanel.setSizeUndefined();
 		super.contentPanel.setContent(cal);
 	}
 	
 	private void onCalendarRangeSelect(CalendarComponentEvents.RangeSelectEvent event) {
 		AppointmentItem appointmentItem = new AppointmentItem(new Appointment(event.getStart().toLocalDateTime(), event.getEnd().toLocalDateTime()));
-		final AppointmentWindow window = new AppointmentWindow(this, appointmentItem); 
+		final AppointmentWindow window = new AppointmentWindow(this, appointmentItem, patientItemList, doctorItemList); 
 		window.setModal(true);
 		super.getUI().getUI().addWindow(window);
     }
 	
 	private void onCalendarItemClick(CalendarComponentEvents.ItemClickEvent event) {
-		final AppointmentWindow window = new AppointmentWindow(this, (AppointmentItem) event.getCalendarItem());
+		final AppointmentWindow window = new AppointmentWindow(this, (AppointmentItem) event.getCalendarItem(),patientItemList, doctorItemList);
 		window.setModal(true);
 		super.getUI().getUI().addWindow(window);;
 	}
@@ -95,5 +109,17 @@ public class AgendaViewImpl extends PmsCustomComponent implements View, AgendaVi
 	}
 	
 	public void changeCalendarRange() {
+	}
+	
+	private void updatePatientItemList() {
+		for (AgendaViewListener listener: listeners) {
+			this.patientItemList = listener.setupPatientItemList();
+		}
+	}
+	
+	private void updateDoctorItemList() {
+		for (AgendaViewListener listener: listeners) {
+			this.doctorItemList = listener.setupDoctorItemList();
+		}
 	}
 }

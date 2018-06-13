@@ -15639,6 +15639,10 @@ div.v-layout.v-horizontal.v-widget {
 	overflow: hidden;
 }
 
+.mytheme .login-view {
+	margin-top: 200px;
+}
+
 .mytheme .main-menubar {
 	height: 50px;
 	width: 100%;

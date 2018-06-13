@@ -14,9 +14,10 @@
         <class>ch.bfh.bti7081.s2018.black.pms.model.DrugModel</class>
         <class>ch.bfh.bti7081.s2018.black.pms.model.DoctorModel</class>
         <class>ch.bfh.bti7081.s2018.black.pms.model.EntityModel</class>
-        <class>ch.bfh.bti7081.s2018.black.pms.model.LocationModel</class>
+        <class>ch.bfh.bti7081.s2018.black.pms.model.ClinicModel</class>
         <class>ch.bfh.bti7081.s2018.black.pms.model.NoticeModel</class>
         <class>ch.bfh.bti7081.s2018.black.pms.model.PatientModel</class>
+        <class>ch.bfh.bti7081.s2018.black.pms.model.PatientDrugModel</class>
         <class>ch.bfh.bti7081.s2018.black.pms.model.SymptomModel</class>
         <class>ch.bfh.bti7081.s2018.black.pms.model.UserModel</class>
       

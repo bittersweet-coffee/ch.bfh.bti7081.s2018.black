@@ -8,6 +8,7 @@ import com.vaadin.data.provider.DataProvider;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -20,7 +21,10 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
 
+import ch.bfh.bti7081.s2018.black.pms.controller.Controller;
+import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
+import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 
 public class PatientViewImpl extends PmsCustomComponent implements View, PatientView {
 
@@ -41,6 +45,7 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 	public void enter(ViewChangeEvent event) {
 		super.bC.makeCrumbs(PatientViewImpl.NAME);
 		super.bC.visibleBreadcrumbs();
+		super.menuBar.getItems().get(1).setText((String) VaadinSession.getCurrent().getAttribute("username"));
 		this.patientItemGrid = new Grid<>();
 		this.patientItemList = new LinkedList<>();
 		
@@ -48,6 +53,7 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 		patientItemGrid.addColumn(PatientItem::getId).setCaption("ID");
 		patientItemGrid.addColumn(PatientItem::getFirstName).setCaption("Firstname");
 		patientItemGrid.addColumn(PatientItem::getLastName).setCaption("Lastname");
+		patientItemGrid.addColumn(PatientItem::getBirthday).setCaption("Birthday");
 		
 		updatePatientItemList();
 		patientProvider = DataProvider.ofCollection(patientItemList);
@@ -128,7 +134,7 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 	}
 
 	protected void patientNewWindow() {
-		final PatientNewWindow window = new PatientNewWindow(this);
+		final PatientNewWindow window = new PatientNewWindow(this, new PatientItem());
 		window.setModal(true);
 		super.getUI().getUI().addWindow(window);
 	}
@@ -140,7 +146,10 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 		super.getUI().getUI().addWindow(window);
 	}
 
-	public void save(PatientItem newPatient) {
+	public void save(PatientItem patientItem, String note) {
+		for (PatientViewListener listener : listeners) {
+			listener.saveButtonClicked(patientItem, note);
+		}
 	}
 	
 	@Override

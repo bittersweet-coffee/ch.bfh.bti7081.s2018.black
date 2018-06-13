@@ -1,95 +1,93 @@
 package ch.bfh.bti7081.s2018.black.pms.model;
 
-import java.util.Date;
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.MappedSuperclass;
 
 /**
  * User class
  * @author musaa1
  * @version 0.1
  */
-@Entity
-@Table(name="user")
+@MappedSuperclass
 public class UserModel extends EntityModel {
+
+	// firstname of the user
+	@Column(nullable=false)
+	private String firstname;
 	
-	// name of the user
-	private String name;
+	// lastname of user
+	@Column(nullable=false)
+	private String lastname;
 	
-	// password of the user
-	private String password;
+	// username of the user
+	@Column(nullable=false)
+	private String username;
 	
-	// the date when the user will expire
-	@Column(name="expiry_date")
-	private Date expiryDate;
+	// passwordHash of the user
+	@Column(nullable=false)
+	private String passwordHash;
 	
-	// doctor that belongs to the specified user
-	@OneToOne(mappedBy="user")
-	private DoctorModel doctor;
-
 	/**
-	 * getter of the name
-	 * @return the name of the user
+	 * getter of the firstname
+	 * @return the firstname of the user
 	 */
-	public String getName() {
-		return this.name;
+	public String getFirstname() {
+		return this.firstname;
 	}
 
 	/**
-	 * setter of the name
-	 * @param name of the user
+	 * setter of the firstname
+	 * @param firstname of the user
 	 */
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
 
 	/**
-	 * getter of the password
-	 * @return the password of the user
+	 * getter of the lastname
+	 * @return the lastname of the user
 	 */
-	public String getPassword() {
-		return this.password;
+	public String getLastname() {
+		return this.lastname;
 	}
 
 	/**
-	 * setter of the password
-	 * @param password of the user
+	 * setter of the lastname
+	 * @param lastname of the user
 	 */
-	public void setPassword(String password) {
-		this.password = password;
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
 	}
 
 	/**
-	 * getter of the expire date
-	 * @return the date when the user will expire
+	 * getter of the username 
+	 * @return the username of the user
 	 */
-	public Date getExpiryDate() {
-		return this.expiryDate;
+	public String getUsername() {
+		return this.username;
 	}
 
 	/**
-	 * setter of the expire date
-	 * @param expiryDate: Date when the user will expire
+	 * setter of the username
+	 * @param username of the user
 	 */
-	public void setExpiryDate(Date expiryDate) {
-		this.expiryDate = expiryDate;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	/**
-	 * getter of the doctor
-	 * @return the doctor that belongs to the user
+	 * getter of the passwordHash
+	 * @return the passwordHash of the user
 	 */
-	public DoctorModel getDoctor() {
-		return this.doctor;
+	public String getPasswordHash() {
+		return this.passwordHash;
 	}
 
 	/**
-	 * setter of the doctor
-	 * @param doctor of the user that blongs to it
+	 * setter of the passwordHash
+	 * @param passwordHash of the user
 	 */
-	public void setDoctor(DoctorModel doctor) {
-		this.doctor = doctor;
+	public void setPasswordHash(String passwordHash) {
+		this.passwordHash = passwordHash;
 	}
 }

@@ -1,6 +1,5 @@
 package ch.bfh.bti7081.s2018.black.pms.model;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -9,7 +8,6 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 /**
  * Addiction class
@@ -34,13 +32,10 @@ public class AddictionModel extends EntityModel {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "addiction")
 	private List<SymptomModel> symptoms;
 
-	// hibernate ignores this variable. I think we don't need this variable
-	@Transient
-	private List<String> treatments = new LinkedList<>();;
-	
-	// hibernate ignores this variable. TODO: Do we have to rename our LocationModel class to ClinicModel?
-	@Transient
-	private List<String> clinics = new LinkedList<>();;
+	// list of the clinics where the addiction is treaten
+	// is mapped with the variable addictions of the class AddictionModel
+    @ManyToMany(mappedBy="addictions")
+	private List<ClinicModel> clinics;
 	
 	// list of patients with the same addiction
 	// is mapped with the variable addictions in the class PatientModel
@@ -127,21 +122,11 @@ public class AddictionModel extends EntityModel {
 			return symptomString;
 	}
 	
-	// the variable treatments may be deleted
-	public List<String> getTreatments() {
-		return this.treatments;
-	}
-	
-	// the variable treatments may be deleted
-	public void setTreatments(List<String> treatments) {
-		this.treatments = treatments;
-	}
-	
 	/**
 	 * getter of the clinics
 	 * @return List of clinics where the addiction can be cured
 	 */
-	public List<String> getClinics() {
+	public List<ClinicModel> getClinics() {
 		return this.clinics;
 	}
 	
@@ -149,7 +134,7 @@ public class AddictionModel extends EntityModel {
 	 * setter of clinics
 	 * @param clinics where the addiction can be cured
 	 */
-	public void setClinics(List<String> clinics) {
+	public void setClinics(List<ClinicModel> clinics) {
 		this.clinics = clinics;
 	}
 	
