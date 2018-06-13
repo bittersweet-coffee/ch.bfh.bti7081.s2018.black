@@ -92,7 +92,7 @@ public class JpaDataAccessObject implements JpaService {
 	public <T> List<T> findAll(Class<T> entityClass) {
 		// return the result of the execute method of the JpaUtility class with our block of code
 		return transaction.execute(
-								// lambda for writing the anonymous class
+				// lambda for writing the anonymous class
 				(entityManager) -> { 
 					// return all objects from the entity
 					return entityManager.createQuery(
