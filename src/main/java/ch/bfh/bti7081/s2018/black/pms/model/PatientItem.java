@@ -7,21 +7,19 @@ import java.util.List;
 public class PatientItem {
 	
 	private Integer id;
+	private PatientModel model;
+	private ClinicModel clinic;
+	
+	private String firstName, lastName, street, telephone;
+	private Date birthday;
+	private int postcode;
 	
 	private List<String> notes;
-	private PatientModel model;
-	private String street;
-	private int postcode;
-	private String telephone;
 	private List<AddictionModel> addictions;
 	private List<DoctorModel> doctors;
-	private ClinicModel clinic;
 	private List<PatientDrugModel> drugs;
 	private List<AppointmentModel> appointments;
 	
-	
-	private String firstName, lastName;
-	private Date birthday;
 	
 	public PatientItem() {
 		
@@ -37,11 +35,33 @@ public class PatientItem {
 		this.firstName = model.getFirstname();
 		this.lastName = model.getLastname();
 		this.birthday = model.getBirthday();
-
+		this.street = model.getStreet();
+		this.postcode = model.getPostCode();
+		this.telephone = model.getTelephone();
+		this.clinic = model.getClinic();
+		
+		this.drugs = new LinkedList<>();
+		for (PatientDrugModel drug : model.getDrugs()) {
+			this.drugs.add(drug);
+		}
+		
+		this.doctors = new LinkedList<>();
+		for (DoctorModel doctor : model.getDoctors()) {
+			this.doctors.add(doctor);
+		}
+		
 		this.notes = new LinkedList<>();
 		for (NoticeModel note : model.getNotes()) {
 			this.notes.add(note.getNote());
 		}
+		
+		/*
+		this.addictions = new LinkedList<>();
+		for (AddictionModel addiction : model.getAddictions()) {
+			this.notes.add(addiction.getName());
+		}
+		*/
+		
 	}
 
 	public Integer getId() {

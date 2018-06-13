@@ -15,7 +15,8 @@ import com.vaadin.ui.Window;
 
 import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentModel;
-import ch.bfh.bti7081.s2018.black.pms.model.DrugModel;
+import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
+import ch.bfh.bti7081.s2018.black.pms.model.PatientDrugModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 
 public class PatientOpenWindow extends Window {
@@ -34,6 +35,10 @@ public class PatientOpenWindow extends Window {
 		Label lblFirstName = new Label("Firstname:");
 		Label lblLastName = new Label("Lastname:");
 		Label lblBirthday = new Label("Birthday:");
+		Label lblStreet = new Label("Street:");
+		Label lblPostCode = new Label("ZIP:");
+		Label lblTel = new Label("Telephone:");
+		Label lblClinic = new Label("Clinic:");
 		
 		TextField txtFirstName = new TextField();
 		txtFirstName.setValue(this.patientItem.getFirstName());
@@ -46,21 +51,53 @@ public class PatientOpenWindow extends Window {
 		txtLastName.setValue(this.patientItem.getLastName());
 		
 		TextField txtBirthday = new TextField();
-		txtBirthday.setPlaceholder("Insert Birthday");
 		txtBirthday.setMaxLength(20);
 		txtBirthday.setReadOnly(true);
 		txtBirthday.setValue(this.patientItem.getBirthdayAsString());
 		
-		GridLayout tileGridPatient = new GridLayout(2,3);
+		TextField txtStreet = new TextField();
+		txtStreet.setMaxLength(20);
+		txtStreet.setReadOnly(true);
+		txtStreet.setValue(this.patientItem.getStreet());
+		
+		TextField txtPostCode = new TextField();
+		txtPostCode.setMaxLength(20);
+		txtPostCode.setReadOnly(true);
+		txtPostCode.setValue(String.valueOf(this.patientItem.getPostcode()));
+		
+		TextField txtTel = new TextField();
+		txtTel.setMaxLength(20);
+		txtTel.setReadOnly(true);
+		txtTel.setValue(this.patientItem.getTelephone());
+		
+		TextField txtClinic = new TextField();
+		//txtClinic.setMaxLength(20);
+		txtClinic.setReadOnly(true);
+		txtClinic.setValue(this.patientItem.getClinic().getName());
+		
+		GridLayout tileGridPatient = new GridLayout(4,4);
 		tileGridPatient.addComponent(lblFirstName, 0, 0);
 		tileGridPatient.addComponent(lblLastName, 0, 1);
 		tileGridPatient.addComponent(lblBirthday, 0, 2);
+		tileGridPatient.addComponent(lblClinic, 0, 3);
 		tileGridPatient.addComponent(txtFirstName, 1, 0);
 		tileGridPatient.setComponentAlignment(txtFirstName, Alignment.MIDDLE_CENTER);
 		tileGridPatient.addComponent(txtLastName, 1, 1);
 		tileGridPatient.setComponentAlignment(txtLastName, Alignment.MIDDLE_CENTER);
 		tileGridPatient.addComponent(txtBirthday, 1, 2);
 		tileGridPatient.setComponentAlignment(txtBirthday, Alignment.MIDDLE_CENTER);
+		tileGridPatient.addComponent(txtClinic, 1, 3);
+		tileGridPatient.setComponentAlignment(txtClinic, Alignment.MIDDLE_CENTER);		
+		
+		tileGridPatient.addComponent(lblStreet, 2, 0);
+		tileGridPatient.addComponent(lblPostCode, 2, 1);
+		tileGridPatient.addComponent(lblTel, 2, 2);
+		tileGridPatient.addComponent(txtStreet, 3, 0);
+		tileGridPatient.setComponentAlignment(txtStreet, Alignment.MIDDLE_CENTER);
+		tileGridPatient.addComponent(txtPostCode, 3, 1);
+		tileGridPatient.setComponentAlignment(txtPostCode, Alignment.MIDDLE_CENTER);
+		tileGridPatient.addComponent(txtTel, 3, 2);
+		tileGridPatient.setComponentAlignment(txtTel, Alignment.MIDDLE_CENTER);
 		
 		//Appointment Part
 		List<AppointmentModel> appointmentList =  patientItem.getModel().getAppointments();
@@ -77,27 +114,23 @@ public class PatientOpenWindow extends Window {
         lsAppointment.setRows(4);
         lsAppointment.setWidth("500px");
         lsAppointment.setStyleName("select.v-select-select");
-        
-        //lsPatient.addValueChangeListener(event -> System.out.println("Value changed"));
-           
-        
+       
 		GridLayout tileGridAppointment = new GridLayout(1,2);
 		tileGridAppointment.addComponent(lsAppointment, 0, 0);
 		
 		//Comment Part
 		TextArea txtCurrentNotes = new TextArea();
-		txtCurrentNotes.setWidth("210px");
+		txtCurrentNotes.setWidth("250px");
 		txtCurrentNotes.setHeight("340px");
 		txtCurrentNotes.setReadOnly(true);
 		txtCurrentNotes.setCaptionAsHtml(true);
 		txtCurrentNotes.setValue(this.patientItem.getNotesAsString());
 		
 		TextArea txtNewNote = new TextArea();
-		txtNewNote.setWidth("210px");
+		txtNewNote.setWidth("250px");
 		txtNewNote.setHeight("340px");
 		
 		Button btnSaveNote = new Button("Save");
-		//TextField 
 		
 		GridLayout tileGridComment = new GridLayout(2,2);
 		tileGridComment.addComponent(txtCurrentNotes, 0, 0);
@@ -114,38 +147,50 @@ public class PatientOpenWindow extends Window {
 		}
 			
         ListSelect lsAddiction = new ListSelect<>("Addictions", dataAddiction);
-        lsAddiction.setRows(4);
-        lsAddiction.setWidth("500px");
-        lsAddiction.setStyleName("select.v-select-select");
-        
-        //lsPatient.addValueChangeListener(event -> System.out.println("Value changed"));
-        
+        lsAddiction.setRows(3);
+        lsAddiction.setWidth("525px");
+        lsAddiction.setStyleName("select.v-select-select");        
     
 		GridLayout tileGridAddiction = new GridLayout(1,2);
 		tileGridAddiction.addComponent(lsAddiction, 0, 0);
 		
+		
+		
 		//Medication Part
-		/**
-		 * --> FOR SCHLUP TO FIX!!!!
-		 * List<DrugModel> dataMediObjects = patientItem.getModel().getDrugs();
+		List<PatientDrugModel> dataMediObjects = patientItem.getModel().getDrugs();
 		List<String> dataMedication = new LinkedList<String>();
-		for (DrugModel drugs : dataMediObjects) {
-			dataMedication.add(drugs.getName());
+		for (PatientDrugModel drugs : dataMediObjects) {
+			dataMedication.add(drugs.getDrug().getName() + " Dose: " + drugs.getDose());
 		}
+		
         ListSelect lsMedication = new ListSelect<>("Medications", dataMedication);
-        lsMedication.setRows(4);
-        lsMedication.setWidth("500px");
-        lsMedication.setStyleName("select.v-select-select");**/
-        
-        //lsPatient.addValueChangeListener(event -> System.out.println("Value changed"));
-         
-        
+        lsMedication.setRows(3);
+        lsMedication.setWidth("525px");
+        lsMedication.setStyleName("select.v-select-select");
+                
 		GridLayout tileGridMedication = new GridLayout(1,2);
-		//tileGridMedication.addComponent(lsMedication, 0, 0);
+		tileGridMedication.addComponent(lsMedication, 0, 0);
 	
+		
+		//Doctors Part
+		List<DoctorModel> docList = patientItem.getModel().getDoctors();
+		List<String> dataDoc = new LinkedList<String>();
+		for (DoctorModel doctor : docList) {
+			dataDoc.add(doctor.getLastname() + " " + doctor.getFirstname());
+		}
+		
+        ListSelect lsDoc = new ListSelect<>("Docotrs", dataDoc);
+        lsDoc.setRows(2);
+        lsDoc.setWidth("525px");
+        lsDoc.setStyleName("select.v-select-select");
+                
+		GridLayout tileGridDoc = new GridLayout(1,2);
+		tileGridDoc.addComponent(lsDoc, 0, 0);
+		
+		
 		VerticalLayout vBoxLeft = new VerticalLayout();
 		vBoxLeft.setWidth("600px");
-		vBoxLeft.addComponents(tileGridPatient, tileGridAddiction, tileGridMedication);
+		vBoxLeft.addComponents(tileGridPatient, tileGridAddiction, tileGridMedication, tileGridDoc);
 		
 		VerticalLayout vBoxRight = new VerticalLayout();
 		vBoxRight.setWidth("600px");

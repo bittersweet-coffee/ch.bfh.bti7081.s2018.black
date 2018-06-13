@@ -78,19 +78,19 @@ INSERT INTO symptom (description, addiction_id) VALUES ('distress or impairment 
 INSERT INTO symptom (description, addiction_id) VALUES ('compulsive buying is not limited to hypomanic or manic episodes',10)
 
 
-INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@BernerKlinikMontana.ch','Berner Klinik Montana','Bern',1000,'Aarbergergasse','062 287 32 32')
-INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@BernerRehaZentrum.ch','Berner Reha Heiligenschwendi','Bern',1003,'Aarstrasse','081 303 30 30')
-INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@HirslandenKlinikBeauite.ch','Hirslanden Klinik Beau-Site','Bern',1004,'Abendstrasse','0848 801 100')
-INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@HirslandenKlinikPermanence.ch','Hirslanden Klinik Permanence','Bern',1005,'Aberlistrasse','044 786 00 00')
-INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@HirslandenSalemSpital.ch','Hirslanden Salem-Spital','Bern',1006,'Aebistrasse','062 287 32 32')
-INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@HôpitalduJurabernois.ch','Hopital du Jura bernois Moutier','Bern',1007,'Aegertenstrasse','062 767 99 99')
-INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@HôpitalduJurabernoisSaintImier.ch','Hopital du Jura bernois Saint-Imier','Bern',1008,'Aehrenweg','044 814 27 74')
+INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@BernerKlinikMontana.ch','Klinik Montana','Bern',1000,'Aarbergergasse','062 287 32 32')
+INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@BernerRehaZentrum.ch','Reha Schwendi','Bern',1003,'Aarstrasse','081 303 30 30')
+INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@HirslandenKlinikBeauite.ch','Klinik Beau-Site','Bern',1004,'Abendstrasse','0848 801 100')
+INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@HirslandenKlinikPermanence.ch','Klinik Permanence','Bern',1005,'Aberlistrasse','044 786 00 00')
+INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@HirslandenSalemSpital.ch','Salem-Spital','Bern',1006,'Aebistrasse','062 287 32 32')
+INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@HôpitalduJurabernois.ch','Hopital du Moutier','Bern',1007,'Aegertenstrasse','062 767 99 99')
+INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@HôpitalduJurabernoisSaintImier.ch','Hopital Saint-Imier','Bern',1008,'Aehrenweg','044 814 27 74')
 INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@HUGHôpitaldeLoëx.ch','HUG Hopital de Loex','Bern',1008,'Ahornweg','052 208 08 08')
 INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@Inselspital.ch','Inselspital','Bern',1009,'Alemannenstrasse','071 913 87 00')
 INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@PallasKlinikBern.ch','Pallas Klinik Bern','Bern',1010,'Alexandraweg','043 883 12 34')
-INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@ServicesPsychiatriquesJuraBernois.ch','Services Psychiatriques Jura','Bern',1011,'Alleeweg','062 287 32 32')
+INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@ServicesPsychiatriquesJuraBernois.ch','Psychiatriques Jura','Bern',1011,'Alleeweg','062 287 32 32')
 INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@SoteriaBern.ch','Soteria Bern','Bern',1012,'Allmendstrasse','081 303 30 30')
-INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@StiftungDiaconisPalliativeCareDiakonissenhaus.ch','Stiftung Diaconis Palliative Care','Bern',1015,'Alpeneggstrasse','0848 801 100')
+INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@StiftungDiaconisPalliativeCareDiakonissenhaus.ch','Diaconis Palliative Care','Bern',1015,'Alpeneggstrasse','0848 801 100')
 INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@upd.ch','UPD Waldau','Bern',1018,'Alpenstrasse','044 786 00 00')
 
 
@@ -166,7 +166,15 @@ INSERT INTO drug (name, description, minDose, maxDose, measure) values ('Seroxat
 INSERT INTO drug (name, description, minDose, maxDose, measure) values ('Zoloft','Treatment of panic disorder with sertraline results in a decrease of the number of panic attacks and an improved quality of life. In four double-blind studies sertraline was shown to be superior to placebo for the treatment of panic disorder. The response rate was independent of the dose. In addition to decreasing the frequency of panic attacks by about 80% (vs. 45% for placebo) and decreasing general anxiety, sertraline resulted in improvement of quality of life on most parameters.', 0.8, 3.2, 'DOSE_DOUBLE')
 
 
+INSERT INTO appointment (name, description, start, end) VALUES ('test','test','2008-01-01 00:00:01','2008-01-01 00:00:01')
+
+
+INSERT INTO notice(note, patient_id) values ('Test', 1)
+INSERT INTO notice(note, patient_id) values ('Nochmals ein Test', 1)
+
+
 INSERT INTO patient_addiction (patient_id, addiction_id) values (1,1)
+INSERT INTO patient_addiction (patient_id, addiction_id) values (1,2)
 INSERT INTO patient_addiction (patient_id, addiction_id) values (2,2)
 INSERT INTO patient_addiction (patient_id, addiction_id) values (3,3)
 INSERT INTO patient_addiction (patient_id, addiction_id) values (4,4)
@@ -199,6 +207,7 @@ INSERT INTO patient_addiction (patient_id, addiction_id) values (30,10)
 
 
 INSERT INTO patient_doctor (patient_id, doctor_id) values (1,1)
+INSERT INTO patient_doctor (patient_id, doctor_id) values (1,2)
 INSERT INTO patient_doctor (patient_id, doctor_id) values (2,2)
 INSERT INTO patient_doctor (patient_id, doctor_id) values (3,3)
 INSERT INTO patient_doctor (patient_id, doctor_id) values (4,4)
@@ -256,13 +265,6 @@ INSERT INTO patient_doctor (patient_id, doctor_id) values (55,6)
 INSERT INTO patient_doctor (patient_id, doctor_id) values (56,7)
 
 
-INSERT INTO appointment (name, description, start, end) VALUES ('test','test','2008-01-01 00:00:01','2008-01-01 00:00:01')
-
-
-INSERT INTO notice(note, patient_id) values ('Test', 1)
-INSERT INTO notice(note, patient_id) values ('Nochmals ein Test', 1)
-
-
 INSERT INTO clinic_addiction(clinic_id, addiction_id) values (1,1)
 INSERT INTO clinic_addiction(clinic_id, addiction_id) values (1,2)
 INSERT INTO clinic_addiction(clinic_id, addiction_id) values (1,3)
@@ -291,3 +293,7 @@ INSERT INTO clinic_addiction(clinic_id, addiction_id) values (11,5)
 INSERT INTO clinic_addiction(clinic_id, addiction_id) values (12,6)
 INSERT INTO clinic_addiction(clinic_id, addiction_id) values (13,7)
 
+
+INSERT INTO patient_drug(dose, drug_id,patient_id) values(1.0,1,1)
+INSERT INTO patient_drug(dose, drug_id,patient_id) values(1.2,11,1)
+INSERT INTO patient_drug(dose, drug_id,patient_id) values(1.3,9,1)
