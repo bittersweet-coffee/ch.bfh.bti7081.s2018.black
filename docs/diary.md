@@ -404,3 +404,23 @@
 ### Beschlüsse
 
 * Master branch auf neuesten Stand bringen
+
+## 2018-06-11
+
+### Teilnehmer
+
+* Aleksander
+* Amin
+* Antonio
+* Cedric
+* Jan
+* Michael
+* Nicola
+
+### Agenda
+
+* Priorisierung der noch zu erledigenden Issues
+
+### Beschlüsse
+
+* Mehr Konzentration auf Logik setzen als auf Design
