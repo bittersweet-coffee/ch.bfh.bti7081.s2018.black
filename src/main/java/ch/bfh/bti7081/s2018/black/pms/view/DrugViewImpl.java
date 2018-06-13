@@ -75,6 +75,8 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 	}
 	
 	public void enter(ViewChangeEvent event) {
+		super.bC.makeCrumbs(DrugViewImpl.NAME);
+		super.bC.visibleBreadcrumbs();
 		super.menuBar.getItems().get(1).setText((String) VaadinSession.getCurrent().getAttribute("username"));
 		Label test = new Label("Drug here");
         super.contentPanel.setContent(test);

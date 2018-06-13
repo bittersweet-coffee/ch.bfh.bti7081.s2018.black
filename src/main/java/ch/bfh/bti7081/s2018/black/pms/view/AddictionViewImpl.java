@@ -73,6 +73,8 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 	}
 	
 	public void enter(ViewChangeEvent event) {
+		super.bC.makeCrumbs(AddictionViewImpl.NAME);
+    	super.bC.visibleBreadcrumbs();
 		super.menuBar.getItems().get(1).setText((String) VaadinSession.getCurrent().getAttribute("username"));
 		this.nativeAddict = new NativeSelect<>();
 		

@@ -43,6 +43,8 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 	}
 	
 	public void enter(ViewChangeEvent event) {
+		super.bC.makeCrumbs(PatientViewImpl.NAME);
+		super.bC.visibleBreadcrumbs();
 		super.menuBar.getItems().get(1).setText((String) VaadinSession.getCurrent().getAttribute("username"));
 		this.patientItemGrid = new Grid<>();
 		this.patientItemList = new LinkedList<>();
