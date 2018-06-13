@@ -123,12 +123,13 @@ public class PdfSource implements StreamSource {
         doc.add(pDoctor);
         doc.add(lDoctors);
         
-        //String imFile = new File("").getAbsolutePath() + "\\src\\main\\webapp\\VAADIN\\themes\\mytheme\\img\\pms_64px.png";       
-        //ImageData data = ImageDataFactory.create(imFile);        
-        //Image image = new Image(data);                     
-        //image.setFixedPosition(500, 740);                    
-        //doc.add(image); 
-              
+        String imFile = new File("").getAbsolutePath() + "/src/main/webapp/VAADIN/themes/mytheme/img/pms_64px.png";       
+        ImageData data = ImageDataFactory.create(imFile);        
+        Image image = new Image(data); 
+        image.setFontSize(50);
+        image.setFixedPosition(500, 740);                    
+        doc.add(image); 
+        
         doc.close(); 
     }
 
