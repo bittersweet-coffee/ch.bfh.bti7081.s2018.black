@@ -10,8 +10,6 @@ import ch.bfh.bti7081.s2018.black.pms.model.Pair;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientDrugModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
-import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
-import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 import ch.bfh.bti7081.s2018.black.pms.view.DrugView;
 
 /**
@@ -27,6 +25,7 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 	private List<String> drugNameList = new LinkedList<>();
 	private List<PatientModel> patientModelList;
 	private List<PatientItem> patientItemList = new LinkedList<>();
+	private JpaServicePresenter service;
 	
 	/**
 	 * Constructor for the DrugPresenter
@@ -85,9 +84,7 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 			patient.getDrugs().add(model);
 		}
 		drug.getPatients().add(model);
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		objects.store(model);
+		JpaServicePresenter.store(model);
 		return true;
 	}
 	
@@ -95,10 +92,7 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 	 * Method used to query the database and fill the DrugModelList with all DrugModels from the database
 	 */
 	public void fillDrugList() {
-		
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		this.drugModelList = objects.findAll(DrugModel.class);
+		this.drugModelList = JpaServicePresenter.findAll(DrugModel.class);
 		
 		for (DrugModel drug : this.drugModelList) {
      		this.drugNameList.add(drug.getName());
@@ -110,12 +104,11 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 	 * Method used to query the database and fill the PatientItemList with representations/mockObjects from the PatientModels
 	 */
 	private void fillPatientList() {
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		this.patientModelList = objects.findAll(PatientModel.class);
+		this.patientModelList = JpaServicePresenter.findAll(PatientModel.class);
      	
 		this.patientItemList = new LinkedList<>();
 		for (PatientModel patient : this.patientModelList) {
+			System.out.println(patient.getFirstname());
 			this.patientItemList.add(new PatientItem(patient));
      	}
 	}

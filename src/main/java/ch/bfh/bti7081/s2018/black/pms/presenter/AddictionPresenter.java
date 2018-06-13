@@ -8,8 +8,6 @@ import java.util.stream.Collectors;
 import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
-import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
-import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 import ch.bfh.bti7081.s2018.black.pms.view.AddictionView;
 
 /**
@@ -49,9 +47,7 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 				.findFirst();
 		if(!addictList.isPresent()) {
 			patient.getAddictions().add(addict);
-			JpaUtility transaction = new JpaUtility();
-			JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-			objects.update(patient);
+			JpaServicePresenter.update(patient);
 			return true;
 		}
 		return false;
@@ -61,9 +57,7 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 	 * Method used to query the database and fill the AddictionModelList with all AddictionModels from the database
 	 */
 	public void fillAddictionList() {
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		this.addictModelList = objects.findAll(AddictionModel.class);
+		this.addictModelList = JpaServicePresenter.findAll(AddictionModel.class);
      	
 		for (AddictionModel addict : this.addictModelList) {
      		this.addictNameList.add(addict.getName());
@@ -74,9 +68,7 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 	 * Method used to query the database and fill the PatientItemList with representations/mockObjects from the PatientModels
 	 */
 	private void fillPatientList() {
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		this.patientModelList = objects.findAll(PatientModel.class);
+		this.patientModelList = JpaServicePresenter.findAll(PatientModel.class);
      	
 		this.patientItemList = new LinkedList<>();
 		for (PatientModel patient : this.patientModelList) {

@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.util.Optional;
 
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
@@ -21,17 +22,15 @@ import com.vaadin.server.StreamResource.StreamSource;
 
 import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
 import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
-import ch.bfh.bti7081.s2018.black.pms.model.DrugModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientDrugModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
-import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
-import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 
 public class PdfSource implements StreamSource {
 
     private ByteArrayOutputStream bof;
     private PatientModel patientModel;
+    private java.util.List<PatientModel> patientModelList;
 
     public PdfSource() {
         bof = new ByteArrayOutputStream();
@@ -41,9 +40,13 @@ public class PdfSource implements StreamSource {
     }
     
     public PdfSource(PatientItem patientItem) throws MalformedURLException {
-    	JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		patientModel = (PatientModel) objects.byid(PatientModel.class, patientItem.getId());
+		this.patientModelList = JpaServicePresenter.findAll(PatientModel.class);
+		
+		Optional<PatientModel> patientList = patientModelList.stream()
+				.filter(patient -> patient.getId() == patientItem.getId())
+				.findFirst();
+    	
+    	patientModel = patientList.get();
 		
         bof = new ByteArrayOutputStream();
         
