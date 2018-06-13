@@ -27,28 +27,47 @@ import com.vaadin.ui.Grid.SelectionMode;
 
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 
+/**
+ * AddictionViewImpl Class
+ * View Implementation of AddictionView
+ * @author schaa4
+ *
+ */
 public class AddictionViewImpl extends PmsCustomComponent implements View, AddictionView {
-
+	
+	// identifier used for displaying the correct URL
 	public static final String NAME = "addiction";
 	
+	// List containing all listeners for this object (mostly the corresponding Presenter Class)
 	private List<AddictionViewListener> listeners = new ArrayList<AddictionViewListener>();
 	
-	//private List<String> patientList;
-	
+	// List containing Mock Objects for the PatientModel
 	private List<PatientItem> patientItemList;
 	
+	// UI element displaying the addiction names on the left side of the UI
 	private NativeSelect<String> nativeAddict;
 	
+	// Grid displaying all patients of the PMS
+	// used for allocation of a drug to a patient
+	// provides filter capabilities
 	private Grid<PatientItem> patientItemGrid;
 	
+	// DataProvider used to populate the patientItemGrid
 	private ListDataProvider<PatientItem> patientProvider;
 	
+	// Window which pops up when an allocation is to be done
+	// contains the patientItemGrid
 	private Window windowPatient;
 	
+	// labels used for describing Addiction Properties
 	private Label lblAddictNameTitle, lblAddictDescTitle, lblSymptoms;
 	
+	// TextAreas used for displaying Addiction Properties
 	private TextArea txtAddictName, txtAddictDesc, txtSymptoms;
 
+	/**
+	 * Default Constructor like all other ViewImplementations to trigger the super-class constructor  
+	 */
 	public AddictionViewImpl() {
 		super();
 	}
@@ -166,10 +185,10 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 	    patientLayout.addComponents(lblPatient, txtFilter);
 	    patientLayout.setMargin(new MarginInfo(true, false, false, false));
 	    
-	    Button btnPatient = new Button("Allocate");
-	    btnPatient.setEnabled(false);
+	    Button btnAllocate = new Button("Allocate");
+	    btnAllocate.setEnabled(false);
 	    
-	    marginLayout.addComponents(lblSelectedAddict, patientLayout, patientItemGrid, btnPatient);
+	    marginLayout.addComponents(lblSelectedAddict, patientLayout, patientItemGrid, btnAllocate);
 	    marginLayout.setMargin(true);
 	    
 	    allocateContent.addComponent(marginLayout);
@@ -216,14 +235,14 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 			btnAddTo.setEnabled(true);
 		});
 		
-		btnPatient.addClickListener(click -> {
+		btnAllocate.addClickListener(click -> {
 			if (patientItemGrid.getSelectedItems().iterator().hasNext()) {
 				for (AddictionViewListener listener: listeners) {
 					if(listener.allocateButtonClicked(nativeAddict.getSelectedItem().get(),
 	        				patientItemGrid.getSelectedItems().iterator().next())) {
 						this.windowPatient.close();
 					} else {
-						Notification.show("The selected addiction has already been assigned to the patient!");
+						Notification.show("Warning", "The selected addiction has already been assigned to the patient!", Notification.TYPE_ERROR_MESSAGE);
 					}
 				}
 	        		
@@ -235,9 +254,9 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 		
 		patientItemGrid.addSelectionListener(selection -> {
 			if (patientItemGrid.getSelectedItems().iterator().hasNext()) {
-				btnPatient.setEnabled(true);
+				btnAllocate.setEnabled(true);
 			} else {
-				btnPatient.setEnabled(false);
+				btnAllocate.setEnabled(false);
 			}
 		});
 		
@@ -252,7 +271,7 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 		btnSearch.addShortcutListener(enterSearchListener);
 		
 		txtFilter.addShortcutListener(enterSearchListener);
-		btnPatient.addShortcutListener(enterSearchListener);
+		btnAllocate.addShortcutListener(enterSearchListener);
 	}
 	
 	@Override
@@ -260,31 +279,12 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 		this.listeners.add(listener);
 	}
 	
+	/**
+	 * Method used by the patiemtItemGrid to update its DataProvider 
+	 */
 	private void updatePatientItemList() {
 		for (AddictionViewListener listener: listeners) {
 			this.patientItemList = listener.setupPatientItemList();
 		}
 	}
-	
-	/*
-	@Override
-	public void setupAddictList(List<String> addictionList) {
-		this.nativeAddict.setItems(addictionList);
-	}
-	
-	@Override
-	public void setListDesc(String desc) {
-		this.txtAddictDesc.setValue(desc);
-	}
-
-	@Override
-	public void setListSymptoms(String symptoms) {
-		this.txtSymptoms.setValue(symptoms);
-	}
-
-	@Override
-	public void setupPatientList(List<String> patientList) {
-		this.patientList = patientList;
-	}
-	*/
 }

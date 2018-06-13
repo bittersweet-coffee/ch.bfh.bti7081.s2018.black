@@ -29,27 +29,47 @@ import ch.bfh.bti7081.s2018.black.pms.model.Pair;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 
 
-
+/**
+ * DrugViewImpl Class
+ * View Implementation of DrugView
+ * @author schaa4
+ *
+ */
 public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 
+	// identifier used for displaying the correct URL
 	public static final String NAME = "drug";
 	
+	// List containing all listeners for this object (mostly the corresponding Presenter Class)
 	private List<DrugViewListener> listeners = new ArrayList<DrugViewListener>();
 	
+	// List containing Mock Objects for the PatientModel
 	private List<PatientItem> patientItemList;
 	
+	// UI element displaying the addiction names on the left side of the UI
 	private NativeSelect<String> nativeDrug;
 	
+	// Grid displaying all patients of the PMS
+	// used for allocation of a drug to a patient
+	// provides filter capabilities
 	private Grid<PatientItem> patientItemGrid;
 	
+	// DataProvider used to populate the patientItemGrid
 	private ListDataProvider<PatientItem> patientProvider;
 	
+	// Window which pops up when an allocation is to be done
+	// contains the patientItemGrid
 	private Window windowPatient;
 	
+	// labels used for describing Drug Properties
 	private Label lblDrugNameTitle, lblDrugDescTitle;
 	
+	// TextAreas used for displaying Drug Properties
 	private TextArea txtDrugName, txtDrugDesc;
 
+	/**
+	 * Default Constructor like all other ViewImplementations to trigger the super-class constructor  
+	 */
 	public DrugViewImpl() {
 		super();
 	}
@@ -220,7 +240,6 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		
 		btnAllocatePatient.addClickListener(click -> {
 			if (patientItemGrid.getSelectedItems().iterator().hasNext()) {
-				System.out.println(patientItemGrid.getSelectedItems().iterator().next().getFirstName());
 				if(isDouble(txtDose.getValue())) {
 					for (DrugViewListener listener: listeners) {
 						
@@ -235,7 +254,7 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 						}
 					}
 				} else {
-					Notification.show("Warning", "Please enter a Dose of type Double!", Notification.TYPE_ERROR_MESSAGE);
+					Notification.show("Warning", "Please enter a Dose of type Double and less than 7 decimal places!", Notification.TYPE_ERROR_MESSAGE);
 				}
 			} else {
 				Notification.show("Input Data Incomplete");
@@ -261,22 +280,44 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		btnSearch.addShortcutListener(enterSearchListener);
 	}
 	
+	/**
+	 * Helper Method to detect whether entered Dose is a valid Double number.
+	 * Valid means: Standard Double format & less than 7 decimal places
+	 * @param str Entered Dose retrieved as String
+	 * @return boolean response whether entered Dose is a valid Double number
+	 */
 	private boolean isDouble(String str) {
 		  try{
+			// try to parse entered Dose to Double
 		    Double.parseDouble(str);
+		    
+		    // No exception thrown to this point, so it is Double-parsable
+		    // Check if entered number has less than 7 decimal places
+		    if(str.contains(".")) {
+		    	String[] splitted = str.split("\\.");
+		    	
+		    	if(splitted[1].length() < 6) {
+		    		return true;
+		    	} else {
+		    		return false;
+		    	}
+		    }
+		    	
 		    return true;
 		    
 		  } catch(Exception e) {
 		    return false;
 		  }
 	}
-	
 
 	@Override
 	public void addListener(DrugViewListener listener) {
 		this.listeners.add(listener);
 	}
 	
+	/**
+	 * Method used by the patiemtItemGrid to update its DataProvider 
+	 */
 	private void updatePatientItemList() {
 		for (DrugViewListener listener: listeners) {
 			this.patientItemList = listener.setupPatientItemList();

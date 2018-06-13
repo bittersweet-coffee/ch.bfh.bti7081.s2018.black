@@ -24,15 +24,7 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
 		this.fillClinicList();
 	}
 	
-	public void addClinic(ClinicModel clinic) {
-		this.clinicModelList.add(clinic);
-	}
-	
-	public List<ClinicModel> getAddictionModelList() {
-		return this.clinicModelList;
-	}
-	
-	public void fillClinicList() {
+	private void fillClinicList() {
 		JpaUtility transaction = new JpaUtility();
 		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
 		this.clinicModelList = objects.findAll(ClinicModel.class);
@@ -77,7 +69,6 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
 		}
 	}
 
-
 	@Override
 	public List<String> selectListChanged(String clinicName) {
 		Optional<ClinicModel> optionalClinic = this.clinicModelList.stream()
@@ -109,5 +100,4 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
 	public List<String> setupClinicList() {
 		return this.clinicNameList;
 	}
-
 }

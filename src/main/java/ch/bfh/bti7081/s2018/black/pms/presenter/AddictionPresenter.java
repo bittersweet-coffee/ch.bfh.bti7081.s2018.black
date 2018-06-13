@@ -12,6 +12,11 @@ import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 import ch.bfh.bti7081.s2018.black.pms.view.AddictionView;
 
+/**
+ * AddictionPresenter Class
+ * Presenter Class used to manage data exchange between Models and Views as well as triggering database queries
+ * @author schaa4
+ */
 public class AddictionPresenter implements AddictionView.AddictionViewListener {
 
 	private AddictionView view;
@@ -20,55 +25,24 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 	private List<PatientModel> patientModelList;
 	private List<PatientItem> patientItemList = new LinkedList<>();
 	
+	/**
+	 * Constructor for the AddictionPresenter
+	 * Used to register itself as a listener in the corresponding view as well as initializing the AddictionList
+	 * @param view Instance of the corresponding View
+	 */
 	public AddictionPresenter(AddictionView view) {
 		this.view = view;
 		this.addictModelList = new LinkedList<>();
 		view.addListener(this);
 		this.fillAddictionList();
 	}
-
-	@Override
-	public List<String> searchButtonClicked(String searchTerm) {
-		List<String> optionalAddict = this.addictModelList.stream()
-				.filter(addict -> addict.getName().toLowerCase().contains(searchTerm.toLowerCase()))
-				.map(AddictionModel::getName)
-				.collect(Collectors.toList());
-			
-		return optionalAddict;
-	}
-
-	@Override
-	public List<String> addToButtonClicked() {
-
-	// These are Mock Objects because Patient Management isn't ready yet
-		List<String> patientList = new LinkedList<>();
-		patientList.add("Toni Donato");
-		patientList.add("Nico Schlup");
-		patientList.add("Cederik Bielmann");
-		patientList.add("Michi Hofer");
-		patientList.add("Jan Henzi");
-		
-		//
-		//
-		// Put Logic in here once Patient Management is ready
-		//
-		//
-		
-		return patientList;
-	}
 	
-	@Override
-	public boolean allocateButtonClicked(String addictionName, PatientItem patientItem) {
-		Optional<AddictionModel> optionalAddict = this.addictModelList.stream()
-				.filter(addict -> addict.getName().equals(addictionName))
-				.findFirst();
-		
-		if(optionalAddict.isPresent()) {
-			return allocateAddictionToPatient(optionalAddict.get(), patientItem.getModel());
-		}
-		return false;
-	}
-	
+	/**
+	 * Method to allocate an Addiction to a Patient
+	 * @param addict The AddictionModel which has to be allocated to the patient
+	 * @param patient The PatientModel to whom the Addiction has to be allocated to
+	 * @return boolean response whether the allocation could be performed
+	 */
 	private boolean allocateAddictionToPatient(AddictionModel addict, PatientModel patient) {
 		Optional<AddictionModel> addictList = patient.getAddictions().stream()
 				.filter(a -> a.getId() == addict.getId())
@@ -83,12 +57,53 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 		return false;
 	}
 	
-	public void addAddiction(AddictionModel addiction) {
-		this.addictModelList.add(addiction);
+	/**
+	 * Method used to query the database and fill the AddictionModelList with all AddictionModels from the database
+	 */
+	public void fillAddictionList() {
+		JpaUtility transaction = new JpaUtility();
+		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
+		this.addictModelList = objects.findAll(AddictionModel.class);
+     	
+		for (AddictionModel addict : this.addictModelList) {
+     		this.addictNameList.add(addict.getName());
+     	}
 	}
 	
-	public List<AddictionModel> getAddictionModelList() {
-		return this.addictModelList;
+	/**
+	 * Method used to query the database and fill the PatientItemList with representations/mockObjects from the PatientModels
+	 */
+	private void fillPatientList() {
+		JpaUtility transaction = new JpaUtility();
+		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
+		this.patientModelList = objects.findAll(PatientModel.class);
+     	
+		this.patientItemList = new LinkedList<>();
+		for (PatientModel patient : this.patientModelList) {
+			this.patientItemList.add(new PatientItem(patient));
+     	}
+	}
+
+	@Override
+	public List<String> searchButtonClicked(String searchTerm) {
+		List<String> optionalAddict = this.addictModelList.stream()
+				.filter(addict -> addict.getName().toLowerCase().contains(searchTerm.toLowerCase()))
+				.map(AddictionModel::getName)
+				.collect(Collectors.toList());
+			
+		return optionalAddict;
+	}
+	
+	@Override
+	public boolean allocateButtonClicked(String addictionName, PatientItem patientItem) {
+		Optional<AddictionModel> optionalAddict = this.addictModelList.stream()
+				.filter(addict -> addict.getName().equals(addictionName))
+				.findFirst();
+		
+		if(optionalAddict.isPresent()) {
+			return allocateAddictionToPatient(optionalAddict.get(), patientItem.getModel());
+		}
+		return false;
 	}
 	
 	@Override
@@ -110,16 +125,6 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 		return addictionDetails;
 	}
 	
-	public void fillAddictionList() {
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		this.addictModelList = objects.findAll(AddictionModel.class);
-     	
-		for (AddictionModel addict : this.addictModelList) {
-     		this.addictNameList.add(addict.getName());
-     	}
-	}
-
 	@Override
 	public List<String> setupAddictList() {
 		return this.addictNameList;
@@ -130,17 +135,5 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 		this.fillPatientList();
 		return this.patientItemList;
 	}
-	
-	public void fillPatientList() {
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		this.patientModelList = objects.findAll(PatientModel.class);
-     	
-		this.patientItemList = new LinkedList<>();
-		for (PatientModel patient : this.patientModelList) {
-			this.patientItemList.add(new PatientItem(patient));
-     	}
-	}
-
 
 }
