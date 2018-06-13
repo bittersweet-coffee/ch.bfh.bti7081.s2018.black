@@ -74,7 +74,9 @@ public class PatientNewWindow extends Window {
 		
 		ComboBox<String> cmbLocs = new ComboBox<String>("Select a Location:");
 		Controller.setupLocations(cmbLocs);
+		cmbLocs.setRequiredIndicatorVisible(true);
 		ComboBox<String> cmbDocs = new ComboBox<String>("Select a doctor:");
+		cmbDocs.setRequiredIndicatorVisible(true);
 		Controller.setupDoctors(cmbDocs);
 		
 		TextArea descriptionField = new TextArea();
@@ -84,7 +86,9 @@ public class PatientNewWindow extends Window {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				
-				if(firstNameField.isEmpty() || lastNameField.isEmpty() || phoneField.isEmpty() || postCodeField.isEmpty() || streetField.isEmpty() || birthdayField.isEmpty()) {
+				if(firstNameField.isEmpty() || lastNameField.isEmpty() || phoneField.isEmpty() 
+						|| postCodeField.isEmpty() || streetField.isEmpty() || birthdayField.isEmpty()
+						|| !cmbLocs.getSelectedItem().isPresent() || !cmbDocs.getSelectedItem().isPresent()) {
 					Notification.show("Warning", "Please fill out all required fields!", Notification.TYPE_ERROR_MESSAGE);
 				} else {
 					
@@ -92,37 +96,26 @@ public class PatientNewWindow extends Window {
 					patient.setLastName(lastNameField.getValue());
 					patient.setStreet(streetField.getValue());
 					
-					
-					try {
-						Integer.parseInt(postCodeField.getValue());
-						patient.setPostcode(Integer.parseInt(postCodeField.getValue()));
-					} catch (Exception e) {
-						Notification.show("Warning", "Please enter a valid Integer as Post Code!", Notification.TYPE_ERROR_MESSAGE);
-					}
-					
-					
 					patient.setTelephone(phoneField.getValue());
 					patient.setDoctors(Controller.getSelectedDoctor(cmbDocs));
 					patient.setClinic(Controller.getSelectedLocation(cmbLocs));
 					patient.setAddictions(Controller.parseSelectedAddictions(addictionselect.getSelectedItems()));
 					
-					if (isValidDate(birthdayField.getValue())) {
+					if (isValidDate(birthdayField.getValue()) && isValidPLZ(postCodeField.getValue())) {
 						patient.setBirthday(birthdayField.getValue());
+						patient.setPostcode(Integer.parseInt(postCodeField.getValue()));
+						
 						view.save(patient, descriptionField.getValue());
 						close();
 						Page.getCurrent().reload();
-					} else {
-						Notification.show("Warning", "Birthday is not Valid! Please check the selected Date.", Notification.TYPE_ERROR_MESSAGE);
-						birthdayField.setValue(birthdayField.getValue());
-						birthdayField.setRequiredIndicatorVisible(true);
-					}
+						
+					} else if(!isValidDate(birthdayField.getValue())) {
+						Notification.show("Warning", "Birthday is not valid! Please check the selected Date.", Notification.TYPE_ERROR_MESSAGE);
 					
-				}
-				
-				
-				
-				
-								
+					} else {
+						Notification.show("Warning", "Post Code is not valid! Please enter a 4-digit Post Code.", Notification.TYPE_ERROR_MESSAGE);
+					}
+				}				
 			}
 
 			private boolean isValidDate(LocalDate localDate) {
@@ -130,6 +123,21 @@ public class PatientNewWindow extends Window {
 					return false;
 				} else {
 					return true;
+				}
+			}
+			
+			private boolean isValidPLZ(String str) {
+				try {
+					Integer.parseInt(postCodeField.getValue());
+					
+					if(str.length() != 4) {
+						throw new NumberFormatException();
+					}
+					
+					return true;
+					
+				} catch (Exception e) {
+					return false;
 				}
 			}
 		});
