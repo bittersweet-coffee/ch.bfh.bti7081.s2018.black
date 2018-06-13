@@ -146,14 +146,6 @@ public class ClinicModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the email address
-	 * @param email of the location
-	 */
-	public void setemail(String email) {
-		this.email = email;
-	}
-
-	/**
 	 * getter of the patients
 	 * @return a list of patients that are cured at the location
 	 */
