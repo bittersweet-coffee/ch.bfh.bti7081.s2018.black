@@ -153,7 +153,7 @@ INSERT INTO patient (firstname, lastname, birthday, post_code, street, telephone
 INSERT INTO patient (firstname, lastname, birthday, post_code, street, telephone, clinic_id) VALUES('Shawn','Roth','1991-11-25',1025,'Bienenstrasse','044 814 27 74',4)
 
 
-INSERT INTO drug (name, description, minDose, maxDose, measure) values ('Amlodipine', 'Amlodipine is a calcium channel blocker that dilates (widens) blood vessels and improves blood flow.', 0.5, 2.5, 'DOSE_DOUBLE')
+INSERT INTO drug (name, description, minDose, maxDose, measure) values ('Amlodipine', 'Amlodipine is a calcium channel blocker that dilates (widens) blood vessels and improves blood flow.', 0.4, 2.6, 'DOSE_DOUBLE')
 INSERT INTO drug (name, description, minDose, maxDose, measure) values ('Aspirin', 'Aspirin is a salicylate (sa-LIS-il-ate). It works by reducing substances in the body that cause pain, fever, and inflammation.', 2, 5, 'DOSE_INTEGER')
 INSERT INTO drug (name, description, minDose, maxDose, measure) values ('Austedo', 'Austedo (deutetrabenazine) reduces the amount of certain chemicals in the body that are overly active in people with Huntingtons disease.', 4.5, 9.5,'DOSE_HALVES')
 INSERT INTO drug (name, description, minDose, maxDose, measure) values ('Methadone','As an opioid, methadone has the same effect and side effect profile and thus essentially the same risk potential as other opioids. However, due to the slow flooding during oral application, it does not produce a kick (the sudden intense well-being that also leads to the development of an addiction).', 0.8, 2.2, 'DOSE_DOUBLE')
@@ -295,5 +295,3 @@ INSERT INTO clinic_addiction(clinic_id, addiction_id) values (13,7)
 
 
 INSERT INTO patient_drug(dose, drug_id,patient_id) values(1.0,1,1)
-INSERT INTO patient_drug(dose, drug_id,patient_id) values(1.2,11,1)
-INSERT INTO patient_drug(dose, drug_id,patient_id) values(1.3,9,1)

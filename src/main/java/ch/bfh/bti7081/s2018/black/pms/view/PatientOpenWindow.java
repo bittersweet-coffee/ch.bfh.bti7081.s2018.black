@@ -19,11 +19,20 @@ import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientDrugModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 
+/**
+ * PatientOpenWindow Class
+ * Used to display all important content of a patient record.
+ * @author supnic
+ */
 public class PatientOpenWindow extends Window {
 
 	private PatientViewImpl view;
 	private PatientItem patientItem;
 
+	/**
+	 * Constructor for the PatientOpenWindow
+	 * Used to build the UI to display the patient record as well as initializing the patient-mock-objects
+	 */
 	public PatientOpenWindow(PatientViewImpl view, PatientItem patientItem) {
 		super("Open Patient");
 		this.view = view;
@@ -31,7 +40,10 @@ public class PatientOpenWindow extends Window {
 		buildWindow();
 	}
 	
+	//Opens the new Window
 	private void buildWindow() {
+		
+		//Components to declare which information of the patient is on the right side
 		Label lblFirstName = new Label("Firstname:");
 		Label lblLastName = new Label("Lastname:");
 		Label lblBirthday = new Label("Birthday:");
@@ -40,6 +52,7 @@ public class PatientOpenWindow extends Window {
 		Label lblTel = new Label("Telephone:");
 		Label lblClinic = new Label("Clinic:");
 		
+		//TextFields which contain the informations about the patient
 		TextField txtFirstName = new TextField();
 		txtFirstName.setValue(this.patientItem.getFirstName());
 		txtFirstName.setMaxLength(20);
@@ -75,6 +88,8 @@ public class PatientOpenWindow extends Window {
 		txtClinic.setReadOnly(true);
 		txtClinic.setValue(this.patientItem.getClinic().getName());
 		
+		
+		//Layout to group all components
 		GridLayout tileGridPatient = new GridLayout(4,4);
 		tileGridPatient.addComponent(lblFirstName, 0, 0);
 		tileGridPatient.addComponent(lblLastName, 0, 1);
@@ -99,7 +114,7 @@ public class PatientOpenWindow extends Window {
 		tileGridPatient.addComponent(txtTel, 3, 2);
 		tileGridPatient.setComponentAlignment(txtTel, Alignment.MIDDLE_CENTER);
 		
-		//Appointment Part
+		//Part to display all Appointments of the patient
 		List<AppointmentModel> appointmentList =  patientItem.getModel().getAppointments();
 		List<String> dataAppointment = new LinkedList<String>();
 		if (appointmentList != null) {
@@ -118,7 +133,7 @@ public class PatientOpenWindow extends Window {
 		GridLayout tileGridAppointment = new GridLayout(1,2);
 		tileGridAppointment.addComponent(lsAppointment, 0, 0);
 		
-		//Comment Part
+		//Part to display and write the comments about the patient
 		TextArea txtCurrentNotes = new TextArea();
 		txtCurrentNotes.setWidth("250px");
 		txtCurrentNotes.setHeight("340px");
@@ -139,7 +154,7 @@ public class PatientOpenWindow extends Window {
 		
 		
 		
-		//Addiction Part
+		//Part to display all Addictions of the patient
 		List<AddictionModel> addicList = patientItem.getModel().getAddictions(); 
 		List<String> dataAddiction = new LinkedList<String>();
 		for (AddictionModel addic : addicList) {
@@ -155,12 +170,12 @@ public class PatientOpenWindow extends Window {
 		tileGridAddiction.addComponent(lsAddiction, 0, 0);
 		
 		
-		
-		//Medication Part
+		//Part to display all Medications allocated to the patient
 		List<PatientDrugModel> dataMediObjects = patientItem.getModel().getDrugs();
+		
 		List<String> dataMedication = new LinkedList<String>();
 		for (PatientDrugModel drugs : dataMediObjects) {
-			dataMedication.add(drugs.getDrug().getName() + " Dose: " + drugs.getDose());
+			dataMedication.add(drugs.getDrug().getName() + " Dose: " + drugs.getDose() + " " + drugs.getDrug().getUnit());
 		}
 		
         ListSelect lsMedication = new ListSelect<>("Medications", dataMedication);
@@ -172,7 +187,7 @@ public class PatientOpenWindow extends Window {
 		tileGridMedication.addComponent(lsMedication, 0, 0);
 	
 		
-		//Doctors Part
+		//Part to display all the Doctors allocated to the patient
 		List<DoctorModel> docList = patientItem.getModel().getDoctors();
 		List<String> dataDoc = new LinkedList<String>();
 		for (DoctorModel doctor : docList) {
@@ -187,7 +202,7 @@ public class PatientOpenWindow extends Window {
 		GridLayout tileGridDoc = new GridLayout(1,2);
 		tileGridDoc.addComponent(lsDoc, 0, 0);
 		
-		
+		//Layouts to group the other components
 		VerticalLayout vBoxLeft = new VerticalLayout();
 		vBoxLeft.setWidth("600px");
 		vBoxLeft.addComponents(tileGridPatient, tileGridAddiction, tileGridMedication, tileGridDoc);

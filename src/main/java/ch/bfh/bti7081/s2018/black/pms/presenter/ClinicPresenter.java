@@ -11,12 +11,22 @@ import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 import ch.bfh.bti7081.s2018.black.pms.view.ClinicView;
 
+/**
+ * ClinicPresenter Class
+ * Presenter Class used to manage data exchange between Models and Views as well as triggering database queries
+ * @author supnic
+ */
 public class ClinicPresenter implements ClinicView.ClinicViewListener{
 	
 	private ClinicView view;
 	private List<ClinicModel> clinicModelList;
 	private List<String> clinicNameList = new LinkedList<>();
 	
+	
+	/**
+	 * Constructor for the ClinicPresenter
+	 * Used to register itself as a listener in the corresponding view as well as initializing the ClinicList
+	 */
 	public ClinicPresenter(ClinicView view) {
 		this.view = view;
 		this.clinicModelList = new LinkedList<>();
@@ -24,14 +34,25 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
 		this.fillClinicList();
 	}
 	
+	/**
+	 * Method to add a new clinic to the list
+	 */
 	public void addClinic(ClinicModel clinic) {
 		this.clinicModelList.add(clinic);
 	}
 	
-	public List<ClinicModel> getAddictionModelList() {
+	
+	/**
+	 * Method to return the actual clinic list
+	 */
+	public List<ClinicModel> getClinicModelList() {
 		return this.clinicModelList;
 	}
 	
+	
+	/**
+	 * Method used to query the database and fill the ClinicModelList with all ClinicModels from the database
+	 */
 	public void fillClinicList() {
 		JpaUtility transaction = new JpaUtility();
 		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);

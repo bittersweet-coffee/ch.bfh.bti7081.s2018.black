@@ -4,6 +4,12 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * PatientItem Class
+ * PatientItem Class used get access to the patient infos and guarantee the mvp.
+ * @author henzij
+ * @author supnic
+ */
 public class PatientItem {
 	
 	private Integer id;
@@ -20,16 +26,26 @@ public class PatientItem {
 	private List<PatientDrugModel> drugs;
 	private List<AppointmentModel> appointments;
 	
-	
+	/**
+	 * Constructor for the PatientItem
+	 * Needed to create a new instance via reflection by persistence framework.
+	 */
 	public PatientItem() {
 		
 	}
 	
+	/**
+	 * Constructor for the PatientItem
+	 * Includes the PatientModel and reloads the entries
+	 */
 	public PatientItem(PatientModel model) {
 		this.model = model;
 		reloadFromModel();
 	}
 
+	/**
+	 * Method to reload all needed informations about the patient
+	 */
 	public void reloadFromModel() {
 		this.id = model.getId();
 		this.firstName = model.getFirstname();
@@ -55,27 +71,19 @@ public class PatientItem {
 			this.notes.add(note.getNote());
 		}
 		
-		/*
 		this.addictions = new LinkedList<>();
 		for (AddictionModel addiction : model.getAddictions()) {
-			this.notes.add(addiction.getName());
+			this.addictions.add(addiction);
 		}
-		*/
 		
-	}
-
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public List<String> getNotes() {
-		return this.notes;
+		this.appointments = new LinkedList<>();
+		for (AppointmentModel appointment : model.getAppointments()) {
+			this.appointments.add(appointment);
+		}
+				
 	}
 	
+	//Method to collect all notes of a patient into one string
 	public String getNotesAsString() {
 		String strNotes = "";
 		for (String note : this.notes) {
@@ -88,6 +96,19 @@ public class PatientItem {
 		}
 			
 		return strNotes;
+	}
+
+	//All getters and setters of the lists and variables
+	public Integer getId() {
+		return this.id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public List<String> getNotes() {
+		return this.notes;
 	}
 
 	public void setNotes(List<String> notes) {
