@@ -107,9 +107,7 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
 	}
 
 	public static List<ClinicItem> getClinicNames() {
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		List<ClinicModel> clinicModelList = objects.findAll(ClinicModel.class);
+		List<ClinicModel> clinicModelList = JpaServicePresenter.findAll(ClinicModel.class);
 		List<ClinicItem> clinicItemList = new LinkedList<ClinicItem>();
 		for (ClinicModel clinic : clinicModelList) {
 			ClinicItem c = new ClinicItem();
@@ -120,9 +118,7 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
 	}
 
 	public static void setupClinic(Optional<String> clinic, PatientItem patient) {
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		List<ClinicModel> clinicModelList = objects.findAll(ClinicModel.class);
+		List<ClinicModel> clinicModelList = JpaServicePresenter.findAll(ClinicModel.class);
 		for (ClinicModel clinicModel : clinicModelList) {
 			if (clinic.get().equals(clinicModel.getName())) {
 				patient.setClinic(clinicModel);

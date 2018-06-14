@@ -137,9 +137,7 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 	}
 
 	public static List<AddictionItem> getAddictionItems() {
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		List<AddictionModel> addictionModelList = objects.findAll(AddictionModel.class);
+		List<AddictionModel> addictionModelList = JpaServicePresenter.findAll(AddictionModel.class);
 		List<AddictionItem> addictionItemList = new LinkedList<AddictionItem>();
 		for (AddictionModel addiction : addictionModelList) {
 			AddictionItem a = new AddictionItem();
@@ -150,10 +148,8 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 	}
 
 	public static void setAddictionsToPatient(Set<String> selectedItems, PatientItem patient) {
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
 		LinkedList<AddictionModel> addictionListAdd = new LinkedList<AddictionModel>();
-		List<AddictionModel> addictionModelList = objects.findAll(AddictionModel.class);
+		List<AddictionModel> addictionModelList = JpaServicePresenter.findAll(AddictionModel.class);
 		for (String string : selectedItems) {
 			for (AddictionModel addictionModel : addictionModelList) {
 				if (string.equals(addictionModel.getName())) {

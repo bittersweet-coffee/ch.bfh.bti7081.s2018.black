@@ -14,9 +14,7 @@ import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 public class DoctorPresenter {
 
 	public static List<DoctorItem> getDoctorNames() {
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		List<DoctorModel> docModelList = objects.findAll(DoctorModel.class);
+		List<DoctorModel> docModelList = JpaServicePresenter.findAll(DoctorModel.class);
 		List<DoctorItem> docItemList = new LinkedList<DoctorItem>();
 		for (DoctorModel doc : docModelList) {
 			DoctorItem d = new DoctorItem();
@@ -27,10 +25,8 @@ public class DoctorPresenter {
 	}
 
 	public static void setupDoctor(Optional<String> doc, PatientItem patient) {
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
 		LinkedList<DoctorModel> doctorModelListAdd = new LinkedList<DoctorModel>();
-		List<DoctorModel> docModelList = objects.findAll(DoctorModel.class);
+		List<DoctorModel> docModelList = JpaServicePresenter.findAll(DoctorModel.class);
 		for (DoctorModel doctor : docModelList) {
 				if (doc.get().equals(doctor.getLastname())) {
 						doctorModelListAdd.add(doctor);
