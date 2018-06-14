@@ -29,7 +29,12 @@ import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
-
+/**
+ * PdfSource Class
+ * Creates a patient report
+ * @author schaa4
+ *
+ */
 public class PdfSource implements StreamSource {
 	
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
@@ -41,6 +46,10 @@ public class PdfSource implements StreamSource {
         bof = new ByteArrayOutputStream();
     }
     
+    /**
+	 * Constructor for the PdfSource
+	 * @param patientItem The mock object of the Patient (PatientItem)
+	 */
     public PdfSource(PatientItem patientItem) throws MalformedURLException {
     	JpaUtility transaction = new JpaUtility();
 		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
@@ -60,47 +69,15 @@ public class PdfSource implements StreamSource {
         
         float [] pointColumnWidths = {100F, 200F};       
         Table addresstable = new Table(pointColumnWidths);
-                     
-        Cell c1 = new Cell();                        
-        c1.add("Firstname:");                              
-        c1.setBorder(Border.NO_BORDER);                    
-        addresstable.addCell(c1);
         
-        Cell c2 = new Cell();                        
-        c2.add(patientModel.getFirstname());                              
-        c2.setBorder(Border.NO_BORDER);                    
-        addresstable.addCell(c2);
-        
-        c1 = new Cell();                        
-        c1.add("Lastname:");                              
-        c1.setBorder(Border.NO_BORDER);                    
-        addresstable.addCell(c1);
-        
-        c2 = new Cell();                        
-        c2.add(patientModel.getLastname());                              
-        c2.setBorder(Border.NO_BORDER);                    
-        addresstable.addCell(c2);
-        
-        c1 = new Cell();                        
-        c1.add("Adresse:");                              
-        c1.setBorder(Border.NO_BORDER);                    
-        addresstable.addCell(c1);
-        
-        c2 = new Cell();                        
-        c2.add(patientModel.getStreet());                              
-        c2.setBorder(Border.NO_BORDER);                    
-        addresstable.addCell(c2);
-        
-        c1 = new Cell();                        
-        c1.add("");                              
-        c1.setBorder(Border.NO_BORDER);                    
-        addresstable.addCell(c1);
-        
-        c2 = new Cell();                        
-        c2.add(String.valueOf(patientModel.getPostCode()));                              
-        c2.setBorder(Border.NO_BORDER);                    
-        addresstable.addCell(c2);      
-        doc.add(addresstable);      
+        addCell(addresstable, "Firstname:", false);
+        addCell(addresstable, patientModel.getFirstname(), false);
+        addCell(addresstable, "Lastname:", false);
+        addCell(addresstable, patientModel.getLastname(), false);
+        addCell(addresstable, "Adresse:", false);
+        addCell(addresstable, patientModel.getStreet(), false);
+        addCell(addresstable, "", false);
+        addCell(addresstable, String.valueOf(patientModel.getPostCode()), false);   
         
         Paragraph pAddiction = new Paragraph("Addictions:");
         pAddiction.setBold();
@@ -115,7 +92,7 @@ public class PdfSource implements StreamSource {
         pDrugs.setBold();
         List lDrugs = new List();
         for (PatientDrugModel dm : patientModel.getDrugs()) {
-        	lDrugs.add(dm.getDrug().getName() + " - Dose: " + dm.getDose());
+        	lDrugs.add(dm.getDrug().getName() + ", Dose: " + dm.getDose());
 		}
         doc.add(pDrugs);
         doc.add(lDrugs);

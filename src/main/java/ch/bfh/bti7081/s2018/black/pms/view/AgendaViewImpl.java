@@ -19,17 +19,33 @@ import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
 import ch.bfh.bti7081.s2018.black.pms.model.DoctorItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.view.PatientView.PatientViewListener;
-
+/**
+ * AgendaViewImpl Class
+ * View Implementation of AgendaView
+ * @author bielc1
+ *
+ */
 public class AgendaViewImpl extends PmsCustomComponent implements View, AgendaView {
 
+	// identifier used for displaying the correct URL
 	public static final String NAME = "agenda";
 
+	// List containing all listeners for this object (mostly the corresponding Presenter Class)
 	private List<AgendaViewListener> listeners = new ArrayList<AgendaViewListener>();
+	
+	//Vaadin Calendar is for visualizing items in a calendar. 
+	//Calendar items can be visualized in the variable length view depending on the start and end dates. 
 	Calendar<AppointmentItem> cal = new Calendar<>();
 	
+	// List containing Mock Objects for the PatientModel
 	private List<PatientItem> patientItemList;
+	
+	// List containing Mock Objects for the DoctorModel
 	private List<DoctorItem> doctorItemList;
 
+	/**
+	 * Default Constructor like all other ViewImplementations to trigger the super-class constructor  
+	 */
 	public AgendaViewImpl() {
 		super();
 	}
@@ -39,7 +55,6 @@ public class AgendaViewImpl extends PmsCustomComponent implements View, AgendaVi
 		//cal.setWidth(super.contentPanel.getWidth(), super.contentPanel.getWidthUnits());
 		cal.setWidth("1200px");
 		addCalendarEventListeners();
-		changeCalendarRange();
 		this.patientItemList = new LinkedList<>();
 		updatePatientItemList();
 		this.doctorItemList = new LinkedList<>();
@@ -48,6 +63,9 @@ public class AgendaViewImpl extends PmsCustomComponent implements View, AgendaVi
 		super.contentPanel.setContent(cal);
 	}
 	
+
+
+	//RangeSelectEvent is sent when day or time cells are drag-marked with mouse.
 	private void onCalendarRangeSelect(CalendarComponentEvents.RangeSelectEvent event) {
 		AppointmentItem appointmentItem = new AppointmentItem(new Appointment(event.getStart().toLocalDateTime(), event.getEnd().toLocalDateTime()));
 		final AppointmentWindow window = new AppointmentWindow(this, appointmentItem, patientItemList, doctorItemList); 
@@ -55,23 +73,28 @@ public class AgendaViewImpl extends PmsCustomComponent implements View, AgendaVi
 		super.getUI().getUI().addWindow(window);
     }
 	
+	//ItemClickEvent is sent when an item on the calendar is clicked.
 	private void onCalendarItemClick(CalendarComponentEvents.ItemClickEvent event) {
 		final AppointmentWindow window = new AppointmentWindow(this, (AppointmentItem) event.getCalendarItem(),patientItemList, doctorItemList);
 		window.setModal(true);
 		super.getUI().getUI().addWindow(window);;
 	}
 	
+	//DateClickEvent is sent when a date is clicked.
 	private void onDateClick(CalendarComponentEvents.DateClickEvent event) {
 		BasicDateClickHandler basicDateClickHandler = new BasicDateClickHandler();
 		basicDateClickHandler.dateClick(event);
-		changeCalendarRange();
 	}
+	
+	//ItemResizeEvent is sent when an item is resized
 	private void onItemResize(CalendarComponentEvents.ItemResizeEvent event) {
 		BasicItemResizeHandler basicItemResizeHandler = new BasicItemResizeHandler();
 		basicItemResizeHandler.itemResize(event);
 		saveAppointment((AppointmentItem)event.getCalendarItem());
 	}
 	
+	//ItemMoveEvent is sent when existing item is dragged to a new position.
+
 	private void onItemMove(CalendarComponentEvents.ItemMoveEvent event) {
 		BasicItemMoveHandler basicItemMoveHandler = new BasicItemMoveHandler();
 		basicItemMoveHandler.itemMove(event);
@@ -104,9 +127,6 @@ public class AgendaViewImpl extends PmsCustomComponent implements View, AgendaVi
 	@Override
 	public void addEventProvider(AppointmentDataProvider eventProvider) {
 		cal.setDataProvider(eventProvider);
-	}
-	
-	public void changeCalendarRange() {
 	}
 	
 	private void updatePatientItemList() {

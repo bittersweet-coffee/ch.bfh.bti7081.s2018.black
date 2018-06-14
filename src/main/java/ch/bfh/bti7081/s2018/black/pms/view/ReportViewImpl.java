@@ -25,20 +25,38 @@ import com.vaadin.ui.Grid.SelectionMode;
 
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.presenter.PdfSource;
-
+/**
+ * ReportViewImpl Class
+ * View Implementation of ReportView
+ * @author bielc1
+ *
+ */
 public class ReportViewImpl extends PmsCustomComponent implements View, ReportView {
 
+	// identifier used for displaying the correct URL
 	public static final String NAME = "report";
 	
+	// List containing all listeners for this object (mostly the corresponding Presenter Class)
 	private List<ReportViewListener> listeners = new ArrayList<ReportViewListener>();
+	
+	// List containing Mock Objects for the PatientModel
 	private List<PatientItem> patientItemList;
+	
+	// Grid displaying all patients of the PMS
+	// used for allocation of a drug to a patient
+	// provides filter capabilities
 	private Grid<PatientItem> patientItemGrid;
+	
+	// DataProvider used to populate the patientItemGrid
 	private ListDataProvider<PatientItem> patientProvider;
 	
 	StreamSource source;
 	StreamResource resource;
 	BrowserWindowOpener opener;
 	
+	/**
+	 * Default Constructor like all other ViewImplementations to trigger the super-class constructor  
+	 */
 	public ReportViewImpl() {
 		super();
 	}
@@ -131,14 +149,13 @@ public class ReportViewImpl extends PmsCustomComponent implements View, ReportVi
 		});
 	}
 	
+	/**
+	 * Method used by the patiemtItemGrid to update its DataProvider 
+	 */
 	private void updatePatientItemList() {
 		for (ReportViewListener listener: listeners) {
 			this.patientItemList = listener.setupPatientItemList();
 		}
-	}
-	
-	private void generateReport() {
-		
 	}
 
 	@Override
