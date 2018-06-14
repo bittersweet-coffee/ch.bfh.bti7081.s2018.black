@@ -53,9 +53,6 @@ public class PdfSource implements StreamSource {
 	 * @param patientItem The mock object of the Patient (PatientItem)
 	 */
     public PdfSource(PatientItem patientItem) throws MalformedURLException {
-    	//JpaUtility transaction = new JpaUtility();
-		//JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		// = (PatientModel) objects.byid(PatientModel.class, patientItem.getId());
     	patientModel = JpaServicePresenter.findAll(PatientModel.class).stream().filter(p -> p.getId() == patientItem.getId()).findFirst().get();
 		ArrayList<AppointmentModel> appointmentModel = new ArrayList<>(patientItem.getModel().getAppointments());
 		
