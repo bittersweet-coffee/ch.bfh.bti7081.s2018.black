@@ -2,6 +2,9 @@ package ch.bfh.bti7081.s2018.black.pms;
 
 import javax.servlet.annotation.WebServlet;
 
+import org.apache.log4j.Logger;
+
+import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -26,12 +29,19 @@ import ch.bfh.bti7081.s2018.black.pms.view.*;
 // Let Navigator use the HTML5 history API to have nicer URLs and catch backwards navigation
 @PushStateNavigation
 
+// Prevent logout when refreshing the session (F5)
+@PreserveOnRefresh
+
 // Custom browser tab title
 @Title("PMS")
 public class Main extends UI {
 	
+	final static Logger logger = Logger.getLogger(Main.class);
+	
     @Override
     protected void init(VaadinRequest vaadinRequest) {
+    	logger.info("Initializing PMS");
+    	
     	// Initialize the LoginView first in order to handle the user session
     	LoginViewImpl loginView = new LoginViewImpl();
     	Navigator navigator = new Navigator(this, this);
@@ -46,13 +56,21 @@ public class Main extends UI {
     	PatientViewImpl patientView = new PatientViewImpl();
     	ReportViewImpl reportView = new ReportViewImpl();
     	
-    	new AgendaPresenter(agendaView);
-    	new AddictionPresenter(addictionView);
-    	new PatientPresenter(patientView);
-    	new LoginPresenter(loginView);
-    	new ClinicPresenter(clinicView);
-    	new ReportPresenter(reportView);
-    	new DrugPresenter(drugView);
+    	AgendaPresenter ap = new AgendaPresenter();
+    	ap.setupView(agendaView);
+    	AddictionPresenter ad = new AddictionPresenter();
+    	ad.setupView(addictionView);
+    	PatientPresenter pp = new PatientPresenter();
+    	pp.setupView(patientView);
+    	LoginPresenter lp = new LoginPresenter();
+    	lp.setupView(loginView);
+    	ClinicPresenter cp = new ClinicPresenter();
+    	cp.setupView(clinicView);
+    	ReportPresenter rp = new ReportPresenter();
+    	rp.setupView(reportView);
+    	DrugPresenter dp = new DrugPresenter();
+    	dp.setupView(drugView);
+    	
 
     	navigator.addView(DashboardViewImpl.NAME, dashboardView);
     	navigator.addView(AddictionViewImpl.NAME, addictionView);
@@ -61,6 +79,7 @@ public class Main extends UI {
     	navigator.addView(DrugViewImpl.NAME, drugView);
     	navigator.addView(PatientViewImpl.NAME, patientView);
     	navigator.addView(ReportViewImpl.NAME, reportView);
+    	logger.info("Finished initializing PMS");
     	
     	navigator.navigateTo("login");
     }

@@ -1,6 +1,6 @@
 package ch.bfh.bti7081.s2018.black.pms.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,18 +13,20 @@ import java.util.List;
 public class PatientItem {
 	
 	private Integer id;
+	
+  private List<String> notes;
 	private PatientModel model;
-	private ClinicModel clinic;
-	
-	private String firstName, lastName, street, telephone;
-	private Date birthday;
+	private String street;
 	private int postcode;
-	
-	private List<String> notes;
+	private String telephone;
 	private List<AddictionModel> addictions;
 	private List<DoctorModel> doctors;
+	private ClinicModel clinic;
 	private List<PatientDrugModel> drugs;
 	private List<AppointmentModel> appointments;
+  
+  private String firstName, lastName;
+	private LocalDate birthday;
 	
 	/**
 	 * Constructor for the PatientItem
@@ -135,7 +137,7 @@ public class PatientItem {
 		return this.firstName + " " + this.lastName; 
 	}
 	
-	public Date getBirthday() {
+	public LocalDate getBirthday() {
 		return this.birthday;
 	}
 
@@ -207,7 +209,7 @@ public class PatientItem {
 		this.model = model;
 	}
 	
-	public void setBirthday(Date birthday) {
+	public void setBirthday(LocalDate birthday) {
 		this.birthday = birthday;
 	}
 

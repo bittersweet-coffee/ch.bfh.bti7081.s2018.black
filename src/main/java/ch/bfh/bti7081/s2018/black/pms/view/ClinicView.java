@@ -37,7 +37,6 @@ public interface ClinicView {
 		 * @return List of Strings containing the names of all Clinics
 		 */
 		List<String> setupClinicList();
-		
 	}
 	
 	/**

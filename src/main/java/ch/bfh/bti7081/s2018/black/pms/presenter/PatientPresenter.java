@@ -6,9 +6,8 @@ import java.util.List;
 import ch.bfh.bti7081.s2018.black.pms.model.NoticeModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
-import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
-import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 import ch.bfh.bti7081.s2018.black.pms.view.PatientView;
+import ch.bfh.bti7081.s2018.black.pms.view.PatientViewImpl;
 
 public class PatientPresenter implements PatientView.PatientViewListener {
 
@@ -16,16 +15,12 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 	private List<PatientModel> patientModelList;
 	private List<PatientItem> patientItemList = new LinkedList<>();
 
-	public PatientPresenter(PatientView view) {
-		this.view = view;
-		this.view.addListener(this);
+	public PatientPresenter() {
 		this.patientModelList = new LinkedList<>();
 	}
 
 	public void fillPatientList() {
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		this.patientModelList = objects.findAll(PatientModel.class);
+		this.patientModelList = JpaServicePresenter.findAll(PatientModel.class);
 		this.patientItemList = new LinkedList<>();
 		for (PatientModel patient : this.patientModelList) {
 			this.patientItemList.add(new PatientItem(patient));
@@ -59,16 +54,12 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 		NoticeModel note = new NoticeModel();
 		note.setNote(newNote);
 		note.setPatient(patient);
-		JpaUtility t2 = new JpaUtility();
-		JpaDataAccessObject ob2 = new JpaDataAccessObject(t2);
-		ob2.update(note);
+		JpaServicePresenter.update(note);
 		patient.getNotes().add(note);
 	}
 	
 	@Override
 	public void saveButtonClicked(PatientItem patientItem, String newNote) {
-		JpaUtility t2 = new JpaUtility();
-		JpaDataAccessObject ob2 = new JpaDataAccessObject(t2);
 		PatientModel patient = new PatientModel();
 		patient.setFirstname(patientItem.getFirstName());
 		patient.setLastname(patientItem.getLastName());
@@ -86,14 +77,19 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 		List<NoticeModel> notes = new LinkedList<>();
 		notes.add(note);
 		patient.setNotes(notes);
-
-		
-		ob2.store(patient);
+		JpaServicePresenter.store(patient);
 	}
 
 	@Override
 	public List<String> getNotesForPatient(Integer patientId) {
 		List<String> patientNotes = new LinkedList<>(); // fetch DB for Patient Notes
 		return patientNotes;
+	}
+
+
+	public void setupView(PatientViewImpl patientView) {
+		this.view = patientView;
+		this.view.addListener(this);
+		
 	}
 }

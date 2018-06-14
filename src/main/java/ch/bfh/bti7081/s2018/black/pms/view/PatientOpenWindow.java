@@ -117,19 +117,23 @@ public class PatientOpenWindow extends Window {
 		//Part to display all Appointments of the patient
 		List<AppointmentModel> appointmentList =  patientItem.getModel().getAppointments();
 		List<String> dataAppointment = new LinkedList<String>();
-		if (appointmentList != null) {
-			for (AppointmentModel a: appointmentList) {
-	        	dataAppointment.add(a.getName() + "Strart: " + a.getStart() + "End: " + a.getEnd());
+		if(appointmentList != null) {
+			if (!appointmentList.isEmpty()) {
+				for (AppointmentModel a: appointmentList) {
+		        	dataAppointment.add(a.getName() + "   Start: " + a.getStart() + "   End: " + a.getEnd());
+				}
+			} else {
+				dataAppointment.add("No Appointments");
 			}
-		} else
+		} else {
 			dataAppointment.add("No Appointments");
+		}
         
-        
-        ListSelect lsAppointment = new ListSelect<>("Appointments", dataAppointment);
-        lsAppointment.setRows(4);
-        lsAppointment.setWidth("500px");
-        lsAppointment.setStyleName("select.v-select-select");
-       
+    ListSelect<String> lsAppointment = new ListSelect<>("Appointments", dataAppointment);
+    lsAppointment.setRows(4);
+    lsAppointment.setWidth("500px");
+    lsAppointment.setStyleName("select.v-select-select");
+
 		GridLayout tileGridAppointment = new GridLayout(1,2);
 		tileGridAppointment.addComponent(lsAppointment, 0, 0);
 		
@@ -161,10 +165,10 @@ public class PatientOpenWindow extends Window {
 			dataAddiction.add(addic.getName());
 		}
 			
-        ListSelect lsAddiction = new ListSelect<>("Addictions", dataAddiction);
-        lsAddiction.setRows(3);
-        lsAddiction.setWidth("525px");
-        lsAddiction.setStyleName("select.v-select-select");        
+    ListSelect lsAddiction = new ListSelect<>("Addictions", dataAddiction);
+    lsAddiction.setRows(3);
+    lsAddiction.setWidth("525px");
+    lsAddiction.setStyleName("select.v-select-select");        
     
 		GridLayout tileGridAddiction = new GridLayout(1,2);
 		tileGridAddiction.addComponent(lsAddiction, 0, 0);
@@ -178,10 +182,10 @@ public class PatientOpenWindow extends Window {
 			dataMedication.add(drugs.getDrug().getName() + " Dose: " + drugs.getDose() + " " + drugs.getDrug().getUnit());
 		}
 		
-        ListSelect lsMedication = new ListSelect<>("Medications", dataMedication);
-        lsMedication.setRows(3);
-        lsMedication.setWidth("525px");
-        lsMedication.setStyleName("select.v-select-select");
+    ListSelect lsMedication = new ListSelect<>("Medications", dataMedication);
+    lsMedication.setRows(3);
+    lsMedication.setWidth("525px");
+    lsMedication.setStyleName("select.v-select-select");
                 
 		GridLayout tileGridMedication = new GridLayout(1,2);
 		tileGridMedication.addComponent(lsMedication, 0, 0);

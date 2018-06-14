@@ -1,10 +1,11 @@
 package ch.bfh.bti7081.s2018.black.pms.view;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
+
+import org.apache.log4j.Logger;
 
 import com.vaadin.server.Page;
 import com.vaadin.ui.Button;
@@ -18,8 +19,6 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.TwinColSelect;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-
-import ch.bfh.bti7081.s2018.black.pms.controller.Controller;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 
 import com.vaadin.ui.Button.ClickEvent;
@@ -32,6 +31,8 @@ public class PatientNewWindow extends Window {
 	PatientItem patient;
 	List<String> dataAppointment;
 	TextArea appointmentsList;
+
+	final static Logger logger = Logger.getLogger(PatientNewWindow.class);
 	
 	public PatientNewWindow(PatientViewImpl view, PatientItem patientItem) {
 		super("New Patient");
@@ -55,21 +56,33 @@ public class PatientNewWindow extends Window {
 	
 		
 		TwinColSelect<String> addictionselect = new TwinColSelect<>("Addictions: ");
-		addictionselect.setItems(Controller.getAddictionNames(Controller.getAddictions()));
+		addictionselect.setItems(view.getAddictionNames());
 		addictionselect.setRows(5);
 
 
 		TextField firstNameField = new TextField();
+		firstNameField.setRequiredIndicatorVisible(true);
 		TextField lastNameField = new TextField();
+		lastNameField.setRequiredIndicatorVisible(true);
 		TextField phoneField = new TextField();
-		TextField postodeField = new TextField();
+		phoneField.setRequiredIndicatorVisible(true);
+		TextField postCodeField = new TextField();
+		postCodeField.setRequiredIndicatorVisible(true);
 		TextField streetField = new TextField();
+		streetField.setRequiredIndicatorVisible(true);
 		DateField birthdayField = new DateField();
+		birthdayField.setRequiredIndicatorVisible(true);
 		
 		ComboBox<String> cmbLocs = new ComboBox<String>("Select a Location:");
-		Controller.setupLocations(cmbLocs);
-		ComboBox<String> cmbDocs = new ComboBox<String>("Select your doctor:");
-		Controller.setupDoctors(cmbDocs);
+		List<String> locNameList = view.getClinicNames();
+		cmbLocs.setItems(locNameList);
+		cmbLocs.setItemCaptionGenerator(String::toString);
+		cmbLocs.setRequiredIndicatorVisible(true);
+		ComboBox<String> cmbDocs = new ComboBox<String>("Select a doctor:");
+		List<String> docNameList = view.getDocNames();
+		cmbDocs.setItems(docNameList);
+		cmbDocs.setItemCaptionGenerator(String::toString);
+		cmbDocs.setRequiredIndicatorVisible(true);
 		
 		TextArea descriptionField = new TextArea();
 		descriptionField.setRows(5);
@@ -77,50 +90,75 @@ public class PatientNewWindow extends Window {
 		Button btnSave = new Button("Save", new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				patient.setFirstName(firstNameField.getValue());
-				patient.setLastName(lastNameField.getValue());
-				patient.setStreet(streetField.getValue());
-				patient.setPostcode(Integer.parseInt(postodeField.getValue())); //TO-DO: Check if int!!
-				patient.setTelephone(phoneField.getValue());
-				patient.setDoctors(Controller.getSelectedDoctor(cmbDocs));
-				patient.setClinic(Controller.getSelectedLocation(cmbLocs));
-				patient.setAddictions(Controller.parseSelectedAddictions(addictionselect.getSelectedItems()));
-				if (birthdayField.isEmpty()) {
-					Notification.show("Warning", "Birthday is not set!", Notification.TYPE_ERROR_MESSAGE);
-				} else if (isValid(birthdayField.getValue())) {
-					Date birthdaydate = Date.from(birthdayField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-					patient.setBirthday(birthdaydate);
-					view.save(patient, descriptionField.getValue());
-					close();
-					Page.getCurrent().reload();
-				} else {
-					Notification.show("Warning", "Birthday is not Valid! Please check the selected Date", Notification.TYPE_ERROR_MESSAGE);
-					birthdayField.setValue(birthdayField.getValue());
-					birthdayField.setRequiredIndicatorVisible(true);
-				}
 				
+				if(firstNameField.isEmpty() || lastNameField.isEmpty() || phoneField.isEmpty() 
+						|| postCodeField.isEmpty() || streetField.isEmpty() || birthdayField.isEmpty()
+						|| !cmbLocs.getSelectedItem().isPresent() || !cmbDocs.getSelectedItem().isPresent()) {
+					Notification.show("Warning", "Please fill out all required fields!", Notification.TYPE_ERROR_MESSAGE);
+				} else {
+					
+					patient.setFirstName(firstNameField.getValue());
+					patient.setLastName(lastNameField.getValue());
+					patient.setStreet(streetField.getValue());
+					
+					patient.setTelephone(phoneField.getValue());
+					Optional<String> doc = cmbDocs.getSelectedItem();
+					if (doc.isPresent()) {
+						view.getSelectedDoctor(doc, patient);
+					} else {
+						Notification.show("Warning", "No Doctor was selected!", Notification.TYPE_ERROR_MESSAGE);
+					}
+					Optional<String> clinic = cmbLocs.getSelectedItem();
+					if (clinic.isPresent()) {
+						view.getSelectedClinic(clinic, patient);
+					} else {
+						Notification.show("Warning", "No Clinic was selected!", Notification.TYPE_ERROR_MESSAGE);
+					}
+					
+					view.setSelectedAddictions(addictionselect.getSelectedItems(), patient);
+					
+					if (isValidDate(birthdayField.getValue()) && isValidPLZ(postCodeField.getValue())) {
+						patient.setBirthday(birthdayField.getValue());
+						patient.setPostcode(Integer.parseInt(postCodeField.getValue()));
+						
+						view.save(patient, descriptionField.getValue());
+						close();
+						Page.getCurrent().reload();
+						
+					} else if(!isValidDate(birthdayField.getValue())) {
+						Notification.show("Warning", "Birthday is not valid! Please check the selected Date.", Notification.TYPE_ERROR_MESSAGE);
+					
+					} else {
+						Notification.show("Warning", "Post Code is not valid! Please enter a 4-digit Post Code.", Notification.TYPE_ERROR_MESSAGE);
+					}
+				}				
 			}
 
-			private boolean isValid(LocalDate localDate) {
+			private boolean isValidDate(LocalDate localDate) {
 				if (localDate.isAfter(LocalDate.now())) {
 					return false;
 				} else {
 					return true;
 				}
 			}
-		});
-
-		Button btnDummyData = new Button("Load Dummy Data", new ClickListener() {
-			@Override
-			public void buttonClick(ClickEvent event) {
-				firstNameField.setValue("DummyFirstName");
-				lastNameField.setValue("DummyLastName");
-				streetField.setValue("Dummy Street 1");
-				postodeField.setValue("1234");
-				phoneField.setValue("Dummy Phone 123");
-				
+			
+			private boolean isValidPLZ(String str) {
+				try {
+					Integer.parseInt(postCodeField.getValue());
+					
+					if(str.length() != 4) {
+						throw new NumberFormatException();
+					}
+					
+					return true;
+					
+				} catch (Exception e) {
+					logger.error(e);
+					return false;
+				}
 			}
 		});
+
 
 		Button btnCancel = new Button("Cancel", event -> this.close());
 
@@ -134,7 +172,7 @@ public class PatientNewWindow extends Window {
 		tileGrid.addComponent(lblStreet, 0, 3);
 		tileGrid.addComponent(streetField, 1, 3);
 		tileGrid.addComponent(lblpostCode, 0, 4);
-		tileGrid.addComponent(postodeField, 1, 4);
+		tileGrid.addComponent(postCodeField, 1, 4);
 		tileGrid.addComponent(lblPhone, 0, 5);
 		tileGrid.addComponent(phoneField, 1, 5);
 		tileGrid.addComponent(lblDoctors, 0, 6);
@@ -143,16 +181,12 @@ public class PatientNewWindow extends Window {
 		tileGrid.addComponent(cmbLocs, 1, 7);
 		
 		VerticalLayout rightComponentBox = new VerticalLayout(addictionselect, lblNotes, descriptionField);
-		HorizontalLayout navigationButtons = new HorizontalLayout(btnSave, btnDummyData, btnCancel);
+		HorizontalLayout navigationButtons = new HorizontalLayout(btnSave, btnCancel);
 		VerticalLayout leftComponentBox = new VerticalLayout(tileGrid, navigationButtons);
 		HorizontalLayout mainOpenWindow = new HorizontalLayout(leftComponentBox, rightComponentBox);
 		this.setWidth("1000px");
 		tileGrid.setMargin(true);
 		
 		setContent(mainOpenWindow);
-	}
-	
-	public PatientNewWindow getPatientNewWindow() {
-		return this;
 	}
 }

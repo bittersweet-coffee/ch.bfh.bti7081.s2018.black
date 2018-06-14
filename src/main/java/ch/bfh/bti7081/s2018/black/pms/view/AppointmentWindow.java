@@ -20,19 +20,34 @@ import com.vaadin.ui.Window;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
 import ch.bfh.bti7081.s2018.black.pms.model.DoctorItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
-
+/**
+ * AppointmentWindow Class
+ * @author bielc1
+ *
+ */
 public class AppointmentWindow extends Window {
 	
 	AgendaViewImpl view;
+	// List containing Mock Objects for the PatientModel
 	private List<PatientItem> patientItemList;
+	// DataProvide for the ComboBox
 	private ListDataProvider<PatientItem> patientProvider;
 	
+	// List containing Mock Objects for the PatientModel
 	private List<DoctorItem> doctorItemList;
+	// DataProvide for the ComboBox
 	private ListDataProvider<DoctorItem> doctorProvider;
 	
 	ComboBox<PatientItem> comboBoxPatient;
 	ComboBox<DoctorItem> comboBoxDoctor;
 
+	/**
+	 * Constructor to create a new appointment window
+	 * @param view
+	 * @param appointmentItem
+	 * @param patientItemList
+	 * @param doctorItemList
+	 */
 	public AppointmentWindow(AgendaViewImpl view, AppointmentItem appointmentItem, List<PatientItem> patientItemList, List<DoctorItem> doctorItemList) {
 		super("New Appointment");
 		this.view = view;
@@ -41,6 +56,10 @@ public class AppointmentWindow extends Window {
 		buildWindow(appointmentItem);
 	}
 	
+	/**
+	 * Method to build the appointment window
+	 * @param appointmentItem
+	 */
 	private void buildWindow(AppointmentItem appointmentItem) {
 		setWidth(500.0f, Unit.PIXELS);
 

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.navigator.View;
@@ -53,6 +55,8 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
 	
 	// Textareas which contain all important information about the clinic
 	private TextArea txtClinicName, txtCityName, txtPostCode, txtStreet, txtTelephone, txtAddictions;
+	
+	final static Logger logger = Logger.getLogger(ClinicViewImpl.class);
 
 	/**
 	 * Default Constructor like all other ViewImplementations to trigger the super-class constructor  
@@ -62,6 +66,8 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
 	}
 	
 	public void enter(ViewChangeEvent event) {
+		super.bC.makeCrumbs(ClinicViewImpl.NAME);
+		super.bC.visibleBreadcrumbs();
 		super.menuBar.getItems().get(1).setText((String) VaadinSession.getCurrent().getAttribute("username"));
 		Label test = new Label("Clinic here");
         super.contentPanel.setContent(test);
@@ -225,19 +231,18 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
     		try {
     			mailto = new URI("mailto:" + this.email + "?subject=Request");
     		} catch (URISyntaxException e) {
-    			// TODO Auto-generated catch block
-    			e.printStackTrace();
+    			logger.error(e);
     		}
               try {
     			desktop.mail(mailto);
     		} catch (IOException e) {
-    			// TODO Auto-generated catch block
-    			e.printStackTrace();
+    			logger.error(e);
     		}
             } else {
             	super.contentPanel.getUI().getUI().addWindow(windowPatient);
-            	lblMailError.setValue("desktop doesn't support mailto; mail is dead anyway ;)");
-            	throw new RuntimeException("desktop doesn't support mailto; mail is dead anyway ;)");
+            	lblMailError.setValue("Desktop doesn't support mailto; mail is dead anyway! ;)");
+            	logger.error("Desktop doesn't support mailto; mail is dead anyway! ;)");
+            	throw new RuntimeException("Desktop doesn't support mailto; mail is dead anyway! ;)");
             }
         });
         

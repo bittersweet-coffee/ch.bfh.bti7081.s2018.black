@@ -6,10 +6,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
+import ch.bfh.bti7081.s2018.black.pms.model.ClinicItem;
 import ch.bfh.bti7081.s2018.black.pms.model.ClinicModel;
-import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
-import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
+import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.view.ClinicView;
+import ch.bfh.bti7081.s2018.black.pms.view.ClinicViewImpl;
 
 /**
  * ClinicPresenter Class
@@ -22,15 +23,15 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
 	private List<ClinicModel> clinicModelList;
 	private List<String> clinicNameList = new LinkedList<>();
 	
-	
 	/**
 	 * Constructor for the ClinicPresenter
 	 * Used to register itself as a listener in the corresponding view as well as initializing the ClinicList
 	 */
 	public ClinicPresenter(ClinicView view) {
 		this.view = view;
+
+	public ClinicPresenter() {
 		this.clinicModelList = new LinkedList<>();
-		view.addListener(this);
 		this.fillClinicList();
 	}
 	
@@ -53,10 +54,9 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
 	/**
 	 * Method used to query the database and fill the ClinicModelList with all ClinicModels from the database
 	 */
-	public void fillClinicList() {
-		JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		this.clinicModelList = objects.findAll(ClinicModel.class);
+	private void fillClinicList() {
+		this.clinicModelList = JpaServicePresenter.findAll(ClinicModel.class);
+
      	
 		for (ClinicModel clinic : this.clinicModelList) {
      		this.clinicNameList.add(clinic.getName());
@@ -98,7 +98,6 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
 		}
 	}
 
-
 	@Override
 	public List<String> selectListChanged(String clinicName) {
 		Optional<ClinicModel> optionalClinic = this.clinicModelList.stream()
@@ -131,4 +130,30 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
 		return this.clinicNameList;
 	}
 
+	public void setupView(ClinicViewImpl clinicView) {
+		this.view = clinicView;
+		this.view.addListener(this);
+		
+	}
+
+	public static List<ClinicItem> getClinicNames() {
+		List<ClinicModel> clinicModelList = JpaServicePresenter.findAll(ClinicModel.class);
+		List<ClinicItem> clinicItemList = new LinkedList<ClinicItem>();
+		for (ClinicModel clinic : clinicModelList) {
+			ClinicItem c = new ClinicItem();
+			c.setName(clinic.getName());
+			clinicItemList.add(c);
+		}
+		return clinicItemList;
+	}
+
+	public static void setupClinic(Optional<String> clinic, PatientItem patient) {
+		List<ClinicModel> clinicModelList = JpaServicePresenter.findAll(ClinicModel.class);
+		for (ClinicModel clinicModel : clinicModelList) {
+			if (clinic.get().equals(clinicModel.getName())) {
+				patient.setClinic(clinicModel);
+			}
+		}
+		
+	}
 }
