@@ -10,6 +10,8 @@ import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.vaadin.shared.extension.PartInformationState;
+
 import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentModel;
 import ch.bfh.bti7081.s2018.black.pms.model.ClinicModel;
@@ -75,7 +77,116 @@ class JUnitTests {
 		setupMockNote(mockPatient);
 		
 	}
+	
+	@Before
+	void setupJPA() {
+		assertNotNull(transaction);
+		assertNotNull(objects);
+	}
 
+	/**
+	 * Checks Patient Presenter on save a new patient method.
+	 */
+	@Test
+	void checkPatientPresenterStore() {
+		int nbrBefore = objects.findAll(PatientModel.class).size();
+		PatientPresenter pp = new PatientPresenter();
+		PatientItem mockPatientItem = new PatientItem();
+		objects.store(mockClinic);
+		setupMockPatient(mockAddictionList, mockAppointmentList, mockDoctorList, mockPatientDrugModelList, mockNoteList);
+		setupMockNote(mockPatient);
+		mockNoteList.add(mockNote);
+		mockPatient.setNotes(mockNoteList);
+		mockPatientItem.setAddictions(mockPatient.getAddictions());
+		mockPatientItem.setAppointments(mockPatient.getAppointments());
+		mockPatientItem.setBirthday(mockPatient.getBirthday());
+		mockPatientItem.setClinic(mockClinic);
+		mockPatientItem.setDoctors(mockPatient.getDoctors());
+		mockPatientItem.setDrugs(mockPatient.getDrugs());
+		mockPatientItem.setFirstName(mockPatient.getFirstname());
+		mockPatientItem.setLastName(mockPatient.getLastname());
+		mockPatientItem.setPostcode(mockPatient.getPostCode());
+		mockPatientItem.setStreet(mockPatient.getStreet());
+		mockPatientItem.setTelephone(mockPatient.getTelephone());
+		pp.saveButtonClicked(mockPatientItem, mockPatient.getNotes().get(0).getNote());
+		int nbrAfter = objects.findAll(PatientModel.class).size();
+		assertEquals(nbrBefore+1, nbrAfter);
+	}
+	/**
+	 * Database Check
+	 */
+	@Test
+	void checkFindAllMethod() {
+		assertNotNull(objects.findAll(PatientModel.class));
+	}
+	
+	/**
+	 * Database Check
+	 */
+	@Test 
+	void checkObjectStoreMethod_addNewPatient() {
+		int nbrBefore = objects.findAll(PatientModel.class).size();
+		storePatient(objects);
+		int nbrAfter = objects.findAll(PatientModel.class).size();
+		assertEquals(nbrBefore+1, nbrAfter);
+	}
+	
+	/**
+	 * Database Check
+	 */
+	@Test
+	void checkObejctStoreMethod_removePatient() {
+		int nbrBefore = objects.findAll(PatientModel.class).size();
+		storePatient(objects);
+		objects.remove(mockPatient);
+		int nbrAfter = objects.findAll(PatientModel.class).size();
+		assertEquals(nbrBefore, nbrAfter);
+	}
+	
+	/**
+	 * Database Check
+	 */
+	@Test
+	void checkObjectStoreMethod_updatePatient() {
+		String newFirstName = "newMockFirstName";
+		Boolean assertFlag = false;
+		storePatient(objects);
+		for (PatientModel patient : objects.findAll(PatientModel.class)) {
+			if (patient.getFirstname().equals("mockFirstName")) {
+				mockPatient.setFirstname(newFirstName);
+			}
+		}
+		objects.update(mockPatient);
+		for (PatientModel patient : objects.findAll(PatientModel.class)) {
+			if (patient.getFirstname().equals(newFirstName)) {
+				assertFlag = true;
+			}
+		}
+		assertTrue(assertFlag);
+		
+		
+	}
+	
+	
+	/**
+	 * Stores a mocked patient in the database
+	 * @param objects
+	 */
+	private void storePatient(JpaDataAccessObject objects) {
+		setupMockPatient(mockAddictionList, mockAppointmentList, mockDoctorList, mockPatientDrugModelList, mockNoteList);
+		setupPatientDependencies(objects, mockPatient.getClinic());
+		objects.store(mockPatient);
+	}
+
+	/**
+	 * Helpermethod because patient store needs a clinic store first. 
+	 * @param objects
+	 * @param clinic
+	 */
+	private void setupPatientDependencies(JpaDataAccessObject objects, ClinicModel clinic) {
+		objects.store(clinic);
+	}
+	
 	private void setupMockPatientDrugModel(DrugModel mockDrug, PatientModel mockPatient) {
 		mockPatientDrugModel = new PatientDrugModel();
 		mockPatientDrugModel.setDose(1.0);
@@ -151,70 +262,6 @@ class JUnitTests {
 		mockPatient.setPostCode(1234);
 		mockPatient.setStreet("mockStreet");
 		mockPatient.setTelephone("mockPhone");
-		
-	}
-
-	
-	@Test
-	void checkPatientPresenterStore() {
-		int nbrBefore = objects.findAll(PatientModel.class).size();
-		PatientPresenter pp = new PatientPresenter();
-		PatientItem mockPatientItem = new PatientItem();
-		objects.store(mockClinic);
-		setupMockPatient(mockAddictionList, mockAppointmentList, mockDoctorList, mockPatientDrugModelList, mockNoteList);
-		setupMockNote(mockPatient);
-		mockNoteList.add(mockNote);
-		mockPatient.setNotes(mockNoteList);
-		mockPatientItem.setAddictions(mockPatient.getAddictions());
-		mockPatientItem.setAppointments(mockPatient.getAppointments());
-		mockPatientItem.setBirthday(mockPatient.getBirthday());
-		mockPatientItem.setClinic(mockClinic);
-		mockPatientItem.setDoctors(mockPatient.getDoctors());
-		mockPatientItem.setDrugs(mockPatient.getDrugs());
-		mockPatientItem.setFirstName(mockPatient.getFirstname());
-		mockPatientItem.setLastName(mockPatient.getLastname());
-		mockPatientItem.setPostcode(mockPatient.getPostCode());
-		mockPatientItem.setStreet(mockPatient.getStreet());
-		mockPatientItem.setTelephone(mockPatient.getTelephone());
-		pp.saveButtonClicked(mockPatientItem, mockPatient.getNotes().get(0).getNote());
-		int nbrAfter = objects.findAll(PatientModel.class).size();
-		assertEquals(nbrBefore+1, nbrAfter);
-	}
-	
-	
-	
-	@Before
-	void setupJPA() {
-		assertNotNull(transaction);
-		assertNotNull(objects);
-	}
-	
-	@Test
-	void checkFindAllMethod() {
-		assertNotNull(objects.findAll(PatientModel.class));
-	}
-	
-	@Test 
-	void checkObjectStoreMethod_addNewPatient() {
-		int nbrBefore = objects.findAll(PatientModel.class).size();
-		storePatient(objects);
-		int nbrAfter = objects.findAll(PatientModel.class).size();
-		assertEquals(nbrBefore+1, nbrAfter);
-	}
-	
-	@Test
-	void checkObejctStoreMethod_removePatient() {
-		
-	}
-
-	private void storePatient(JpaDataAccessObject objects) {
-		setupMockPatient(mockAddictionList, mockAppointmentList, mockDoctorList, mockPatientDrugModelList, mockNoteList);
-		setupPatientDependencies(objects, mockPatient.getClinic());
-		objects.store(mockPatient);
-	}
-
-	private void setupPatientDependencies(JpaDataAccessObject objects, ClinicModel clinic) {
-		objects.store(clinic);
 		
 	}
 	

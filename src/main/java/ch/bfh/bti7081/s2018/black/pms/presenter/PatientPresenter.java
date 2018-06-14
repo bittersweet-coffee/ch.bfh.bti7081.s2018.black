@@ -19,7 +19,6 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 		this.patientModelList = new LinkedList<>();
 	}
 
-
 	public void fillPatientList() {
 		this.patientModelList = JpaServicePresenter.findAll(PatientModel.class);
 		this.patientItemList = new LinkedList<>();

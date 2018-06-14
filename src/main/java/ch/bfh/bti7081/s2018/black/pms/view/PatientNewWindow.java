@@ -154,17 +154,6 @@ public class PatientNewWindow extends Window {
 			}
 		});
 
-		Button btnDummyData = new Button("Load Dummy Data", new ClickListener() {
-			@Override
-			public void buttonClick(ClickEvent event) {
-				firstNameField.setValue("DummyFirstName");
-				lastNameField.setValue("DummyLastName");
-				streetField.setValue("Dummy Street 1");
-				postCodeField.setValue("1234");
-				phoneField.setValue("Dummy Phone 123");
-				
-			}
-		});
 
 		Button btnCancel = new Button("Cancel", event -> this.close());
 
@@ -187,16 +176,12 @@ public class PatientNewWindow extends Window {
 		tileGrid.addComponent(cmbLocs, 1, 7);
 		
 		VerticalLayout rightComponentBox = new VerticalLayout(addictionselect, lblNotes, descriptionField);
-		HorizontalLayout navigationButtons = new HorizontalLayout(btnSave, btnDummyData, btnCancel);
+		HorizontalLayout navigationButtons = new HorizontalLayout(btnSave, btnCancel);
 		VerticalLayout leftComponentBox = new VerticalLayout(tileGrid, navigationButtons);
 		HorizontalLayout mainOpenWindow = new HorizontalLayout(leftComponentBox, rightComponentBox);
 		this.setWidth("1000px");
 		tileGrid.setMargin(true);
 		
 		setContent(mainOpenWindow);
-	}
-	
-	public PatientNewWindow getPatientNewWindow() {
-		return this;
 	}
 }
