@@ -37,6 +37,7 @@ public class LoginViewImpl extends CustomComponent implements View, LoginView {
         
 		TextField usernameField = new TextField();
 		usernameField.setCaption("Username:");
+		usernameField.focus();
 
 		PasswordField passwordField = new PasswordField();
 		passwordField.setCaption("Password:");

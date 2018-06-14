@@ -112,7 +112,7 @@ public class DrugModel extends EntityModel {
 		
 		case DOSE_INTEGER:
 			// Check whether enteredDose is an Integer
-			if((enteredDose - Math.floor(enteredDose)) < 0.00000001) {
+			if((enteredDose - Math.floor(enteredDose)) == 0) {
 				result.put(checker.getResult(), checker.getMessage());
 			} else {
 				result.put(false, "Entered Dose isn't an Integer!");
@@ -121,7 +121,7 @@ public class DrugModel extends EntityModel {
 			
 		case DOSE_HALVES:
 			// Check whether enteredDose is an Integer or Half	
-			if ((enteredDose - Math.floor(enteredDose) < 0.00000001) || (enteredDose % 1 == 0.5)) {
+			if ((enteredDose - Math.floor(enteredDose) == 0) || (enteredDose % 1 == 0.5)) {
 				result.put(checker.getResult(), checker.getMessage());
 			} else {
 				result.put(false, "Entered Dose isn't an Half!");
