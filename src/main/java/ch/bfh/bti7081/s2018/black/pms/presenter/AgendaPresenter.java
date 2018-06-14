@@ -13,6 +13,7 @@ import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.view.AgendaView;
+import ch.bfh.bti7081.s2018.black.pms.view.AgendaViewImpl;
 
 /**
  * AgendaPresenter Class

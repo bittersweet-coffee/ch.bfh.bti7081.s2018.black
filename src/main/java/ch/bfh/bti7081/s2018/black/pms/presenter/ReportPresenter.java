@@ -7,6 +7,7 @@ import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.view.ClinicViewImpl;
 import ch.bfh.bti7081.s2018.black.pms.view.ReportView;
+import ch.bfh.bti7081.s2018.black.pms.view.ReportViewImpl;
 
 /**
  * ReportPresenter Class
