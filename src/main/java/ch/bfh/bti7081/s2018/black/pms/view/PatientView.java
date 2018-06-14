@@ -7,7 +7,6 @@ import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 public interface PatientView {
 	
 	public interface PatientViewListener {
-		List<List<String>> openButtonClicked(Integer patientId, String patientName);
 		List<String> getNotesForPatient(Integer patientId);
 		void saveNoteButtonClicked(PatientItem patientItem, String note);
 		void saveButtonClicked(PatientItem patientItem, String note);

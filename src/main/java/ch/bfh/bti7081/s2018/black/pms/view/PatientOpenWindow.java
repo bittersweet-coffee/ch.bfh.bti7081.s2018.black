@@ -129,10 +129,10 @@ public class PatientOpenWindow extends Window {
 			dataAppointment.add("No Appointments");
 		}
         
-    ListSelect<String> lsAppointment = new ListSelect<>("Appointments", dataAppointment);
-    lsAppointment.setRows(4);
-    lsAppointment.setWidth("500px");
-    lsAppointment.setStyleName("select.v-select-select");
+	    ListSelect<String> lsAppointment = new ListSelect<>("Appointments", dataAppointment);
+	    lsAppointment.setRows(4);
+	    lsAppointment.setWidth("500px");
+	    lsAppointment.setStyleName("select.v-select-select");
 
 		GridLayout tileGridAppointment = new GridLayout(1,2);
 		tileGridAppointment.addComponent(lsAppointment, 0, 0);
@@ -165,10 +165,10 @@ public class PatientOpenWindow extends Window {
 			dataAddiction.add(addic.getName());
 		}
 			
-    ListSelect lsAddiction = new ListSelect<>("Addictions", dataAddiction);
-    lsAddiction.setRows(3);
-    lsAddiction.setWidth("525px");
-    lsAddiction.setStyleName("select.v-select-select");        
+	    ListSelect lsAddiction = new ListSelect<>("Addictions", dataAddiction);
+	    lsAddiction.setRows(3);
+	    lsAddiction.setWidth("525px");
+	    lsAddiction.setStyleName("select.v-select-select");        
     
 		GridLayout tileGridAddiction = new GridLayout(1,2);
 		tileGridAddiction.addComponent(lsAddiction, 0, 0);
@@ -178,14 +178,16 @@ public class PatientOpenWindow extends Window {
 		List<PatientDrugModel> dataMediObjects = patientItem.getModel().getDrugs();
 		
 		List<String> dataMedication = new LinkedList<String>();
-		for (PatientDrugModel drugs : dataMediObjects) {
-			dataMedication.add(drugs.getDrug().getName() + " Dose: " + drugs.getDose() + " " + drugs.getDrug().getUnit());
+		if(dataMediObjects != null) {
+			for (PatientDrugModel drugs : dataMediObjects) {
+				dataMedication.add(drugs.getDrug().getName() + " Dose: " + drugs.getDose() + "" + drugs.getDrug().getUnit());
+			}
 		}
 		
-    ListSelect lsMedication = new ListSelect<>("Medications", dataMedication);
-    lsMedication.setRows(3);
-    lsMedication.setWidth("525px");
-    lsMedication.setStyleName("select.v-select-select");
+	    ListSelect lsMedication = new ListSelect<>("Medications", dataMedication);
+	    lsMedication.setRows(3);
+	    lsMedication.setWidth("525px");
+	    lsMedication.setStyleName("select.v-select-select");
                 
 		GridLayout tileGridMedication = new GridLayout(1,2);
 		tileGridMedication.addComponent(lsMedication, 0, 0);

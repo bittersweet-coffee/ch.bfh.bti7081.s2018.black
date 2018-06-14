@@ -29,7 +29,8 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
 	 */
 	public ClinicPresenter(ClinicView view) {
 		this.view = view;
-
+	}
+	
 	public ClinicPresenter() {
 		this.clinicModelList = new LinkedList<>();
 		this.fillClinicList();

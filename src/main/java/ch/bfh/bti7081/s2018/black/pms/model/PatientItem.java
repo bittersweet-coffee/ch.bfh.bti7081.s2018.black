@@ -57,30 +57,34 @@ public class PatientItem {
 		this.postcode = model.getPostCode();
 		this.telephone = model.getTelephone();
 		this.clinic = model.getClinic();
-		
 		this.drugs = new LinkedList<>();
-		for (PatientDrugModel drug : model.getDrugs()) {
-			this.drugs.add(drug);
-		}
-		
 		this.doctors = new LinkedList<>();
+		this.notes = new LinkedList<>();
+		this.addictions = new LinkedList<>();
+		this.appointments = new LinkedList<>();
+
+		if(model.getDrugs() != null) {
+			for (PatientDrugModel drug : model.getDrugs()) {
+				this.drugs.add(drug);
+			}
+		}
+			
 		for (DoctorModel doctor : model.getDoctors()) {
 			this.doctors.add(doctor);
 		}
 		
-		this.notes = new LinkedList<>();
 		for (NoticeModel note : model.getNotes()) {
 			this.notes.add(note.getNote());
 		}
 		
-		this.addictions = new LinkedList<>();
 		for (AddictionModel addiction : model.getAddictions()) {
 			this.addictions.add(addiction);
 		}
-		
-		this.appointments = new LinkedList<>();
-		for (AppointmentModel appointment : model.getAppointments()) {
-			this.appointments.add(appointment);
+			
+		if(model.getAppointments() != null) {
+			for (AppointmentModel appointment : model.getAppointments()) {
+				this.appointments.add(appointment);
+			}
 		}
 				
 	}
