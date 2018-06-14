@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
@@ -41,7 +43,6 @@ public class PdfSource implements StreamSource {
 
     private ByteArrayOutputStream bof;
     private PatientModel patientModel;
-    private java.util.List<PatientModel> patientModelList;
 
     public PdfSource() {
         bof = new ByteArrayOutputStream();
@@ -52,14 +53,10 @@ public class PdfSource implements StreamSource {
 	 * @param patientItem The mock object of the Patient (PatientItem)
 	 */
     public PdfSource(PatientItem patientItem) throws MalformedURLException {
-		this.patientModelList = JpaServicePresenter.findAll(PatientModel.class);
-		
-		Optional<PatientModel> patientList = patientModelList.stream()
-				.filter(patient -> patient.getId() == patientItem.getId())
-				.findFirst();
-    	
-    	patientModel = patientList.get();
-		
+    	//JpaUtility transaction = new JpaUtility();
+		//JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
+		// = (PatientModel) objects.byid(PatientModel.class, patientItem.getId());
+    	patientModel = JpaServicePresenter.findAll(PatientModel.class).stream().filter(p -> p.getId() == patientItem.getId()).findFirst().get();
 		ArrayList<AppointmentModel> appointmentModel = new ArrayList<>(patientItem.getModel().getAppointments());
 		
         bof = new ByteArrayOutputStream();
@@ -83,6 +80,7 @@ public class PdfSource implements StreamSource {
         addCell(addresstable, patientModel.getStreet(), false);
         addCell(addresstable, "", false);
         addCell(addresstable, String.valueOf(patientModel.getPostCode()), false);   
+        doc.add(addresstable);
         
         Paragraph pAddiction = new Paragraph("Addictions:");
         pAddiction.setBold();
