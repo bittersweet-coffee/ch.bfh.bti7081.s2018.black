@@ -1,5 +1,7 @@
 package ch.bfh.bti7081.s2018.black.pms.view;
 
+import org.apache.log4j.Logger;
+
 import com.vaadin.server.Page;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.UI;
@@ -15,6 +17,8 @@ public class BreadCrumbMaker {
 
 	private static final String DASHBOARD = "";
 	private static final String FIRST_CRUMB = "Home";
+
+	final static Logger logger = Logger.getLogger(BreadCrumbMaker.class);
 
 	private MenuBar breadcrumbs = new MenuBar();
 	
@@ -52,6 +56,7 @@ public class BreadCrumbMaker {
 			}
 		} catch (NullPointerException e){
 			Notification.show("Couldn't find correct path!");
+			logger.error(e);
 			Page.getCurrent().reload();
 		}
 		return this.breadcrumbs;

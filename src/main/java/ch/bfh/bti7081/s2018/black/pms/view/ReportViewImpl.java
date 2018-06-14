@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.vaadin.data.provider.DataProvider;
 import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.navigator.View;
@@ -25,6 +27,7 @@ import com.vaadin.ui.Grid.SelectionMode;
 
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.presenter.PdfSource;
+
 /**
  * ReportViewImpl Class
  * View Implementation of ReportView
@@ -53,6 +56,8 @@ public class ReportViewImpl extends PmsCustomComponent implements View, ReportVi
 	StreamSource source;
 	StreamResource resource;
 	BrowserWindowOpener opener;
+	
+	final static Logger logger = Logger.getLogger(ReportViewImpl.class);
 	
 	/**
 	 * Default Constructor like all other ViewImplementations to trigger the super-class constructor  
@@ -146,8 +151,7 @@ public class ReportViewImpl extends PmsCustomComponent implements View, ReportVi
 				try {
 					source = new PdfSource(this.patientItemGrid.getSelectedItems().iterator().next());
 				} catch (MalformedURLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.error(e);
 				}
 				resource.setStreamSource(source);
 			} else {

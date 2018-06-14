@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.log4j.Logger;
+
 import com.vaadin.server.Page;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -29,6 +31,8 @@ public class PatientNewWindow extends Window {
 	PatientItem patient;
 	List<String> dataAppointment;
 	TextArea appointmentsList;
+
+	final static Logger logger = Logger.getLogger(PatientNewWindow.class);
 	
 	public PatientNewWindow(PatientViewImpl view, PatientItem patientItem) {
 		super("New Patient");
@@ -149,6 +153,7 @@ public class PatientNewWindow extends Window {
 					return true;
 					
 				} catch (Exception e) {
+					logger.error(e);
 					return false;
 				}
 			}

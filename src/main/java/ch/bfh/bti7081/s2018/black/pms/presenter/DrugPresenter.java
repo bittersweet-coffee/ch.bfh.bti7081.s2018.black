@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.log4j.Logger;
+
 import ch.bfh.bti7081.s2018.black.pms.model.DrugModel;
 import ch.bfh.bti7081.s2018.black.pms.model.Pair;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientDrugModel;
@@ -20,6 +22,8 @@ import ch.bfh.bti7081.s2018.black.pms.view.DrugViewImpl;
  *
  */
 public class DrugPresenter implements DrugView.DrugViewListener {
+	
+	final static Logger logger = Logger.getLogger(DrugPresenter.class);
 
 	private DrugView view;
 	private List<DrugModel> drugModelList;
@@ -105,7 +109,6 @@ public class DrugPresenter implements DrugView.DrugViewListener {
      	
 		this.patientItemList = new LinkedList<>();
 		for (PatientModel patient : this.patientModelList) {
-			System.out.println(patient.getFirstname());
 			this.patientItemList.add(new PatientItem(patient));
      	}
 	}
@@ -210,6 +213,7 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 		    return true;
 		    
 		  } catch(Exception e) {
+			logger.error(e);
 		    return false;
 		  }
 	}
