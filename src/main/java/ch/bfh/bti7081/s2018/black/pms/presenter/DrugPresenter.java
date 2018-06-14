@@ -214,4 +214,10 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 		    return false;
 		  }
 	}
+
+	public void setupView(DrugViewImpl drugView) {
+		this.view = drugView;
+		view.addListener(this);
+		
+	}
 }

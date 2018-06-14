@@ -7,6 +7,7 @@ import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.view.ClinicViewImpl;
 import ch.bfh.bti7081.s2018.black.pms.view.ReportView;
+import ch.bfh.bti7081.s2018.black.pms.view.ReportViewImpl;
 
 /**
  * ReportPresenter Class
@@ -24,8 +25,7 @@ public class ReportPresenter implements ReportView.ReportViewListener {
 	 * Used to register itself as a listener in the corresponding view
 	 * @param view Instance of the corresponding View
 	 */
-	public ReportPresenter(ReportView view) {
-		this.view = view;
+	public ReportPresenter() {
 		this.patientModelList = new LinkedList<>();
 	}
 

@@ -13,6 +13,7 @@ import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.view.AgendaView;
+import ch.bfh.bti7081.s2018.black.pms.view.AgendaViewImpl;
 
 /**
  * AgendaPresenter Class
@@ -38,10 +39,7 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 	 * PatientList and DoctorList
 	 * @param view Instance of the corresponding View
 	 */
-	public AgendaPresenter(AgendaView view) {
-		this.view = view;
-		this.view.addListener(this);
-		this.view.addEventProvider(eventProvider);
+	public AgendaPresenter() {
 		appointmentModelList = new LinkedList<AppointmentModel>();
 		this.fillAppointmentList();
 		this.patientModelList = new LinkedList<>();
