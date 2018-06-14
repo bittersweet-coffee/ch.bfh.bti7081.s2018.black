@@ -46,7 +46,7 @@ public class BreadCrumbMaker {
 			//Checks whether there exists a Navigator to controll the crumbs
 			if(UI.getCurrent().getNavigator() != null){
 				String path = UI.getCurrent().getNavigator().getState();
-					if(path.equals(null) || path.equals("") || path.equals("login")){
+					if(path == null || path.equals("") || path.equals("login")){
 						this.breadcrumbs.setVisible(false);
 						removeBreadcrumbs();
 					} 
