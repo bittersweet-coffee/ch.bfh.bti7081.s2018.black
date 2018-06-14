@@ -2,6 +2,7 @@ package ch.bfh.bti7081.s2018.black.pms;
 
 import javax.servlet.annotation.WebServlet;
 
+import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -25,6 +26,9 @@ import ch.bfh.bti7081.s2018.black.pms.view.*;
 
 // Let Navigator use the HTML5 history API to have nicer URLs and catch backwards navigation
 @PushStateNavigation
+
+// Prevent logout when refreshing the session (F5)
+@PreserveOnRefresh
 
 // Custom browser tab title
 @Title("PMS")

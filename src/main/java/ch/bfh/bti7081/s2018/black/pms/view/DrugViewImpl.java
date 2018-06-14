@@ -29,32 +29,54 @@ import ch.bfh.bti7081.s2018.black.pms.model.Pair;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 
 
-
+/**
+ * DrugViewImpl Class
+ * View Implementation of DrugView
+ * @author schaa4
+ *
+ */
 public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 
+	// identifier used for displaying the correct URL
 	public static final String NAME = "drug";
 	
+	// List containing all listeners for this object (mostly the corresponding Presenter Class)
 	private List<DrugViewListener> listeners = new ArrayList<DrugViewListener>();
 	
+	// List containing Mock Objects for the PatientModel
 	private List<PatientItem> patientItemList;
 	
+	// UI element displaying the addiction names on the left side of the UI
 	private NativeSelect<String> nativeDrug;
 	
+	// Grid displaying all patients of the PMS
+	// used for allocation of a drug to a patient
+	// provides filter capabilities
 	private Grid<PatientItem> patientItemGrid;
 	
+	// DataProvider used to populate the patientItemGrid
 	private ListDataProvider<PatientItem> patientProvider;
 	
+	// Window which pops up when an allocation is to be done
+	// contains the patientItemGrid
 	private Window windowPatient;
 	
-	private Label lblDrugNameTitle, lblDrugDescTitle;
+	// labels used for describing Drug Properties
+	private Label lblDrugNameTitle, lblDrugDescTitle, lblMeasure, lblUnit, lblDoseMin, lblDoseMax;
 	
-	private TextArea txtDrugName, txtDrugDesc;
+	// TextAreas used for displaying Drug Properties
+	private TextArea txtDrugName, txtDrugDesc, txtMeasure, txtUnit, txtDoseMin, txtDoseMax;
 
+	/**
+	 * Default Constructor like all other ViewImplementations to trigger the super-class constructor  
+	 */
 	public DrugViewImpl() {
 		super();
 	}
 	
 	public void enter(ViewChangeEvent event) {
+		super.bC.makeCrumbs(DrugViewImpl.NAME);
+		super.bC.visibleBreadcrumbs();
 		super.menuBar.getItems().get(1).setText((String) VaadinSession.getCurrent().getAttribute("username"));
 		Label test = new Label("Drug here");
         super.contentPanel.setContent(test);
@@ -85,20 +107,45 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
         VerticalLayout drugDetails = new VerticalLayout();
         this.lblDrugNameTitle = new Label("Name:");
         this.lblDrugDescTitle = new Label("Description:");
+        this.lblMeasure = new Label("Measure:");
+        this.lblDoseMin = new Label("Min Dose:");
+        this.lblDoseMax = new Label("Max Dose:");
+        
         this.txtDrugName = new TextArea();
-        this.txtDrugName.setReadOnly(true);
         this.txtDrugName.setRows(1);
         this.txtDrugName.setWidth("100%");
+        this.txtDrugName.setReadOnly(true);
         
         this.txtDrugDesc = new TextArea();
         this.txtDrugDesc.setWidth("100%");
         this.txtDrugDesc.setReadOnly(true);
         
+        this.txtMeasure = new TextArea();
+        this.txtMeasure.setRows(1);
+        this.txtMeasure.setWidth("100%");
+        this.txtMeasure.setReadOnly(true);
+        
+        this.txtDoseMin = new TextArea();
+        this.txtDoseMin.setRows(1);
+        this.txtDoseMin.setWidth("100%");
+        this.txtDoseMin.setReadOnly(true);
+        
+        this.txtDoseMax = new TextArea();
+        this.txtDoseMax.setRows(1);
+        this.txtDoseMax.setWidth("100%");
+        this.txtDoseMax.setReadOnly(true);
+        
         drugDetails.addComponents(
         		lblDrugNameTitle,
         		txtDrugName,
         		lblDrugDescTitle,
-        		txtDrugDesc
+        		txtDrugDesc,
+        		lblMeasure,
+        		txtMeasure,
+        		lblDoseMin,
+        		txtDoseMin,
+        		lblDoseMax,
+        		txtDoseMax
         		);
         
         drugDetails.setMargin(false);
@@ -143,28 +190,19 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		TextField txtFilter = new TextField();
 		txtFilter.setPlaceholder("Filter by Firstname or Lastname");
 		txtFilter.setWidth(735.0f, Unit.PIXELS);
-	    
-		txtFilter.addValueChangeListener(action -> {
-			patientProvider.setFilter(name -> {
-				String firstNameLower = name.getFirstName().toLowerCase();
-				String lastNameLower = name.getLastName().toLowerCase();
-				String filterLower = action.getValue().toLowerCase();
-				patientItemGrid.deselectAll();
-				return firstNameLower.contains(filterLower) || lastNameLower.contains(filterLower);		
-			});
-		});
+
 		
 	    Label lblPatient = new Label("Patient:");
 	    Label lblSelectedDrug = new Label();
 	    
-	    Label lblDose = new Label("Enter Dose:");
+	    Label lblAllocateDose = new Label("Enter Dose:");
 	    Label lblMeasurement = new Label("Measurement:");
 	    
 	    TextField txtDose = new TextField();
 	    txtDose.setPlaceholder("Dose");
 	    txtDose.setRequiredIndicatorVisible(true);
 	    
-	    doseLayout.addComponents(lblDose, txtDose);
+	    doseLayout.addComponents(lblAllocateDose, txtDose);
 	    doseLayout.setMargin(new MarginInfo(true, false, false, false));
 	    
 	    patientLayout.addComponents(lblPatient, txtFilter);
@@ -187,7 +225,16 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 	    // Set content
 	    super.contentPanel.setContent(vLayout);
 	    
-	    
+		txtFilter.addValueChangeListener(action -> {
+			patientProvider.setFilter(name -> {
+				String firstNameLower = name.getFirstName().toLowerCase();
+				String lastNameLower = name.getLastName().toLowerCase();
+				String filterLower = action.getValue().toLowerCase();
+				patientItemGrid.deselectAll();
+				return firstNameLower.contains(filterLower) || lastNameLower.contains(filterLower);		
+			});
+		});
+		
         btnSearch.addClickListener(click -> {
         	if (this.nativeDrug.getSelectedItem().isPresent() || !txtSearch.isEmpty()) {
         		this.nativeDrug.setSelectedItem(null);
@@ -212,6 +259,9 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
         			
         			this.txtDrugName.setValue(selected.getValue());
         			this.txtDrugDesc.setValue(addictDetailList.get(0));
+        			this.txtMeasure.setValue(addictDetailList.get(1));
+        			this.txtDoseMin.setValue(addictDetailList.get(3) + " " + addictDetailList.get(2));
+        			this.txtDoseMax.setValue(addictDetailList.get(4) + " " + addictDetailList.get(2));
         			
         		}
 			}	
@@ -220,28 +270,28 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		
 		btnAllocatePatient.addClickListener(click -> {
 			if (patientItemGrid.getSelectedItems().iterator().hasNext()) {
-				System.out.println(patientItemGrid.getSelectedItems().iterator().next().getFirstName());
-				if(isDouble(txtDose.getValue())) {
-					for (DrugViewListener listener: listeners) {
+				for (DrugViewListener listener: listeners) {
+					if(listener.isDouble(txtDose.getValue())) {
 						
 						Pair result = listener.allocateButtonClicked(nativeDrug.getSelectedItem().get(),
 		        				patientItemGrid.getSelectedItems().iterator().next(), Double.parseDouble(txtDose.getValue()));
-						
-						
+												
 						if(result.getResult()) {
 							this.windowPatient.close();
 						} else {
 							Notification.show("Warning", result.getMessage(), Notification.TYPE_ERROR_MESSAGE);
 						}
-					}
-				} else {
-					Notification.show("Warning", "Please enter a Dose of type Double!", Notification.TYPE_ERROR_MESSAGE);
+						
+					} else {
+						Notification.show("Warning", "Please enter a Dose of type Double and less than 7 decimal places!", Notification.TYPE_ERROR_MESSAGE);
+					} 
 				}
+					
 			} else {
-				Notification.show("Input Data Incomplete");
+					Notification.show("Input Data Incomplete");
 			}
 		});
-		
+					
 		patientItemGrid.addSelectionListener(selection -> {
 			if (patientItemGrid.getSelectedItems().iterator().hasNext()) {
 				btnAllocatePatient.setEnabled(true);
@@ -261,22 +311,16 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		btnSearch.addShortcutListener(enterSearchListener);
 	}
 	
-	private boolean isDouble(String str) {
-		  try{
-		    Double.parseDouble(str);
-		    return true;
-		    
-		  } catch(Exception e) {
-		    return false;
-		  }
-	}
-	
+
 
 	@Override
 	public void addListener(DrugViewListener listener) {
 		this.listeners.add(listener);
 	}
 	
+	/**
+	 * Method used by the patiemtItemGrid to update its DataProvider 
+	 */
 	private void updatePatientItemList() {
 		for (DrugViewListener listener: listeners) {
 			this.patientItemList = listener.setupPatientItemList();

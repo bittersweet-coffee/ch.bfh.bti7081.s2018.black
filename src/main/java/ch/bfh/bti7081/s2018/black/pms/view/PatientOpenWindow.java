@@ -67,13 +67,13 @@ public class PatientOpenWindow extends Window {
 		List<String> dataAppointment = new LinkedList<String>();
 		if (appointmentList != null) {
 			for (AppointmentModel a: appointmentList) {
-	        	dataAppointment.add(a.getName() + "Strart: " + a.getStart() + "End: " + a.getEnd());
+	        	dataAppointment.add(a.getName() + "   Start: " + a.getStart() + "   End: " + a.getEnd());
 			}
-		} else
+		} else {
 			dataAppointment.add("No Appointments");
+		}
         
-        
-        ListSelect lsAppointment = new ListSelect<>("Appointments", dataAppointment);
+        ListSelect<String> lsAppointment = new ListSelect<>("Appointments", dataAppointment);
         lsAppointment.setRows(4);
         lsAppointment.setWidth("500px");
         lsAppointment.setStyleName("select.v-select-select");

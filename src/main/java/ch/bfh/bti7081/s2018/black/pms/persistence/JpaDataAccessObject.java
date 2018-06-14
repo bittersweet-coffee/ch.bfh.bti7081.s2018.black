@@ -3,7 +3,7 @@ package ch.bfh.bti7081.s2018.black.pms.persistence;
 import java.util.List;
 
 import ch.bfh.bti7081.s2018.black.pms.model.EntityModel;
-import ch.bfh.bti7081.s2018.black.pms.model.PatientDrugModel;
+import ch.bfh.bti7081.s2018.black.pms.presenter.JpaService;
 
 /**
  * class JpaDataAccessObject
@@ -16,7 +16,7 @@ import ch.bfh.bti7081.s2018.black.pms.model.PatientDrugModel;
 // Source: http://www.copypasteisforword.com/notes/lambda-expressions-in-java
 // Author: enrique
 // Date: 16.05.2018
-public class JpaDataAccessObject {
+public class JpaDataAccessObject implements JpaService {
 	
 	// JPA transaction variable
 	private JpaUtility transaction;
@@ -107,7 +107,7 @@ public class JpaDataAccessObject {
 	 * @return the ID of the last fetched entity
 	 */
 	public int getLastId() {
-		return lastId;
+		return this.lastId;
 	}
 
 	/**
@@ -116,14 +116,5 @@ public class JpaDataAccessObject {
 	 */
 	public void setLastId(int lastId) {
 		this.lastId = lastId;
-	}
-	
-	public <T> EntityModel byid(Class<T> entityClass, int id) {
-		return transaction.execute(
-		// lambda for writing the anonymous class
-				(entityManager) -> { 
-				// remove the passed entity
-		        return entityManager.find(entityClass, id);
-		});
 	}
 }

@@ -41,6 +41,7 @@ public class PdfSource implements StreamSource {
 
     private ByteArrayOutputStream bof;
     private PatientModel patientModel;
+    private java.util.List<PatientModel> patientModelList;
 
     public PdfSource() {
         bof = new ByteArrayOutputStream();
@@ -51,9 +52,13 @@ public class PdfSource implements StreamSource {
 	 * @param patientItem The mock object of the Patient (PatientItem)
 	 */
     public PdfSource(PatientItem patientItem) throws MalformedURLException {
-    	JpaUtility transaction = new JpaUtility();
-		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
-		patientModel = (PatientModel) objects.byid(PatientModel.class, patientItem.getId());
+		this.patientModelList = JpaServicePresenter.findAll(PatientModel.class);
+		
+		Optional<PatientModel> patientList = patientModelList.stream()
+				.filter(patient -> patient.getId() == patientItem.getId())
+				.findFirst();
+    	
+    	patientModel = patientList.get();
 		
 		ArrayList<AppointmentModel> appointmentModel = new ArrayList<>(patientItem.getModel().getAppointments());
 		

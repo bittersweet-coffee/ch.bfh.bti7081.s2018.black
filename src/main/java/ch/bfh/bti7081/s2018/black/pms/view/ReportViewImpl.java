@@ -62,6 +62,8 @@ public class ReportViewImpl extends PmsCustomComponent implements View, ReportVi
 	}
 	
 	public void enter(ViewChangeEvent event) {
+		super.bC.makeCrumbs(ReportViewImpl.NAME);
+		super.bC.visibleBreadcrumbs();
 		super.menuBar.getItems().get(1).setText((String) VaadinSession.getCurrent().getAttribute("username"));
 		Label test = new Label("Report here");
         super.contentPanel.setContent(test);
