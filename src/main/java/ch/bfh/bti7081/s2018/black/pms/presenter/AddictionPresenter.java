@@ -3,11 +3,15 @@ package ch.bfh.bti7081.s2018.black.pms.presenter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import ch.bfh.bti7081.s2018.black.pms.model.AddictionItem;
 import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
+import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
+import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 import ch.bfh.bti7081.s2018.black.pms.view.AddictionView;
 import ch.bfh.bti7081.s2018.black.pms.view.AddictionViewImpl;
 
@@ -130,6 +134,34 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 		this.view = addictionView;
 		view.addListener(this);
 		
+	}
+
+	public static List<AddictionItem> getAddictionItems() {
+		JpaUtility transaction = new JpaUtility();
+		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
+		List<AddictionModel> addictionModelList = objects.findAll(AddictionModel.class);
+		List<AddictionItem> addictionItemList = new LinkedList<AddictionItem>();
+		for (AddictionModel addiction : addictionModelList) {
+			AddictionItem a = new AddictionItem();
+			a.setName(addiction.getName());
+			addictionItemList.add(a);
+		}
+		return addictionItemList;
+	}
+
+	public static void setAddictionsToPatient(Set<String> selectedItems, PatientItem patient) {
+		JpaUtility transaction = new JpaUtility();
+		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
+		LinkedList<AddictionModel> addictionListAdd = new LinkedList<AddictionModel>();
+		List<AddictionModel> addictionModelList = objects.findAll(AddictionModel.class);
+		for (String string : selectedItems) {
+			for (AddictionModel addictionModel : addictionModelList) {
+				if (string.equals(addictionModel.getName())) {
+					addictionListAdd.add(addictionModel);
+				}
+			}
+		}
+		patient.setAddictions(addictionListAdd);
 	}
 
 }

@@ -6,7 +6,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
+import ch.bfh.bti7081.s2018.black.pms.model.ClinicItem;
 import ch.bfh.bti7081.s2018.black.pms.model.ClinicModel;
+import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
+import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
+import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 import ch.bfh.bti7081.s2018.black.pms.view.ClinicView;
 import ch.bfh.bti7081.s2018.black.pms.view.ClinicViewImpl;
 
@@ -99,6 +103,31 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
 	public void setupView(ClinicViewImpl clinicView) {
 		this.view = clinicView;
 		this.view.addListener(this);
+		
+	}
+
+	public static List<ClinicItem> getClinicNames() {
+		JpaUtility transaction = new JpaUtility();
+		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
+		List<ClinicModel> clinicModelList = objects.findAll(ClinicModel.class);
+		List<ClinicItem> clinicItemList = new LinkedList<ClinicItem>();
+		for (ClinicModel clinic : clinicModelList) {
+			ClinicItem c = new ClinicItem();
+			c.setName(clinic.getName());
+			clinicItemList.add(c);
+		}
+		return clinicItemList;
+	}
+
+	public static void setupClinic(Optional<String> clinic, PatientItem patient) {
+		JpaUtility transaction = new JpaUtility();
+		JpaDataAccessObject objects = new JpaDataAccessObject(transaction);
+		List<ClinicModel> clinicModelList = objects.findAll(ClinicModel.class);
+		for (ClinicModel clinicModel : clinicModelList) {
+			if (clinic.get().equals(clinicModel.getName())) {
+				patient.setClinic(clinicModel);
+			}
+		}
 		
 	}
 }
