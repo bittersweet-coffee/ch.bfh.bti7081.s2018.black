@@ -70,7 +70,8 @@ public class DrugModel extends EntityModel {
  		}
  		
  	};
- // ENUM containing all possible units for our drugs
+ 	
+ 	// ENUM containing all possible units for our drugs
  	private enum Unit {
  		UNIT_MILLILITER("ml"),
  		UNIT_MILLIGRAM("mg"),
