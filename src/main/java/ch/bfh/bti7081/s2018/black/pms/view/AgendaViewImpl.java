@@ -18,7 +18,6 @@ import ch.bfh.bti7081.s2018.black.pms.model.AppointmentDataProvider;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
 import ch.bfh.bti7081.s2018.black.pms.model.DoctorItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
-import ch.bfh.bti7081.s2018.black.pms.view.PatientView.PatientViewListener;
 /**
  * AgendaViewImpl Class
  * View Implementation of AgendaView

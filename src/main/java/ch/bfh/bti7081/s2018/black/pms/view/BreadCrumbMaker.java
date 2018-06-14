@@ -1,7 +1,5 @@
 package ch.bfh.bti7081.s2018.black.pms.view;
 
-import java.util.List;
-
 import com.vaadin.server.Page;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.UI;
