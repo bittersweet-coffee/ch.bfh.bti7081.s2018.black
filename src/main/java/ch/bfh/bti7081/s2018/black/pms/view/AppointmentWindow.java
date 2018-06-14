@@ -41,6 +41,13 @@ public class AppointmentWindow extends Window {
 	ComboBox<PatientItem> comboBoxPatient;
 	ComboBox<DoctorItem> comboBoxDoctor;
 
+	/**
+	 * Constructor to create a new appointment window
+	 * @param view
+	 * @param appointmentItem
+	 * @param patientItemList
+	 * @param doctorItemList
+	 */
 	public AppointmentWindow(AgendaViewImpl view, AppointmentItem appointmentItem, List<PatientItem> patientItemList, List<DoctorItem> doctorItemList) {
 		super("New Appointment");
 		this.view = view;
@@ -49,6 +56,10 @@ public class AppointmentWindow extends Window {
 		buildWindow(appointmentItem);
 	}
 	
+	/**
+	 * Method to build the appointment window
+	 * @param appointmentItem
+	 */
 	private void buildWindow(AppointmentItem appointmentItem) {
 		setWidth(500.0f, Unit.PIXELS);
 
