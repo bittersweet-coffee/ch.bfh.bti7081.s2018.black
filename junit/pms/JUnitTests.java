@@ -1,4 +1,4 @@
-package ch.bfh.bti7081.s2018.black.pms;
+package pms;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,7 +24,7 @@ import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 import ch.bfh.bti7081.s2018.black.pms.presenter.PatientPresenter;
 
-class Unittests {
+class JUnitTests {
 	
 	
 	//Mocked Object

@@ -8,7 +8,6 @@ public interface ClinicView {
 		List<String> searchButtonClicked(String searchTerm, String searchMode);
 		List<String> selectListChanged(String clinicName);
 		List<String> setupClinicList();
-		
 	}
 	
 	public void addListener(ClinicViewListener listener);
