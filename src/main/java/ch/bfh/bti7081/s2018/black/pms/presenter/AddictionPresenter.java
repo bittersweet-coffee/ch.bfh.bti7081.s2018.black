@@ -10,8 +10,6 @@ import ch.bfh.bti7081.s2018.black.pms.model.AddictionItem;
 import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
-import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
-import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 import ch.bfh.bti7081.s2018.black.pms.view.AddictionView;
 import ch.bfh.bti7081.s2018.black.pms.view.AddictionViewImpl;
 

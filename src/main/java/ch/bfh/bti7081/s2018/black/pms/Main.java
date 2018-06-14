@@ -2,6 +2,8 @@ package ch.bfh.bti7081.s2018.black.pms;
 
 import javax.servlet.annotation.WebServlet;
 
+import org.apache.log4j.Logger;
+
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -34,8 +36,12 @@ import ch.bfh.bti7081.s2018.black.pms.view.*;
 @Title("PMS")
 public class Main extends UI {
 	
+	final static Logger logger = Logger.getLogger(Main.class);
+	
     @Override
     protected void init(VaadinRequest vaadinRequest) {
+    	logger.info("Initializing PMS");
+    	
     	// Initialize the LoginView first in order to handle the user session
     	LoginViewImpl loginView = new LoginViewImpl();
     	Navigator navigator = new Navigator(this, this);
@@ -73,6 +79,7 @@ public class Main extends UI {
     	navigator.addView(DrugViewImpl.NAME, drugView);
     	navigator.addView(PatientViewImpl.NAME, patientView);
     	navigator.addView(ReportViewImpl.NAME, reportView);
+    	logger.info("Finished initializing PMS");
     	
     	navigator.navigateTo("login");
     }

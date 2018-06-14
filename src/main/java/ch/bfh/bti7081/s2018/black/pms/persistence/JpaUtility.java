@@ -5,6 +5,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
+import org.apache.log4j.Logger;
+
 
 /**
  * class JpaUtility
@@ -19,6 +21,8 @@ public class JpaUtility {
 	private static EntityManagerFactory emf;
 	// EntityManager of the application
 	private static EntityManager em;
+
+	final static Logger logger = Logger.getLogger(JpaUtility.class);
 	
 	/**
 	 * initialize the EntityManagerFactory and EntityManager of the application
@@ -27,9 +31,11 @@ public class JpaUtility {
 		// Singleton
 		if (emf == null) {
 			try {
+				logger.info("Initializing EntityManagerFactory");
 				emf = Persistence.createEntityManagerFactory("PMS");
 				em = emf.createEntityManager();
 			} catch (Exception e){
+				logger.error(e);
 				throw e;
 			}
 		}
@@ -69,6 +75,7 @@ public class JpaUtility {
 			// return the result of the executed method
 			return returnValue;
 		} catch (Exception e) {
+			logger.error(e);
 			// if the transaction is still null, then do a rollback of the transaction
 			if (transaction != null) {
 				transaction.rollback();

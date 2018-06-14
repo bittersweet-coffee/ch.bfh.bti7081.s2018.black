@@ -77,8 +77,6 @@ public class PatientOpenWindow extends Window {
         lsAppointment.setWidth("500px");
         lsAppointment.setStyleName("select.v-select-select");
         
-        //lsPatient.addValueChangeListener(event -> System.out.println("Value changed"));
-           
         
 		GridLayout tileGridAppointment = new GridLayout(1,2);
 		tileGridAppointment.addComponent(lsAppointment, 0, 0);
@@ -117,8 +115,6 @@ public class PatientOpenWindow extends Window {
         lsAddiction.setWidth("500px");
         lsAddiction.setStyleName("select.v-select-select");
         
-        //lsPatient.addValueChangeListener(event -> System.out.println("Value changed"));
-        
     
 		GridLayout tileGridAddiction = new GridLayout(1,2);
 		tileGridAddiction.addComponent(lsAddiction, 0, 0);
@@ -136,8 +132,6 @@ public class PatientOpenWindow extends Window {
         lsMedication.setWidth("500px");
         lsMedication.setStyleName("select.v-select-select");**/
         
-        //lsPatient.addValueChangeListener(event -> System.out.println("Value changed"));
-         
         
 		GridLayout tileGridMedication = new GridLayout(1,2);
 		//tileGridMedication.addComponent(lsMedication, 0, 0);
