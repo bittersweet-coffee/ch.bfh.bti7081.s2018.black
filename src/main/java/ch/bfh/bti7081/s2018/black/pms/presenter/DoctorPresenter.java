@@ -4,12 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-import ch.bfh.bti7081.s2018.black.pms.model.ClinicModel;
 import ch.bfh.bti7081.s2018.black.pms.model.DoctorItem;
 import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
-import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
-import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 
 public class DoctorPresenter {
 

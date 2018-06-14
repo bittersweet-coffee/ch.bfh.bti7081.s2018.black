@@ -52,8 +52,14 @@ public class PdfSource implements StreamSource {
 	 */
     public PdfSource(PatientItem patientItem) throws MalformedURLException {
     	patientModel = JpaServicePresenter.findAll(PatientModel.class).stream().filter(p -> p.getId() == patientItem.getId()).findFirst().get();
-		ArrayList<AppointmentModel> appointmentModel = new ArrayList<>(patientItem.getModel().getAppointments());
+    	ArrayList<AppointmentModel> appointmentModel;
 		
+    	if(patientItem.getModel().getAppointments() != null) {
+			appointmentModel = new ArrayList<>(patientItem.getModel().getAppointments());
+		} else {
+			appointmentModel = new ArrayList<>();
+		}
+    	
         bof = new ByteArrayOutputStream();
         
         PdfWriter writer = new PdfWriter(bof);
@@ -92,9 +98,13 @@ public class PdfSource implements StreamSource {
         Paragraph pDrugs = new Paragraph("Drugs:");
         pDrugs.setBold();
         List lDrugs = new List();
-        for (PatientDrugModel dm : patientModel.getDrugs()) {
-        	lDrugs.add(dm.getDrug().getName() + ", Dose: " + dm.getDose() + dm.getDrug().getUnit());
-		}
+       
+        if(patientModel.getDrugs() != null) {
+        	for (PatientDrugModel dm : patientModel.getDrugs()) {
+                lDrugs.add(dm.getDrug().getName() + ", Dose: " + dm.getDose() + dm.getDrug().getUnit());
+    		}
+        }
+        
         doc.add(pDrugs);
         doc.add(lDrugs);
         
