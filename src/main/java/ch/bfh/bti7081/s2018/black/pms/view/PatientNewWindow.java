@@ -1,10 +1,9 @@
 package ch.bfh.bti7081.s2018.black.pms.view;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import com.vaadin.server.Page;
 import com.vaadin.ui.Button;
@@ -18,8 +17,6 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.TwinColSelect;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-
-import ch.bfh.bti7081.s2018.black.pms.controller.Controller;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 
 import com.vaadin.ui.Button.ClickEvent;
@@ -55,7 +52,7 @@ public class PatientNewWindow extends Window {
 	
 		
 		TwinColSelect<String> addictionselect = new TwinColSelect<>("Addictions: ");
-		addictionselect.setItems(Controller.getAddictionNames(Controller.getAddictions()));
+		addictionselect.setItems(view.getAddictionNames());
 		addictionselect.setRows(5);
 
 
@@ -73,11 +70,15 @@ public class PatientNewWindow extends Window {
 		birthdayField.setRequiredIndicatorVisible(true);
 		
 		ComboBox<String> cmbLocs = new ComboBox<String>("Select a Location:");
-		Controller.setupLocations(cmbLocs);
+		List<String> locNameList = view.getClinicNames();
+		cmbLocs.setItems(locNameList);
+		cmbLocs.setItemCaptionGenerator(String::toString);
 		cmbLocs.setRequiredIndicatorVisible(true);
 		ComboBox<String> cmbDocs = new ComboBox<String>("Select a doctor:");
+		List<String> docNameList = view.getDocNames();
+		cmbDocs.setItems(docNameList);
+		cmbDocs.setItemCaptionGenerator(String::toString);
 		cmbDocs.setRequiredIndicatorVisible(true);
-		Controller.setupDoctors(cmbDocs);
 		
 		TextArea descriptionField = new TextArea();
 		descriptionField.setRows(5);
@@ -97,9 +98,20 @@ public class PatientNewWindow extends Window {
 					patient.setStreet(streetField.getValue());
 					
 					patient.setTelephone(phoneField.getValue());
-					patient.setDoctors(Controller.getSelectedDoctor(cmbDocs));
-					patient.setClinic(Controller.getSelectedLocation(cmbLocs));
-					patient.setAddictions(Controller.parseSelectedAddictions(addictionselect.getSelectedItems()));
+					Optional<String> doc = cmbDocs.getSelectedItem();
+					if (doc.isPresent()) {
+						view.getSelectedDoctor(doc, patient);
+					} else {
+						Notification.show("Warning", "No Doctor was selected!", Notification.TYPE_ERROR_MESSAGE);
+					}
+					Optional<String> clinic = cmbLocs.getSelectedItem();
+					if (clinic.isPresent()) {
+						view.getSelectedClinic(clinic, patient);
+					} else {
+						Notification.show("Warning", "No Clinic was selected!", Notification.TYPE_ERROR_MESSAGE);
+					}
+					
+					view.setSelectedAddictions(addictionselect.getSelectedItems(), patient);
 					
 					if (isValidDate(birthdayField.getValue()) && isValidPLZ(postCodeField.getValue())) {
 						patient.setBirthday(birthdayField.getValue());
@@ -142,17 +154,6 @@ public class PatientNewWindow extends Window {
 			}
 		});
 
-		Button btnDummyData = new Button("Load Dummy Data", new ClickListener() {
-			@Override
-			public void buttonClick(ClickEvent event) {
-				firstNameField.setValue("DummyFirstName");
-				lastNameField.setValue("DummyLastName");
-				streetField.setValue("Dummy Street 1");
-				postCodeField.setValue("1234");
-				phoneField.setValue("Dummy Phone 123");
-				
-			}
-		});
 
 		Button btnCancel = new Button("Cancel", event -> this.close());
 
@@ -175,16 +176,12 @@ public class PatientNewWindow extends Window {
 		tileGrid.addComponent(cmbLocs, 1, 7);
 		
 		VerticalLayout rightComponentBox = new VerticalLayout(addictionselect, lblNotes, descriptionField);
-		HorizontalLayout navigationButtons = new HorizontalLayout(btnSave, btnDummyData, btnCancel);
+		HorizontalLayout navigationButtons = new HorizontalLayout(btnSave, btnCancel);
 		VerticalLayout leftComponentBox = new VerticalLayout(tileGrid, navigationButtons);
 		HorizontalLayout mainOpenWindow = new HorizontalLayout(leftComponentBox, rightComponentBox);
 		this.setWidth("1000px");
 		tileGrid.setMargin(true);
 		
 		setContent(mainOpenWindow);
-	}
-	
-	public PatientNewWindow getPatientNewWindow() {
-		return this;
 	}
 }

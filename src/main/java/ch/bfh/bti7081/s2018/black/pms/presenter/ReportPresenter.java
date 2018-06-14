@@ -5,7 +5,9 @@ import java.util.List;
 
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
+import ch.bfh.bti7081.s2018.black.pms.view.ClinicViewImpl;
 import ch.bfh.bti7081.s2018.black.pms.view.ReportView;
+
 /**
  * ReportPresenter Class
  * Presenter Class used to manage data exchange between Models and Views as well as triggering database queries
@@ -16,6 +18,7 @@ public class ReportPresenter implements ReportView.ReportViewListener {
 	private ReportView view;
 	private List<PatientModel> patientModelList;
 	private List<PatientItem> patientItemList = new LinkedList<>();
+
 	/**
 	 * Constructor for the ReportPresenter
 	 * Used to register itself as a listener in the corresponding view
@@ -24,7 +27,6 @@ public class ReportPresenter implements ReportView.ReportViewListener {
 	public ReportPresenter(ReportView view) {
 		this.view = view;
 		this.patientModelList = new LinkedList<>();
-		view.addListener(this);
 	}
 
 	@Override
@@ -42,6 +44,11 @@ public class ReportPresenter implements ReportView.ReportViewListener {
 		for (PatientModel patient : this.patientModelList) {
 			this.patientItemList.add(new PatientItem(patient));
      	}
+	}
+
+	public void setupView(ReportViewImpl reportView) {
+		this.view = reportView;
+		this.view.addListener(this);
 	}
 
 }

@@ -7,6 +7,7 @@ import ch.bfh.bti7081.s2018.black.pms.model.NoticeModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.view.PatientView;
+import ch.bfh.bti7081.s2018.black.pms.view.PatientViewImpl;
 
 public class PatientPresenter implements PatientView.PatientViewListener {
 
@@ -14,9 +15,7 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 	private List<PatientModel> patientModelList;
 	private List<PatientItem> patientItemList = new LinkedList<>();
 
-	public PatientPresenter(PatientView view) {
-		this.view = view;
-		this.view.addListener(this);
+	public PatientPresenter() {
 		this.patientModelList = new LinkedList<>();
 	}
 
@@ -85,5 +84,12 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 	public List<String> getNotesForPatient(Integer patientId) {
 		List<String> patientNotes = new LinkedList<>(); // fetch DB for Patient Notes
 		return patientNotes;
+	}
+
+
+	public void setupView(PatientViewImpl patientView) {
+		this.view = patientView;
+		this.view.addListener(this);
+		
 	}
 }

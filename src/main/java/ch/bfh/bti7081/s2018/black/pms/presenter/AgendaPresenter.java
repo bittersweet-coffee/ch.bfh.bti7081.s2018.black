@@ -13,6 +13,7 @@ import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.view.AgendaView;
+
 /**
  * AgendaPresenter Class
  * Presenter Class used to manage data exchange between Models and Views as well as triggering database queries
@@ -30,6 +31,7 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 	
 	private List<DoctorItem> doctorItemList = new LinkedList<>();
 	private List<DoctorModel> doctorModelList;
+
 	/**
 	 * Constructor for the AgendaPresenter
 	 * Used to register itself as a listener in the corresponding view as well as initializing the AppointmentList,
@@ -185,5 +187,12 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 		for (DoctorModel doctor : this.doctorModelList) {
 			this.doctorItemList.add(new DoctorItem(doctor));
 		}
+	}
+
+	public void setupView(AgendaViewImpl agendaView) {
+		this.view = agendaView;
+		this.view.addListener(this);
+		this.view.addEventProvider(eventProvider);
+		
 	}
 }

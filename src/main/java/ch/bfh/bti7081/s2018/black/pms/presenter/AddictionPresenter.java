@@ -3,12 +3,17 @@ package ch.bfh.bti7081.s2018.black.pms.presenter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import ch.bfh.bti7081.s2018.black.pms.model.AddictionItem;
 import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
+import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
+import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 import ch.bfh.bti7081.s2018.black.pms.view.AddictionView;
+import ch.bfh.bti7081.s2018.black.pms.view.AddictionViewImpl;
 
 /**
  * AddictionPresenter Class
@@ -26,12 +31,9 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 	/**
 	 * Constructor for the AddictionPresenter
 	 * Used to register itself as a listener in the corresponding view as well as initializing the AddictionList
-	 * @param view Instance of the corresponding View
 	 */
-	public AddictionPresenter(AddictionView view) {
-		this.view = view;
+	public AddictionPresenter() {
 		this.addictModelList = new LinkedList<>();
-		view.addListener(this);
 		this.fillAddictionList();
 	}
 	
@@ -126,6 +128,36 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 	public List<PatientItem> setupPatientItemList() {
 		this.fillPatientList();
 		return this.patientItemList;
+	}
+
+	public void setupView(AddictionViewImpl addictionView) {
+		this.view = addictionView;
+		view.addListener(this);
+		
+	}
+
+	public static List<AddictionItem> getAddictionItems() {
+		List<AddictionModel> addictionModelList = JpaServicePresenter.findAll(AddictionModel.class);
+		List<AddictionItem> addictionItemList = new LinkedList<AddictionItem>();
+		for (AddictionModel addiction : addictionModelList) {
+			AddictionItem a = new AddictionItem();
+			a.setName(addiction.getName());
+			addictionItemList.add(a);
+		}
+		return addictionItemList;
+	}
+
+	public static void setAddictionsToPatient(Set<String> selectedItems, PatientItem patient) {
+		LinkedList<AddictionModel> addictionListAdd = new LinkedList<AddictionModel>();
+		List<AddictionModel> addictionModelList = JpaServicePresenter.findAll(AddictionModel.class);
+		for (String string : selectedItems) {
+			for (AddictionModel addictionModel : addictionModelList) {
+				if (string.equals(addictionModel.getName())) {
+					addictionListAdd.add(addictionModel);
+				}
+			}
+		}
+		patient.setAddictions(addictionListAdd);
 	}
 
 }
