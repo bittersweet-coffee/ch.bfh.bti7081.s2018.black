@@ -77,19 +77,19 @@ INSERT INTO symptom (description, addiction_id) VALUES ('distress or impairment 
 INSERT INTO symptom (description, addiction_id) VALUES ('compulsive buying is not limited to hypomanic or manic episodes',10)
 
 
-INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@BernerKlinikMontana.ch','Berner Klinik Montana','Bern',1000,'Aarbergergasse','062 287 32 32')
-INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@BernerRehaZentrum.ch','Berner Reha Heiligenschwendi','Bern',1003,'Aarstrasse','081 303 30 30')
-INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@HirslandenKlinikBeauite.ch','Hirslanden Klinik Beau-Site','Bern',1004,'Abendstrasse','0848 801 100')
-INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@HirslandenKlinikPermanence.ch','Hirslanden Klinik Permanence','Bern',1005,'Aberlistrasse','044 786 00 00')
-INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@HirslandenSalemSpital.ch','Hirslanden Salem-Spital','Bern',1006,'Aebistrasse','062 287 32 32')
-INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@HôpitalduJurabernois.ch','Hopital du Jura bernois Moutier','Bern',1007,'Aegertenstrasse','062 767 99 99')
-INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@HôpitalduJurabernoisSaintImier.ch','Hopital du Jura bernois Saint-Imier','Bern',1008,'Aehrenweg','044 814 27 74')
+INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@BernerKlinikMontana.ch','Klinik Montana','Bern',1000,'Aarbergergasse','062 287 32 32')
+INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@BernerRehaZentrum.ch','Reha Schwendi','Bern',1003,'Aarstrasse','081 303 30 30')
+INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@HirslandenKlinikBeauite.ch','Klinik Beau-Site','Bern',1004,'Abendstrasse','0848 801 100')
+INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@HirslandenKlinikPermanence.ch','Klinik Permanence','Bern',1005,'Aberlistrasse','044 786 00 00')
+INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@HirslandenSalemSpital.ch','Salem-Spital','Bern',1006,'Aebistrasse','062 287 32 32')
+INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@HôpitalduJurabernois.ch','Hopital du Moutier','Bern',1007,'Aegertenstrasse','062 767 99 99')
+INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@HôpitalduJurabernoisSaintImier.ch','Hopital Saint-Imier','Bern',1008,'Aehrenweg','044 814 27 74')
 INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@HUGHôpitaldeLoëx.ch','HUG Hopital de Loex','Bern',1008,'Ahornweg','052 208 08 08')
 INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@Inselspital.ch','Inselspital','Bern',1009,'Alemannenstrasse','071 913 87 00')
 INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@PallasKlinikBern.ch','Pallas Klinik Bern','Bern',1010,'Alexandraweg','043 883 12 34')
-INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@ServicesPsychiatriquesJuraBernois.ch','Services Psychiatriques Jura','Bern',1011,'Alleeweg','062 287 32 32')
+INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@ServicesPsychiatriquesJuraBernois.ch','Psychiatriques Jura','Bern',1011,'Alleeweg','062 287 32 32')
 INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@SoteriaBern.ch','Soteria Bern','Bern',1012,'Allmendstrasse','081 303 30 30')
-INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@StiftungDiaconisPalliativeCareDiakonissenhaus.ch','Stiftung Diaconis Palliative Care','Bern',1015,'Alpeneggstrasse','0848 801 100')
+INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@StiftungDiaconisPalliativeCareDiakonissenhaus.ch','Diaconis Palliative Care','Bern',1015,'Alpeneggstrasse','0848 801 100')
 INSERT INTO clinic (email, name, place, post_code, street, telephone) VALUES('request@upd.ch','UPD Waldau','Bern',1018,'Alpenstrasse','044 786 00 00')
 
 
@@ -151,7 +151,6 @@ INSERT INTO patient (firstname, lastname, birthday, post_code, street, telephone
 INSERT INTO patient (firstname, lastname, birthday, post_code, street, telephone, clinic_id) VALUES('Flavio','Winkler','1944-06-12',1024,'Biderstrasse','062 767 99 99',3)
 INSERT INTO patient (firstname, lastname, birthday, post_code, street, telephone, clinic_id) VALUES('Shawn','Roth','1991-11-25',1025,'Bienenstrasse','044 814 27 74',4)
 
-
 INSERT INTO drug (name, description, minDose, maxDose, measure, unit) values ('Amlodipine', 'Amlodipine is a calcium channel blocker that dilates (widens) blood vessels and improves blood flow.', 0.5, 2.5, 'DOSE_DOUBLE', 'UNIT_MILLIGRAM')
 INSERT INTO drug (name, description, minDose, maxDose, measure, unit) values ('Aspirin', 'Aspirin is a salicylate (sa-LIS-il-ate). It works by reducing substances in the body that cause pain, fever, and inflammation.', 2, 5, 'DOSE_INTEGER', 'UNIT_MILLIGRAM')
 INSERT INTO drug (name, description, minDose, maxDose, measure, unit) values ('Austedo', 'Austedo (deutetrabenazine) reduces the amount of certain chemicals in the body that are overly active in people with Huntingtons disease.', 4.5, 9.5,'DOSE_HALVES', 'UNIT_PILL')
@@ -164,8 +163,8 @@ INSERT INTO drug (name, description, minDose, maxDose, measure, unit) values ('F
 INSERT INTO drug (name, description, minDose, maxDose, measure, unit) values ('Seroxat','Paroxetine, also known by trade names including Paxil and Seroxat among others, is an antidepressant of the selective serotonin reuptake inhibitor (SSRI) class. It is used to treat major depressive disorder, obsessive-compulsive disorder, social anxiety disorder, panic disorder, posttraumatic stress disorder, generalized anxiety disorder and premenstrual dysphoric disorder. It has also been used in the treatment of hot flashes and night sweats associated with menopause.', 0.6, 0.9, 'DOSE_DOUBLE', 'UNIT_MILLILITER')
 INSERT INTO drug (name, description, minDose, maxDose, measure, unit) values ('Zoloft','Treatment of panic disorder with sertraline results in a decrease of the number of panic attacks and an improved quality of life. In four double-blind studies sertraline was shown to be superior to placebo for the treatment of panic disorder. The response rate was independent of the dose. In addition to decreasing the frequency of panic attacks by about 80% (vs. 45% for placebo) and decreasing general anxiety, sertraline resulted in improvement of quality of life on most parameters.', 0.8, 3.2, 'DOSE_DOUBLE', 'UNIT_MILLILITER')
 
-
 INSERT INTO patient_addiction (patient_id, addiction_id) values (1,1)
+INSERT INTO patient_addiction (patient_id, addiction_id) values (1,2)
 INSERT INTO patient_addiction (patient_id, addiction_id) values (2,2)
 INSERT INTO patient_addiction (patient_id, addiction_id) values (3,3)
 INSERT INTO patient_addiction (patient_id, addiction_id) values (4,4)
@@ -198,6 +197,7 @@ INSERT INTO patient_addiction (patient_id, addiction_id) values (30,10)
 
 
 INSERT INTO patient_doctor (patient_id, doctor_id) values (1,1)
+INSERT INTO patient_doctor (patient_id, doctor_id) values (1,2)
 INSERT INTO patient_doctor (patient_id, doctor_id) values (2,2)
 INSERT INTO patient_doctor (patient_id, doctor_id) values (3,3)
 INSERT INTO patient_doctor (patient_id, doctor_id) values (4,4)

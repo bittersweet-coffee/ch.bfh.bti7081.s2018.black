@@ -12,19 +12,52 @@ import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.view.ClinicView;
 import ch.bfh.bti7081.s2018.black.pms.view.ClinicViewImpl;
 
+/**
+ * ClinicPresenter Class
+ * Presenter Class used to manage data exchange between Models and Views as well as triggering database queries
+ * @author supnic
+ */
 public class ClinicPresenter implements ClinicView.ClinicViewListener{
 	
 	private ClinicView view;
 	private List<ClinicModel> clinicModelList;
 	private List<String> clinicNameList = new LinkedList<>();
 	
+	/**
+	 * Constructor for the ClinicPresenter
+	 * Used to register itself as a listener in the corresponding view as well as initializing the ClinicList
+	 */
+	public ClinicPresenter(ClinicView view) {
+		this.view = view;
+	}
+	
 	public ClinicPresenter() {
 		this.clinicModelList = new LinkedList<>();
 		this.fillClinicList();
 	}
 	
+	/**
+	 * Method to add a new clinic to the list
+	 */
+	public void addClinic(ClinicModel clinic) {
+		this.clinicModelList.add(clinic);
+	}
+	
+	
+	/**
+	 * Method to return the actual clinic list
+	 */
+	public List<ClinicModel> getClinicModelList() {
+		return this.clinicModelList;
+	}
+	
+	
+	/**
+	 * Method used to query the database and fill the ClinicModelList with all ClinicModels from the database
+	 */
 	private void fillClinicList() {
 		this.clinicModelList = JpaServicePresenter.findAll(ClinicModel.class);
+
      	
 		for (ClinicModel clinic : this.clinicModelList) {
      		this.clinicNameList.add(clinic.getName());

@@ -34,21 +34,6 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 	}
 
 	@Override
-	public List<List<String>> openButtonClicked(Integer patientId, String patientName) {
-		List<List<String>> wrapper = new LinkedList<>();
-		List<String> addictionList = new LinkedList<>(); // fetch DB for assigned Addictions
-		List<String> drugList = new LinkedList<>(); // fetch DB for assigned Drugs
-		List<String> appointmentList = new LinkedList<>(); // fetch DB for assigned Appointments
-		List<String> birthdayList = new LinkedList<>(); // fetch DB for Patient's Birthday
-		wrapper.add(addictionList);
-		wrapper.add(drugList);
-		wrapper.add(appointmentList);
-		wrapper.add(birthdayList);
-
-		return wrapper;
-	}
-
-	@Override
 	public void saveNoteButtonClicked(PatientItem patientItem, String newNote) {
 		PatientModel patient = patientItem.getModel();
 		NoticeModel note = new NoticeModel();

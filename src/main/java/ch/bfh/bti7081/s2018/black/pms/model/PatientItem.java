@@ -4,11 +4,17 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * PatientItem Class
+ * PatientItem Class used get access to the patient infos and guarantee the mvp.
+ * @author henzij
+ * @author supnic
+ */
 public class PatientItem {
 	
 	private Integer id;
 	
-	private List<String> notes;
+  private List<String> notes;
 	private PatientModel model;
 	private String street;
 	private int postcode;
@@ -18,44 +24,72 @@ public class PatientItem {
 	private ClinicModel clinic;
 	private List<PatientDrugModel> drugs;
 	private List<AppointmentModel> appointments;
-	
-	
-	private String firstName, lastName;
+  
+  private String firstName, lastName;
 	private LocalDate birthday;
 	
+	/**
+	 * Constructor for the PatientItem
+	 * Needed to create a new instance via reflection by persistence framework.
+	 */
 	public PatientItem() {
 		
 	}
 	
+	/**
+	 * Constructor for the PatientItem
+	 * Includes the PatientModel and reloads the entries
+	 */
 	public PatientItem(PatientModel model) {
 		this.model = model;
 		reloadFromModel();
 	}
 
+	/**
+	 * Method to reload all needed informations about the patient
+	 */
 	public void reloadFromModel() {
 		this.id = model.getId();
 		this.firstName = model.getFirstname();
 		this.lastName = model.getLastname();
 		this.birthday = model.getBirthday();
-
+		this.street = model.getStreet();
+		this.postcode = model.getPostCode();
+		this.telephone = model.getTelephone();
+		this.clinic = model.getClinic();
+		this.drugs = new LinkedList<>();
+		this.doctors = new LinkedList<>();
 		this.notes = new LinkedList<>();
+		this.addictions = new LinkedList<>();
+		this.appointments = new LinkedList<>();
+
+		if(model.getDrugs() != null) {
+			for (PatientDrugModel drug : model.getDrugs()) {
+				this.drugs.add(drug);
+			}
+		}
+			
+		for (DoctorModel doctor : model.getDoctors()) {
+			this.doctors.add(doctor);
+		}
+		
 		for (NoticeModel note : model.getNotes()) {
 			this.notes.add(note.getNote());
 		}
-	}
-
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public List<String> getNotes() {
-		return this.notes;
+		
+		for (AddictionModel addiction : model.getAddictions()) {
+			this.addictions.add(addiction);
+		}
+			
+		if(model.getAppointments() != null) {
+			for (AppointmentModel appointment : model.getAppointments()) {
+				this.appointments.add(appointment);
+			}
+		}
+				
 	}
 	
+	//Method to collect all notes of a patient into one string
 	public String getNotesAsString() {
 		String strNotes = "";
 		for (String note : this.notes) {
@@ -68,6 +102,19 @@ public class PatientItem {
 		}
 			
 		return strNotes;
+	}
+
+	//All getters and setters of the lists and variables
+	public Integer getId() {
+		return this.id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public List<String> getNotes() {
+		return this.notes;
 	}
 
 	public void setNotes(List<String> notes) {
