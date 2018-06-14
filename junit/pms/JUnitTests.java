@@ -3,6 +3,7 @@ package pms;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,8 +14,12 @@ import org.junit.jupiter.api.Test;
 import com.vaadin.shared.extension.PartInformationState;
 
 import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
+import ch.bfh.bti7081.s2018.black.pms.model.AgendaModel;
+import ch.bfh.bti7081.s2018.black.pms.model.Appointment;
+import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentModel;
 import ch.bfh.bti7081.s2018.black.pms.model.ClinicModel;
+import ch.bfh.bti7081.s2018.black.pms.model.DoctorItem;
 import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
 import ch.bfh.bti7081.s2018.black.pms.model.DrugModel;
 import ch.bfh.bti7081.s2018.black.pms.model.NoticeModel;
@@ -24,6 +29,7 @@ import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.model.SymptomModel;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
+import ch.bfh.bti7081.s2018.black.pms.presenter.AgendaPresenter;
 import ch.bfh.bti7081.s2018.black.pms.presenter.PatientPresenter;
 
 class JUnitTests {
@@ -167,7 +173,23 @@ class JUnitTests {
 		
 	}
 	
-	
+	@Test
+	void checkAgendaPresenterSaveAppintment() {
+		int nbrBefore = objects.findAll(AppointmentModel.class).size();
+		AgendaPresenter ap = new AgendaPresenter();
+		Appointment appointment = new Appointment();
+		appointment.setDescription("mockDescription");
+		DoctorItem docItem = new DoctorItem(mockDoctorModel);
+		appointment.setDoctorItem(docItem);
+		appointment.setEnd(LocalDateTime.now());
+		appointment.setStart(LocalDateTime.now());
+		appointment.setTitle("mockTitle");
+		AppointmentItem appointmentItem = new AppointmentItem(appointment);
+		ap.saveAppointment(appointmentItem);
+		int nbrAfter = objects.findAll(AppointmentModel.class).size();
+		assertEquals(nbrBefore+1, nbrAfter);
+	}
+		
 	/**
 	 * Stores a mocked patient in the database
 	 * @param objects
