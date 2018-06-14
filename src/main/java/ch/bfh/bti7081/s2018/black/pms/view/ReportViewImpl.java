@@ -61,6 +61,11 @@ public class ReportViewImpl extends PmsCustomComponent implements View, ReportVi
 		super();
 	}
 	
+	/**
+	 * Called before the view is shown on screen. 
+	 * The event object contains information about parameters used when showing the view,
+	 * in addition to references to the old view and the new view.
+	 */
 	public void enter(ViewChangeEvent event) {
 		super.bC.makeCrumbs(ReportViewImpl.NAME);
 		super.bC.visibleBreadcrumbs();
