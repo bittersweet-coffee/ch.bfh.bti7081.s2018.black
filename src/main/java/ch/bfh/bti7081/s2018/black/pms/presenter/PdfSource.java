@@ -29,8 +29,7 @@ import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientDrugModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
-import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
-import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
+
 /**
  * PdfSource Class
  * Creates a patient report
@@ -43,6 +42,7 @@ public class PdfSource implements StreamSource {
 
     private ByteArrayOutputStream bof;
     private PatientModel patientModel;
+    private final String RELATIVE_PATH_IMAGE = "/src/main/webapp/VAADIN/themes/mytheme/img/pms_64px.png";
 
     public PdfSource() {
         bof = new ByteArrayOutputStream();
@@ -69,16 +69,18 @@ public class PdfSource implements StreamSource {
         float [] pointColumnWidths = {100F, 200F};       
         Table addresstable = new Table(pointColumnWidths);
         
-        addCell(addresstable, "Firstname:", false);
+        // define and add addresstable to document
+        addCell(addresstable, "Firstname:", true);
         addCell(addresstable, patientModel.getFirstname(), false);
-        addCell(addresstable, "Lastname:", false);
+        addCell(addresstable, "Lastname:", true);
         addCell(addresstable, patientModel.getLastname(), false);
-        addCell(addresstable, "Adresse:", false);
+        addCell(addresstable, "Address:", true);
         addCell(addresstable, patientModel.getStreet(), false);
-        addCell(addresstable, "", false);
+        addCell(addresstable, "Postal Code:", true);
         addCell(addresstable, String.valueOf(patientModel.getPostCode()), false);   
         doc.add(addresstable);
         
+        // add all addiction of the patient to the document
         Paragraph pAddiction = new Paragraph("Addictions:");
         pAddiction.setBold();
         List lAddiction = new List();
@@ -88,15 +90,17 @@ public class PdfSource implements StreamSource {
         doc.add(pAddiction);
         doc.add(lAddiction);
         
+        // add all drugs of the patient to the document
         Paragraph pDrugs = new Paragraph("Drugs:");
         pDrugs.setBold();
         List lDrugs = new List();
         for (PatientDrugModel dm : patientModel.getDrugs()) {
-        	lDrugs.add(dm.getDrug().getName() + ", Dose: " + dm.getDose());
+        	lDrugs.add(dm.getDrug().getName() + ", Dose: " + dm.getDose() + dm.getDrug().getUnit());
 		}
         doc.add(pDrugs);
         doc.add(lDrugs);
         
+        // add the doctor of the patient to the document
         Paragraph pDoctor = new Paragraph("Doctors:");
         pDoctor.setBold();
         List lDoctors = new List();
@@ -106,6 +110,7 @@ public class PdfSource implements StreamSource {
         doc.add(pDoctor);
         doc.add(lDoctors);
         
+        // add all appointments of the patient to the document
         Paragraph pAppointment = new Paragraph("Appointments:");
         pAppointment.setBold();
         float [] pcWidthsAppointment = {100F, 200F, 100F, 100F, 100F};       
@@ -130,16 +135,24 @@ public class PdfSource implements StreamSource {
         doc.add(pAppointment);
         doc.add(appoointmentTable);
         
-        String imFile = new File("").getAbsolutePath() + "/src/main/webapp/VAADIN/themes/mytheme/img/pms_64px.png";       
+        // define and add image to document
+        String imFile = new File("").getAbsolutePath() + RELATIVE_PATH_IMAGE;       
         ImageData data = ImageDataFactory.create(imFile);        
         Image image = new Image(data); 
-        image.setFontSize(50);
-        image.setFixedPosition(500, 740);                    
+        image.setWidth(100);
+        image.setHeight(100);
+        image.setFixedPosition(475, 730);                    
         doc.add(image); 
         
         doc.close(); 
     }
     
+    /**
+     * method to fill the table with cells
+     * @param table: table that has to be filled
+     * @param text: text that gets in the cell
+     * @param bolt: boolean value for bolt or not bolt
+     */
     private void addCell(Table table, String text, boolean bolt) {
     	Cell cAp1 = new Cell();                        
         cAp1.add(text);                              
@@ -150,6 +163,9 @@ public class PdfSource implements StreamSource {
         table.addCell(cAp1);
     }
 
+    /**
+     * Create new ByteArrayInputStream for Buffer
+     */
     @Override
     public InputStream getStream() {
         return new ByteArrayInputStream(bof.toByteArray());

@@ -1,4 +1,3 @@
-
 INSERT INTO doctor (firstname, lastname, username, passwordhash) VALUES ('Antonio', 'Musardo', 'musardoa', '$2a$10$r6Mkf90C3vnL33aME6oR9uAuWUzjfjbQCCBdVkGsBEBor2DzZEjJ6')
 INSERT INTO doctor (firstname, lastname, username, passwordhash) VALUES ('Nicola', 'Schlup', 'schlupn', '$2a$10$r6Mkf90C3vnL33aME6oR9uAuWUzjfjbQCCBdVkGsBEBor2DzZEjJ6')
 INSERT INTO doctor (firstname, lastname, username, passwordhash) VALUES ('Cedric', 'Bielmann', 'bielmannc', '$2a$10$r6Mkf90C3vnL33aME6oR9uAuWUzjfjbQCCBdVkGsBEBor2DzZEjJ6')
@@ -255,14 +254,6 @@ INSERT INTO patient_doctor (patient_id, doctor_id) values (54,5)
 INSERT INTO patient_doctor (patient_id, doctor_id) values (55,6)
 INSERT INTO patient_doctor (patient_id, doctor_id) values (56,7)
 
-
-INSERT INTO appointment (name, description, start, end) VALUES ('test','test','2008-01-01 00:00:01','2008-01-01 00:00:01')
-
-
-INSERT INTO notice(note, patient_id) values ('Test', 1)
-INSERT INTO notice(note, patient_id) values ('Nochmals ein Test', 1)
-
-
 INSERT INTO clinic_addiction(clinic_id, addiction_id) values (1,1)
 INSERT INTO clinic_addiction(clinic_id, addiction_id) values (1,2)
 INSERT INTO clinic_addiction(clinic_id, addiction_id) values (1,3)
@@ -290,4 +281,3 @@ INSERT INTO clinic_addiction(clinic_id, addiction_id) values (10,4)
 INSERT INTO clinic_addiction(clinic_id, addiction_id) values (11,5)
 INSERT INTO clinic_addiction(clinic_id, addiction_id) values (12,6)
 INSERT INTO clinic_addiction(clinic_id, addiction_id) values (13,7)
-
