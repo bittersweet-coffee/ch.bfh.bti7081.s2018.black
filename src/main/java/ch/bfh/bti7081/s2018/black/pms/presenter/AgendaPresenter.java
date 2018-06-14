@@ -78,7 +78,7 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 				}
 			}
 			JpaServicePresenter.store(appointmentModel);
-			appointmentItem.getAppointment().setId(JpaServicePresenter.getLastId());
+			appointmentItem.getAppointment().setId(appointmentModel.getId());
 			appointmentModelList.add(appointmentModel);
 		} else {
 			for (AppointmentModel appointmentModel : this.appointmentModelList) {
@@ -116,6 +116,7 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 		for (AppointmentModel appointmentModel : this.appointmentModelList) {
 			if (appointmentModel.getId() == appointment.getId()) {
 				JpaServicePresenter.remove(appointmentModel);
+				appointmentModel.getPatient().getAppointments().remove(appointmentModel);
 			}
      	}
 	}
