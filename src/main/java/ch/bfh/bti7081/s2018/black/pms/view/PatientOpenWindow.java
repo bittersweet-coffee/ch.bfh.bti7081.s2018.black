@@ -15,7 +15,6 @@ import com.vaadin.ui.Window;
 
 import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentModel;
-import ch.bfh.bti7081.s2018.black.pms.model.DrugModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 
 public class PatientOpenWindow extends Window {

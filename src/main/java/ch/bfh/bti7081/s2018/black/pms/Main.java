@@ -50,13 +50,21 @@ public class Main extends UI {
     	PatientViewImpl patientView = new PatientViewImpl();
     	ReportViewImpl reportView = new ReportViewImpl();
     	
-    	new AgendaPresenter(agendaView);
-    	new AddictionPresenter(addictionView);
-    	new PatientPresenter(patientView);
-    	new LoginPresenter(loginView);
-    	new ClinicPresenter(clinicView);
-    	new ReportPresenter(reportView);
-    	new DrugPresenter(drugView);
+    	AgendaPresenter ap = new AgendaPresenter();
+    	ap.setupView(agendaView);
+    	AddictionPresenter ad = new AddictionPresenter();
+    	ad.setupView(addictionView);
+    	PatientPresenter pp = new PatientPresenter();
+    	pp.setupView(patientView);
+    	LoginPresenter lp = new LoginPresenter();
+    	lp.setupView(loginView);
+    	ClinicPresenter cp = new ClinicPresenter();
+    	cp.setupView(clinicView);
+    	ReportPresenter rp = new ReportPresenter();
+    	rp.setupView(reportView);
+    	DrugPresenter dp = new DrugPresenter();
+    	dp.setupView(drugView);
+    	
 
     	navigator.addView(DashboardViewImpl.NAME, dashboardView);
     	navigator.addView(AddictionViewImpl.NAME, addictionView);

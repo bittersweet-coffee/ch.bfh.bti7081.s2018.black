@@ -5,7 +5,9 @@ import java.util.List;
 
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
+import ch.bfh.bti7081.s2018.black.pms.view.ClinicViewImpl;
 import ch.bfh.bti7081.s2018.black.pms.view.ReportView;
+import ch.bfh.bti7081.s2018.black.pms.view.ReportViewImpl;
 
 public class ReportPresenter implements ReportView.ReportViewListener {
 	
@@ -13,10 +15,8 @@ public class ReportPresenter implements ReportView.ReportViewListener {
 	private List<PatientModel> patientModelList;
 	private List<PatientItem> patientItemList = new LinkedList<>();
 	
-	public ReportPresenter(ReportView view) {
-		this.view = view;
+	public ReportPresenter() {
 		this.patientModelList = new LinkedList<>();
-		view.addListener(this);
 	}
 
 	@Override
@@ -32,6 +32,11 @@ public class ReportPresenter implements ReportView.ReportViewListener {
 		for (PatientModel patient : this.patientModelList) {
 			this.patientItemList.add(new PatientItem(patient));
      	}
+	}
+
+	public void setupView(ReportViewImpl reportView) {
+		this.view = reportView;
+		this.view.addListener(this);
 	}
 
 }

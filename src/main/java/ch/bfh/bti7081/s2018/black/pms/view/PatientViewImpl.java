@@ -21,10 +21,7 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
 
-import ch.bfh.bti7081.s2018.black.pms.controller.Controller;
-import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
-import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 
 public class PatientViewImpl extends PmsCustomComponent implements View, PatientView {
 

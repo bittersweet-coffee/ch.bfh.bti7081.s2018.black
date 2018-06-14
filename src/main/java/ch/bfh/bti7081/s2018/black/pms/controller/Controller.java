@@ -17,6 +17,12 @@ import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 import ch.bfh.bti7081.s2018.black.pms.view.PatientView.PatientViewListener;
 
+
+/**
+ * 
+ * Helpermethods to seperate Models from View. Used to create a new PatientItem
+ *
+ */
 public class Controller {
 
 	public static ClinicModel getSelectedLocation(ComboBox<String> cmbLocs) {

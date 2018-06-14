@@ -7,14 +7,14 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import ch.bfh.bti7081.s2018.black.pms.model.UserModel;
 import ch.bfh.bti7081.s2018.black.pms.view.LoginView;
+import ch.bfh.bti7081.s2018.black.pms.view.LoginViewImpl;
 
 public class LoginPresenter implements LoginView.LoginViewListener {
 
 	private LoginView view;
 	
-	public LoginPresenter(LoginView view) {
-		this.view = view;
-		view.addListener(this);
+	public LoginPresenter() {
+		
 	}
 
 	@Override
@@ -33,5 +33,11 @@ public class LoginPresenter implements LoginView.LoginViewListener {
 		}
 	
 		return true;
+	}
+
+	public void setupView(LoginViewImpl loginView) {
+		this.view = loginView;
+		this.view.addListener(this);
+		
 	}
 }

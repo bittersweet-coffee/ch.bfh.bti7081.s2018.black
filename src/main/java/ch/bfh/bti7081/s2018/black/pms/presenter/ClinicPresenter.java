@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
 import ch.bfh.bti7081.s2018.black.pms.model.ClinicModel;
 import ch.bfh.bti7081.s2018.black.pms.view.ClinicView;
+import ch.bfh.bti7081.s2018.black.pms.view.ClinicViewImpl;
 
 public class ClinicPresenter implements ClinicView.ClinicViewListener{
 	
@@ -15,10 +16,8 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
 	private List<ClinicModel> clinicModelList;
 	private List<String> clinicNameList = new LinkedList<>();
 	
-	public ClinicPresenter(ClinicView view) {
-		this.view = view;
+	public ClinicPresenter() {
 		this.clinicModelList = new LinkedList<>();
-		view.addListener(this);
 		this.fillClinicList();
 	}
 	
@@ -95,5 +94,11 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
 	@Override
 	public List<String> setupClinicList() {
 		return this.clinicNameList;
+	}
+
+	public void setupView(ClinicViewImpl clinicView) {
+		this.view = clinicView;
+		this.view.addListener(this);
+		
 	}
 }

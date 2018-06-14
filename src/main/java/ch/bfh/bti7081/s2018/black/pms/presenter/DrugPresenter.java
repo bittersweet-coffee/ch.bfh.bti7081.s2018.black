@@ -11,6 +11,7 @@ import ch.bfh.bti7081.s2018.black.pms.model.PatientDrugModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.view.DrugView;
+import ch.bfh.bti7081.s2018.black.pms.view.DrugViewImpl;
 
 /**
  * DrugPresenter Class
@@ -30,11 +31,8 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 	/**
 	 * Constructor for the DrugPresenter
 	 * Used to register itself as a listener in the corresponding view as well as initializing the DrugList
-	 * @param view Instance of the corresponding View
 	 */
-	public DrugPresenter(DrugView view) {
-		this.view = view;
-		view.addListener(this);
+	public DrugPresenter() {
 		this.drugModelList = new LinkedList<>();
 		this.fillDrugList();
 	}
@@ -183,5 +181,11 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 	public List<PatientItem> setupPatientItemList() {
 		this.fillPatientList();
 		return this.patientItemList;
+	}
+
+	public void setupView(DrugViewImpl drugView) {
+		this.view = drugView;
+		this.view.addListener(this);
+		
 	}
 }

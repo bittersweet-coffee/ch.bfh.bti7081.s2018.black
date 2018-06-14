@@ -9,6 +9,7 @@ import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.view.AddictionView;
+import ch.bfh.bti7081.s2018.black.pms.view.AddictionViewImpl;
 
 /**
  * AddictionPresenter Class
@@ -26,12 +27,9 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 	/**
 	 * Constructor for the AddictionPresenter
 	 * Used to register itself as a listener in the corresponding view as well as initializing the AddictionList
-	 * @param view Instance of the corresponding View
 	 */
-	public AddictionPresenter(AddictionView view) {
-		this.view = view;
+	public AddictionPresenter() {
 		this.addictModelList = new LinkedList<>();
-		view.addListener(this);
 		this.fillAddictionList();
 	}
 	
@@ -126,6 +124,12 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 	public List<PatientItem> setupPatientItemList() {
 		this.fillPatientList();
 		return this.patientItemList;
+	}
+
+	public void setupView(AddictionViewImpl addictionView) {
+		this.view = addictionView;
+		view.addListener(this);
+		
 	}
 
 }

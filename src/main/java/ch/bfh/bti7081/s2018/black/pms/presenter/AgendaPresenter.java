@@ -13,6 +13,7 @@ import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.view.AgendaView;
+import ch.bfh.bti7081.s2018.black.pms.view.AgendaViewImpl;
 
 public class AgendaPresenter implements AgendaView.AgendaViewListener {
 
@@ -27,10 +28,7 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 	private List<DoctorItem> doctorItemList = new LinkedList<>();
 	private List<DoctorModel> doctorModelList;
 	
-	public AgendaPresenter(AgendaView view) {
-		this.view = view;
-		this.view.addListener(this);
-		this.view.addEventProvider(eventProvider);
+	public AgendaPresenter() {
 		appointmentModelList = new LinkedList<AppointmentModel>();
 		this.fillAppointmentList();
 		this.patientModelList = new LinkedList<>();
@@ -165,5 +163,12 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 		for (DoctorModel doctor : this.doctorModelList) {
 			this.doctorItemList.add(new DoctorItem(doctor));
 		}
+	}
+
+	public void setupView(AgendaViewImpl agendaView) {
+		this.view = agendaView;
+		this.view.addListener(this);
+		this.view.addEventProvider(eventProvider);
+		
 	}
 }
