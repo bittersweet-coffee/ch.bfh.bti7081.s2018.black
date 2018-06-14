@@ -13,7 +13,11 @@ import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.view.AgendaView;
-
+/**
+ * AgendaPresenter Class
+ * Presenter Class used to manage data exchange between Models and Views as well as triggering database queries
+ * @author bielc1
+ */
 public class AgendaPresenter implements AgendaView.AgendaViewListener {
 
 	private AgendaView view;
@@ -26,7 +30,12 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 	
 	private List<DoctorItem> doctorItemList = new LinkedList<>();
 	private List<DoctorModel> doctorModelList;
-	
+	/**
+	 * Constructor for the AgendaPresenter
+	 * Used to register itself as a listener in the corresponding view as well as initializing the AppointmentList,
+	 * PatientList and DoctorList
+	 * @param view Instance of the corresponding View
+	 */
 	public AgendaPresenter(AgendaView view) {
 		this.view = view;
 		this.view.addListener(this);
@@ -121,6 +130,9 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
      	}
 	}
 	
+	/**
+	 * Method used to query the database and fill the AppointmentItemList with representations/mockObjects from the AppointmentModels
+	 */
 	public void fillAppointmentList() {
 		this.appointmentModelList = JpaServicePresenter.findAll(AppointmentModel.class);
 		for (AppointmentModel appointmentModel : this.appointmentModelList) {
@@ -147,6 +159,10 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 		this.fillPatientList();
 		return this.patientItemList;
 	}
+	
+	/**
+	 * Method used to query the database and fill the PatientItemList with representations/mockObjects from the PatientModels
+	 */
 	public void fillPatientList() {
 		this.patientModelList = JpaServicePresenter.findAll(PatientModel.class);
 		this.patientItemList = new LinkedList<>();
@@ -160,6 +176,9 @@ public class AgendaPresenter implements AgendaView.AgendaViewListener {
 		this.fillDoctorList();
 		return this.doctorItemList;
 	}
+	/**
+	 * Method used to query the database and fill the DoctorItemList with representations/mockObjects from the DoctorModels
+	 */
 	public void fillDoctorList() {
 		this.doctorModelList = JpaServicePresenter.findAll(DoctorModel.class);
 		this.doctorItemList = new LinkedList<>();
