@@ -1,8 +1,10 @@
 package ch.bfh.bti7081.s2018.black.pms.view;
 
+import com.vaadin.server.Page;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.MenuBar;
@@ -14,19 +16,22 @@ import com.vaadin.ui.VerticalLayout;
 public class PmsCustomComponent extends CustomComponent {
 
     protected Panel contentPanel = new Panel();
+    protected BreadCrumbMaker bC;
     protected MenuBar menuBar = new MenuBar();
     private String username = "Anonymous";
 	
 	public PmsCustomComponent() {
 		if (!checkLogin()) {
 			UI.getCurrent().getNavigator().navigateTo("login");
+			bC = new BreadCrumbMaker();
 		}
 
         MenuBar.Command pmsCommand = new MenuBar.Command() {
         	@Override
 			public void menuSelected(MenuItem selectedItem) {
-				UI.getCurrent().getNavigator().navigateTo("");
-			}
+        		UI.getCurrent().getNavigator().navigateTo("");
+        		bC.visibleBreadcrumbs();
+        	}
 		};
 
         MenuBar.Command logoutCommand = new MenuBar.Command() {
@@ -36,6 +41,7 @@ public class PmsCustomComponent extends CustomComponent {
         		UI.getCurrent().getNavigator().navigateTo("login");
 			}
 		};
+		
 
     	menuBar.setWidth("1200px");
     	menuBar.addStyleName("main-menubar");
@@ -51,6 +57,8 @@ public class PmsCustomComponent extends CustomComponent {
     	logoutItem.setDescription("Logout");
     	logoutItem.setStyleName("main-menubar-logout");
     	
+    	MenuBar breadcrumbs = bC.visibleBreadcrumbs();
+    	
     	HorizontalLayout contentBody = new HorizontalLayout();
     	contentBody.setSizeFull();
         contentBody.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
@@ -59,7 +67,7 @@ public class PmsCustomComponent extends CustomComponent {
 
         VerticalLayout content = new VerticalLayout();
 		content.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
-		content.addComponents(menuBar, contentBody);
+		content.addComponents(menuBar, breadcrumbs, contentBody);
 		
 		setCompositionRoot(content);
 	}

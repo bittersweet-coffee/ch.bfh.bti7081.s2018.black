@@ -164,9 +164,16 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 		
 		if(optionalDrug.isPresent()) {
 			drugDetails.add(optionalDrug.get().getDescription());
+			drugDetails.add(optionalDrug.get().getMeasure());
+			//drugDetails.add(optionalDrug.get().getUnit());
+			drugDetails.add("ml");
+			drugDetails.add(optionalDrug.get().getMinDose().toString());
+			drugDetails.add(optionalDrug.get().getMaxDose().toString());
 		} else {
 			drugDetails.add("No Description present");
 			drugDetails.add("No Symptoms present");
+			drugDetails.add("No Min Dose present");
+			drugDetails.add("No Max Dose present");
 		}
 		
 		return drugDetails;
@@ -183,9 +190,28 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 		return this.patientItemList;
 	}
 
-	public void setupView(DrugViewImpl drugView) {
-		this.view = drugView;
-		this.view.addListener(this);
-		
+	@Override
+	public boolean isDouble(String str) {
+		  try{
+			// try to parse entered Dose to Double
+		    Double.parseDouble(str);
+		    
+		    // No exception thrown to this point, so it is Double-parsable
+		    // Check if entered number has less than 7 decimal places
+		    if(str.contains(".")) {
+		    	String[] splitted = str.split("\\.");
+		    	
+		    	if(splitted[1].length() < 6) {
+		    		return true;
+		    	} else {
+		    		return false;
+		    	}
+		    }
+		    	
+		    return true;
+		    
+		  } catch(Exception e) {
+		    return false;
+		  }
 	}
 }

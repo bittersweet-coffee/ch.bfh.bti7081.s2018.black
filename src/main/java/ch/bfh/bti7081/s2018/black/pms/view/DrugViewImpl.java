@@ -62,10 +62,10 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 	private Window windowPatient;
 	
 	// labels used for describing Drug Properties
-	private Label lblDrugNameTitle, lblDrugDescTitle;
+	private Label lblDrugNameTitle, lblDrugDescTitle, lblMeasure, lblUnit, lblDoseMin, lblDoseMax;
 	
 	// TextAreas used for displaying Drug Properties
-	private TextArea txtDrugName, txtDrugDesc;
+	private TextArea txtDrugName, txtDrugDesc, txtMeasure, txtUnit, txtDoseMin, txtDoseMax;
 
 	/**
 	 * Default Constructor like all other ViewImplementations to trigger the super-class constructor  
@@ -75,6 +75,8 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 	}
 	
 	public void enter(ViewChangeEvent event) {
+		super.bC.makeCrumbs(DrugViewImpl.NAME);
+		super.bC.visibleBreadcrumbs();
 		super.menuBar.getItems().get(1).setText((String) VaadinSession.getCurrent().getAttribute("username"));
 		Label test = new Label("Drug here");
         super.contentPanel.setContent(test);
@@ -105,20 +107,45 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
         VerticalLayout drugDetails = new VerticalLayout();
         this.lblDrugNameTitle = new Label("Name:");
         this.lblDrugDescTitle = new Label("Description:");
+        this.lblMeasure = new Label("Measure:");
+        this.lblDoseMin = new Label("Min Dose:");
+        this.lblDoseMax = new Label("Max Dose:");
+        
         this.txtDrugName = new TextArea();
-        this.txtDrugName.setReadOnly(true);
         this.txtDrugName.setRows(1);
         this.txtDrugName.setWidth("100%");
+        this.txtDrugName.setReadOnly(true);
         
         this.txtDrugDesc = new TextArea();
         this.txtDrugDesc.setWidth("100%");
         this.txtDrugDesc.setReadOnly(true);
         
+        this.txtMeasure = new TextArea();
+        this.txtMeasure.setRows(1);
+        this.txtMeasure.setWidth("100%");
+        this.txtMeasure.setReadOnly(true);
+        
+        this.txtDoseMin = new TextArea();
+        this.txtDoseMin.setRows(1);
+        this.txtDoseMin.setWidth("100%");
+        this.txtDoseMin.setReadOnly(true);
+        
+        this.txtDoseMax = new TextArea();
+        this.txtDoseMax.setRows(1);
+        this.txtDoseMax.setWidth("100%");
+        this.txtDoseMax.setReadOnly(true);
+        
         drugDetails.addComponents(
         		lblDrugNameTitle,
         		txtDrugName,
         		lblDrugDescTitle,
-        		txtDrugDesc
+        		txtDrugDesc,
+        		lblMeasure,
+        		txtMeasure,
+        		lblDoseMin,
+        		txtDoseMin,
+        		lblDoseMax,
+        		txtDoseMax
         		);
         
         drugDetails.setMargin(false);
@@ -163,28 +190,19 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		TextField txtFilter = new TextField();
 		txtFilter.setPlaceholder("Filter by Firstname or Lastname");
 		txtFilter.setWidth(735.0f, Unit.PIXELS);
-	    
-		txtFilter.addValueChangeListener(action -> {
-			patientProvider.setFilter(name -> {
-				String firstNameLower = name.getFirstName().toLowerCase();
-				String lastNameLower = name.getLastName().toLowerCase();
-				String filterLower = action.getValue().toLowerCase();
-				patientItemGrid.deselectAll();
-				return firstNameLower.contains(filterLower) || lastNameLower.contains(filterLower);		
-			});
-		});
+
 		
 	    Label lblPatient = new Label("Patient:");
 	    Label lblSelectedDrug = new Label();
 	    
-	    Label lblDose = new Label("Enter Dose:");
+	    Label lblAllocateDose = new Label("Enter Dose:");
 	    Label lblMeasurement = new Label("Measurement:");
 	    
 	    TextField txtDose = new TextField();
 	    txtDose.setPlaceholder("Dose");
 	    txtDose.setRequiredIndicatorVisible(true);
 	    
-	    doseLayout.addComponents(lblDose, txtDose);
+	    doseLayout.addComponents(lblAllocateDose, txtDose);
 	    doseLayout.setMargin(new MarginInfo(true, false, false, false));
 	    
 	    patientLayout.addComponents(lblPatient, txtFilter);
@@ -207,7 +225,16 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 	    // Set content
 	    super.contentPanel.setContent(vLayout);
 	    
-	    
+		txtFilter.addValueChangeListener(action -> {
+			patientProvider.setFilter(name -> {
+				String firstNameLower = name.getFirstName().toLowerCase();
+				String lastNameLower = name.getLastName().toLowerCase();
+				String filterLower = action.getValue().toLowerCase();
+				patientItemGrid.deselectAll();
+				return firstNameLower.contains(filterLower) || lastNameLower.contains(filterLower);		
+			});
+		});
+		
         btnSearch.addClickListener(click -> {
         	if (this.nativeDrug.getSelectedItem().isPresent() || !txtSearch.isEmpty()) {
         		this.nativeDrug.setSelectedItem(null);
@@ -232,6 +259,9 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
         			
         			this.txtDrugName.setValue(selected.getValue());
         			this.txtDrugDesc.setValue(addictDetailList.get(0));
+        			this.txtMeasure.setValue(addictDetailList.get(1));
+        			this.txtDoseMin.setValue(addictDetailList.get(3) + " " + addictDetailList.get(2));
+        			this.txtDoseMax.setValue(addictDetailList.get(4) + " " + addictDetailList.get(2));
         			
         		}
 			}	
@@ -240,27 +270,28 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		
 		btnAllocatePatient.addClickListener(click -> {
 			if (patientItemGrid.getSelectedItems().iterator().hasNext()) {
-				if(isDouble(txtDose.getValue())) {
-					for (DrugViewListener listener: listeners) {
+				for (DrugViewListener listener: listeners) {
+					if(listener.isDouble(txtDose.getValue())) {
 						
 						Pair result = listener.allocateButtonClicked(nativeDrug.getSelectedItem().get(),
 		        				patientItemGrid.getSelectedItems().iterator().next(), Double.parseDouble(txtDose.getValue()));
-						
-						
+												
 						if(result.getResult()) {
 							this.windowPatient.close();
 						} else {
 							Notification.show("Warning", result.getMessage(), Notification.TYPE_ERROR_MESSAGE);
 						}
-					}
-				} else {
-					Notification.show("Warning", "Please enter a Dose of type Double and less than 7 decimal places!", Notification.TYPE_ERROR_MESSAGE);
+						
+					} else {
+						Notification.show("Warning", "Please enter a Dose of type Double and less than 7 decimal places!", Notification.TYPE_ERROR_MESSAGE);
+					} 
 				}
+					
 			} else {
-				Notification.show("Input Data Incomplete");
+					Notification.show("Input Data Incomplete");
 			}
 		});
-		
+					
 		patientItemGrid.addSelectionListener(selection -> {
 			if (patientItemGrid.getSelectedItems().iterator().hasNext()) {
 				btnAllocatePatient.setEnabled(true);
@@ -280,35 +311,7 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		btnSearch.addShortcutListener(enterSearchListener);
 	}
 	
-	/**
-	 * Helper Method to detect whether entered Dose is a valid Double number.
-	 * Valid means: Standard Double format & less than 7 decimal places
-	 * @param str Entered Dose retrieved as String
-	 * @return boolean response whether entered Dose is a valid Double number
-	 */
-	private boolean isDouble(String str) {
-		  try{
-			// try to parse entered Dose to Double
-		    Double.parseDouble(str);
-		    
-		    // No exception thrown to this point, so it is Double-parsable
-		    // Check if entered number has less than 7 decimal places
-		    if(str.contains(".")) {
-		    	String[] splitted = str.split("\\.");
-		    	
-		    	if(splitted[1].length() < 6) {
-		    		return true;
-		    	} else {
-		    		return false;
-		    	}
-		    }
-		    	
-		    return true;
-		    
-		  } catch(Exception e) {
-		    return false;
-		  }
-	}
+
 
 	@Override
 	public void addListener(DrugViewListener listener) {
