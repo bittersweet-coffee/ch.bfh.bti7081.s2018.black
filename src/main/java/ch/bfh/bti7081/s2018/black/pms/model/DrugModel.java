@@ -36,6 +36,10 @@ public class DrugModel extends EntityModel {
 	@Enumerated(EnumType.STRING)
 	private Measurement measure;
 	
+	// unit of the drug
+	@Enumerated(EnumType.STRING)
+	private Unit unit;
+	
 	// list of the patients that have to take the drug
 	// is mapped with the variable drugs of the class PatientModel
     @OneToMany(mappedBy="patient", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -45,8 +49,7 @@ public class DrugModel extends EntityModel {
  	private enum Measurement {
  		DOSE_INTEGER("Integer"), 
  		DOSE_DOUBLE("Double"),
- 		DOSE_HALVES("Halves");
- 		;
+ 		DOSE_HALVES("Halves"); 	
  		
  		private final String enumMeasure;
  		
@@ -58,6 +61,24 @@ public class DrugModel extends EntityModel {
  			return this.enumMeasure;
  		}
  		
+ 	};
+ // ENUM containing all possible units for our drugs
+ 	private enum Unit {
+ 		UNIT_MILLILITER("ml"),
+ 		UNIT_MILLIGRAM("mg"),
+ 		UNIT_GRAM("g"),
+ 		UNIT_PILL("pills"),
+ 		UNIT_POUCH("pouch");
+ 		
+ 		private final String enumUnit;
+ 		
+ 		Unit(String enumUnit) {
+ 			this.enumUnit = enumUnit;
+ 		}
+ 		
+ 		public String getUnitString() {
+ 			return this.enumUnit;
+ 		}
  	};
  	
  	/**
@@ -116,9 +137,17 @@ public class DrugModel extends EntityModel {
 		if ((enteredDose >= this.minDose) && (enteredDose <= this.maxDose)) {
 			return new Pair(true, "Success");
 		} else {
-			return new Pair(false, "The dose entered is not within the drug thresholds: \n" + "Min: " + this.minDose + "\nMax: " + this.maxDose + "\n");
+			return new Pair(false, "The dose entered is not within the drug thresholds: \n" + "Min: " + this.minDose + " " + this.getUnit() + "\nMax: " + this.maxDose + " " + this.getUnit() + "\n");
 		}
 		
+	}
+	
+	 /**
+     * getter of the unit
+     * @return the unit specific to this drug
+     */
+	public String getUnit() {
+		return this.unit.getUnitString();
 	}
 	
     /**

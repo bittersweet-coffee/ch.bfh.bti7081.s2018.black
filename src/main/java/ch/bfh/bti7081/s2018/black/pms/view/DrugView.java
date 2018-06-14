@@ -40,7 +40,7 @@ public interface DrugView {
 		/**
 		 * Method used to tell the Listener a Drug has been selected. Drug Details have then to be displayed (Description)
 		 * @param drugName The name of the selected Drug
-		 * @return List of Strings containing the Description of the Drug at Index (0)
+		 * @return List of Strings containing the Description of the Drug at Index (0), the MinDose at Index (1) and the MaxDose at Index (2)
 		 */
 		List<String> selectListChanged(String drugName);
 		
@@ -55,6 +55,14 @@ public interface DrugView {
 		 * @return List of PatientItems containing mock objects of the PatientModel (PatientItem)
 		 */
 		List<PatientItem> setupPatientItemList();
+		
+		/**
+		 * Method to detect whether entered Dose is a valid Double number.
+		 * Valid means: Standard Double format & less than 7 decimal places
+		 * @param str Entered Dose retrieved as String
+		 * @return boolean response whether entered Dose is a valid Double number
+		 */
+		boolean isDouble(String str);
 	}
 	
 	/**
