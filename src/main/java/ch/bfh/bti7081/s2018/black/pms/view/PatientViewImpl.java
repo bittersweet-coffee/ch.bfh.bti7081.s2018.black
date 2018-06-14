@@ -155,6 +155,11 @@ public class PatientViewImpl extends PmsCustomComponent implements View, Patient
 		for (PatientViewListener listener : listeners) {
 			listener.saveButtonClicked(patientItem, note);
 		}
+		updatePatientItemList();
+		patientProvider = DataProvider.ofCollection(patientItemList);
+		patientProvider.refreshAll();
+		patientItemGrid.setDataProvider(patientProvider);
+		patientItemGrid.getDataProvider().refreshAll();
 	}
 
 	@Override
