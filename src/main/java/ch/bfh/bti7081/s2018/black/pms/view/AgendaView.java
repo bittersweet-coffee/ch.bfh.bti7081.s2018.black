@@ -15,7 +15,6 @@ public interface AgendaView {
 		void deleteAppointment(AppointmentItem appointmentItem);
 		List<PatientItem> setupPatientItemList();
 		List<DoctorItem> setupDoctorItemList();
-		//void setCalendarRange(LocalDateTime start, LocalDateTime end);
 	}
 	public void addListener(AgendaViewListener listener);
 	public void addEventProvider(AppointmentDataProvider eventProvider);

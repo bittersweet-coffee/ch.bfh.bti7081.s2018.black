@@ -2,36 +2,13 @@ package ch.bfh.bti7081.s2018.black.pms;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.security.Principal;
 import java.time.LocalDate;
-import java.util.Enumeration;
 import java.util.LinkedList;
-import java.util.Locale;
-import java.util.Map;
+import java.util.List;
 
-import javax.servlet.http.Cookie;
-
-import org.hibernate.cfg.ExtendsQueueEntry;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.Runner;
-
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinService;
-import com.vaadin.server.VaadinSession;
-import com.vaadin.server.WrappedHttpSession;
-import com.vaadin.server.WrappedSession;
-import com.vaadin.shared.Registration;
-import com.vaadin.ui.UI;
 
 import ch.bfh.bti7081.s2018.black.pms.model.AddictionModel;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentModel;
@@ -45,11 +22,7 @@ import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.model.SymptomModel;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaDataAccessObject;
 import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
-import ch.bfh.bti7081.s2018.black.pms.presenter.LoginPresenter;
 import ch.bfh.bti7081.s2018.black.pms.presenter.PatientPresenter;
-import ch.bfh.bti7081.s2018.black.pms.view.LoginViewImpl;
-import ch.bfh.bti7081.s2018.black.pms.view.PatientViewImpl;
-import ch.bfh.bti7081.s2018.black.pms.view.PmsCustomComponent;
 
 class Unittests {
 	
@@ -65,7 +38,6 @@ class Unittests {
 	DrugModel mockDrug;
 	NoticeModel mockNote;
 	PatientDrugModel mockPatientDrugModel;
-	UI ui;
 	
 
 	//Needed mocked Lists
@@ -74,7 +46,7 @@ class Unittests {
 	LinkedList<AppointmentModel> mockAppointmentList;
 	LinkedList<AddictionModel> mockAddictionList;
 	LinkedList<ClinicModel> mockClinicList;
-	LinkedList<NoticeModel> mockNoteList;
+	List<NoticeModel> mockNoteList;
 	LinkedList<DoctorModel> mockDoctorList;
 	
 	
@@ -94,7 +66,6 @@ class Unittests {
 		mockPatientList.add(mockPatient);
 		mockPatientDrugModelList.add(mockPatientDrugModel);
 		mockAddictionList.add(mockAddiction);
-		mockNoteList.add(mockNote);
 		mockDoctorList.add(mockDoctorModel);
 		setupMockPatientDrugModel(mockDrug, mockPatient);
 		setupMockAddiction(mockClinicList, mockPatientList);
@@ -166,7 +137,7 @@ class Unittests {
 			LinkedList<AppointmentModel> mockAppointmentList, 
 			LinkedList<DoctorModel> mockDoctorList, 
 			LinkedList<PatientDrugModel> mockPatientDrugModelList, 
-			LinkedList<NoticeModel> mockNoteList) {
+			List<NoticeModel> mockNoteList) {
 		mockPatient = new PatientModel();
 		mockPatient.setAddictions(mockAddictionList);
 		mockPatient.setAppointments(mockAppointmentList);
@@ -185,32 +156,29 @@ class Unittests {
 
 	
 	@Test
-	void checkPatientSave() {
+	void checkPatientPresenterStore() {
 		int nbrBefore = objects.findAll(PatientModel.class).size();
-		ui = new UI () {
-			
-			@Override
-			protected void init(VaadinRequest request) {
-				PatientPresenter pp = new PatientPresenter(new PatientViewImpl());
-				PatientItem mockPatientItem = new PatientItem();
-				objects.store(mockClinic);
-				mockPatientItem.setAddictions(mockPatient.getAddictions());
-				mockPatientItem.setAppointments(mockPatient.getAppointments());
-				mockPatientItem.setBirthday(mockPatient.getBirthday());
-				mockPatientItem.setClinic(mockClinic);
-				mockPatientItem.setDoctors(mockPatient.getDoctors());
-				mockPatientItem.setDrugs(mockPatient.getDrugs());
-				mockPatientItem.setFirstName(mockPatient.getFirstname());
-				mockPatientItem.setLastName(mockPatient.getLastname());
-				mockPatientItem.setPostcode(mockPatient.getPostCode());
-				mockPatientItem.setStreet(mockPatient.getStreet());
-				mockPatientItem.setTelephone(mockPatient.getTelephone());
-				pp.saveButtonClicked(mockPatientItem, mockPatient.getNotes().get(0).getNote());
-			}
-		};
+		PatientPresenter pp = new PatientPresenter();
+		PatientItem mockPatientItem = new PatientItem();
+		objects.store(mockClinic);
+		setupMockPatient(mockAddictionList, mockAppointmentList, mockDoctorList, mockPatientDrugModelList, mockNoteList);
+		setupMockNote(mockPatient);
+		mockNoteList.add(mockNote);
+		mockPatient.setNotes(mockNoteList);
+		mockPatientItem.setAddictions(mockPatient.getAddictions());
+		mockPatientItem.setAppointments(mockPatient.getAppointments());
+		mockPatientItem.setBirthday(mockPatient.getBirthday());
+		mockPatientItem.setClinic(mockClinic);
+		mockPatientItem.setDoctors(mockPatient.getDoctors());
+		mockPatientItem.setDrugs(mockPatient.getDrugs());
+		mockPatientItem.setFirstName(mockPatient.getFirstname());
+		mockPatientItem.setLastName(mockPatient.getLastname());
+		mockPatientItem.setPostcode(mockPatient.getPostCode());
+		mockPatientItem.setStreet(mockPatient.getStreet());
+		mockPatientItem.setTelephone(mockPatient.getTelephone());
+		pp.saveButtonClicked(mockPatientItem, mockPatient.getNotes().get(0).getNote());
 		int nbrAfter = objects.findAll(PatientModel.class).size();
 		assertEquals(nbrBefore+1, nbrAfter);
-		
 	}
 	
 	
