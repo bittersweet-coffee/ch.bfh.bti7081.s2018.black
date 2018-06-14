@@ -26,7 +26,6 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 	private List<String> drugNameList = new LinkedList<>();
 	private List<PatientModel> patientModelList;
 	private List<PatientItem> patientItemList = new LinkedList<>();
-	private JpaServicePresenter service;
 	
 	/**
 	 * Constructor for the DrugPresenter
