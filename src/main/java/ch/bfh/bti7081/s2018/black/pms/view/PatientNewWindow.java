@@ -124,7 +124,6 @@ public class PatientNewWindow extends Window {
 						
 						view.save(patient, descriptionField.getValue());
 						close();
-						Page.getCurrent().reload();
 						
 					} else if(!isValidDate(birthdayField.getValue())) {
 						Notification.show("Warning", "Birthday is not valid! Please check the selected Date.", Notification.TYPE_ERROR_MESSAGE);
