@@ -18,13 +18,21 @@ following features:
 
 # Installation
 
-TODO
+Install maven and eclipse (optional). Then import the project and build it as a
+maven project.
+
+Otherwise just use maven directly to handle the dependencies and setup.
 
 # Dependencies
 
-The app depends on the following Libraries and Components:
+The app depends on the following additional libraries and components:
 
 * [Vaadin Calendar Addon](https://github.com/blackbluegl/calendar-component)
+* Hibernate
+* H2 database
+* Springframework security
+* itextpdf
+* log4j
 
 # Contributions
 
