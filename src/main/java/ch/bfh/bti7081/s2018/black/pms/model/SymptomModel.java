@@ -7,24 +7,22 @@ import javax.persistence.Table;
 
 /**
  * Symptom class
- * @author musaa1
- * @version 0.1
  */
 @Entity
 @Table(name="symptom")
 public class SymptomModel extends EntityModel {
 	
-	// description of the symptom
+	// Description of the symptom
 	private String description;
 
-	// Addiction that belongs to the symptom. In our case all symptoms are uniqe
-	// addiction_id is the foreign key. Can not be null
+	// Addiction that belongs to the symptom. In our case all symptoms are unique 
+	// Addiction_id is the foreign key, can not be null
 	@ManyToOne
 	@JoinColumn(name="addiction_id", nullable=false)
 	private AddictionModel addiction;
 
 	/**
-	 * getter of the description
+	 * Getter for the description
 	 * @return the description of the symptom
 	 */
 	public String getDescription() {
@@ -32,7 +30,7 @@ public class SymptomModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the description
+	 * Setter for the description
 	 * @param description of the symptom
 	 */
 	public void setDescription(String description) {
@@ -40,7 +38,7 @@ public class SymptomModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the addiction
+	 * Getter for the addiction
 	 * @return the addiction that belongs to the symptom
 	 */
 	public AddictionModel getAddiction() {
@@ -48,7 +46,7 @@ public class SymptomModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the addiction
+	 * Setter for the addiction
 	 * @param addiction that belongs to the symptom
 	 */
 	public void setAddiction(AddictionModel addiction) {

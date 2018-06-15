@@ -11,6 +11,10 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+/**
+ * PmsCustomComponent
+ * Provides the menubar and content body
+ */
 public class PmsCustomComponent extends CustomComponent {
 
     protected Panel contentPanel = new Panel();
@@ -39,7 +43,6 @@ public class PmsCustomComponent extends CustomComponent {
         		UI.getCurrent().getNavigator().navigateTo("login");
 			}
 		};
-		
 
     	menuBar.setWidth("1200px");
     	menuBar.addStyleName("main-menubar");

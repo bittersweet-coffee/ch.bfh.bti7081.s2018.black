@@ -30,12 +30,10 @@ import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 /**
  * AddictionViewImpl Class
  * View Implementation of AddictionView
- * @author schaa4
- *
  */
 public class AddictionViewImpl extends PmsCustomComponent implements View, AddictionView {
 	
-	// identifier used for displaying the correct URL
+	// Identifier used for displaying the correct URL
 	public static final String NAME = "addiction";
 	
 	// List containing all listeners for this object (mostly the corresponding Presenter Class)
@@ -240,18 +238,16 @@ public class AddictionViewImpl extends PmsCustomComponent implements View, Addic
 		btnAllocate.addClickListener(click -> {
 			if (patientItemGrid.getSelectedItems().iterator().hasNext()) {
 				for (AddictionViewListener listener: listeners) {
-					if(listener.allocateButtonClicked(nativeAddict.getSelectedItem().get(),
+					if (listener.allocateButtonClicked(nativeAddict.getSelectedItem().get(),
 	        				patientItemGrid.getSelectedItems().iterator().next())) {
 						this.windowPatient.close();
 					} else {
 						Notification.show("Warning", "The selected addiction has already been assigned to the patient!", Notification.TYPE_ERROR_MESSAGE);
 					}
 				}
-	        		
 			} else {
 				Notification.show("Input Data Incomplete");
 			}
-			
 		});
 		
 		patientItemGrid.addSelectionListener(selection -> {

@@ -30,8 +30,6 @@ import com.vaadin.ui.Window;
 /**
  * ClinicViewImpl Class
  * View Implementation of ClinicView
- * @author supnic
- *
  */
 public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicView {
 
@@ -79,20 +77,20 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
 			this.nativeClinic.setItems(listener.setupClinicList());
 		}
 		
-		//Components for the clinic name search
+		// Components for the clinic name search
         TextField txtSearchClinic = new TextField("Enter Clinic Name");
         txtSearchClinic.setTabIndex(1);
         txtSearchClinic.focus();
         
-        //Components for the addiction-clinic search
+        // Components for the addiction-clinic search
         TextField txtSearchAddiction = new TextField("Enter Addiction Name");
         txtSearchAddiction.setEnabled(false);
         
-        //Button to trigger the search
+        // Button to trigger the search
         Button btnSearch = new Button("Search");
         btnSearch.setTabIndex(2);
         
-        //Radiobuttons to select the searchmethod
+        // Radiobuttons to select the searchmethod
         RadioButtonGroup<String> searchMode = new RadioButtonGroup<>();
         searchMode.setItems("Clinic", "Addiction");
         searchMode.setSelectedItem("Clinic");
@@ -157,7 +155,7 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
         		);
         clinictDetails.setMargin(false);
         
-        //Components to display the informations about the addictions, which the clinic treats
+        // Components to display the informations about the addictions, which the clinic treats
         this.txtAddictions = new TextArea();
         this.txtAddictions.setWidth("100%");
         this.txtAddictions.setReadOnly(true);
@@ -167,7 +165,7 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
         Button btnMailTo = new Button("Mail To");
         btnMailTo.setEnabled(false);
         
-        //Components for the clinicmailrequest
+        // Components for the clinicmailrequest
         VerticalLayout addictMailTo = new VerticalLayout();
         addictMailTo.setHeight("100%");
         addictMailTo.addComponents(this.lblAddictions, this.txtAddictions, btnMailTo);
@@ -211,7 +209,7 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
 
         searchMode.addValueChangeListener(change -> {
         	
-        	if(String.valueOf(change.getValue()).equals("Clinic")) {
+        	if (String.valueOf(change.getValue()).equals("Clinic")) {
         		txtSearchClinic.setEnabled(true);
         		txtSearchAddiction.setEnabled(false);
         		txtSearchAddiction.setValue("");
@@ -228,16 +226,18 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
             if (Desktop.isDesktopSupported() 
                 && (desktop = Desktop.getDesktop()).isSupported(Desktop.Action.MAIL)) {
               URI mailto = null;
-    		try {
-    			mailto = new URI("mailto:" + this.email + "?subject=Request");
-    		} catch (URISyntaxException e) {
-    			logger.error(e);
-    		}
+
               try {
-    			desktop.mail(mailto);
-    		} catch (IOException e) {
-    			logger.error(e);
-    		}
+            	  mailto = new URI("mailto:" + this.email + "?subject=Request");
+              } catch (URISyntaxException e) {
+            	  logger.error(e);
+              }
+
+              try {
+            	  desktop.mail(mailto);
+              } catch (IOException e) {
+            	  logger.error(e);
+              }
             } else {
             	super.contentPanel.getUI().getUI().addWindow(windowPatient);
             	lblMailError.setValue("Desktop doesn't support mailto; mail is dead anyway! ;)");
@@ -267,8 +267,6 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
         		} else if(txtSearchAddiction.isEnabled()) {
         			this.nativeClinic.setItems(listener.searchButtonClicked(txtSearchAddiction.getValue(), searchMode.getSelectedItem().get()));
         		}
-        		
-        		
         	}
         });
     
@@ -285,7 +283,6 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
         			this.txtTelephone.setValue(clinicDetailList.get(3));
         			this.email = clinicDetailList.get(4);
         			this.txtAddictions.setValue(clinicDetailList.get(5));
-
         		}
 			}	
 			btnMailTo.setEnabled(true);
@@ -306,5 +303,4 @@ public class ClinicViewImpl extends PmsCustomComponent implements View, ClinicVi
 	public void addListener(ClinicViewListener listener) {
 		this.listeners.add(listener);
 	}
-	
 }

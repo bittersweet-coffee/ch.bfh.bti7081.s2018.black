@@ -25,6 +25,9 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.DateField;
 
+/**
+ * PatientNewWindow
+ */
 public class PatientNewWindow extends Window {
 
 	PatientViewImpl view;
@@ -54,11 +57,9 @@ public class PatientNewWindow extends Window {
 		Label lblLocation = new Label("Location: ");
 		Label lblBirthday = new Label("Birthday: ");
 	
-		
 		TwinColSelect<String> addictionselect = new TwinColSelect<>("Addictions: ");
 		addictionselect.setItems(view.getAddictionNames());
 		addictionselect.setRows(5);
-
 
 		TextField firstNameField = new TextField();
 		firstNameField.setRequiredIndicatorVisible(true);
@@ -91,10 +92,10 @@ public class PatientNewWindow extends Window {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				
-				if(firstNameField.isEmpty() || lastNameField.isEmpty() || phoneField.isEmpty() 
+				if (firstNameField.isEmpty() || lastNameField.isEmpty() || phoneField.isEmpty() 
 						|| postCodeField.isEmpty() || streetField.isEmpty() || birthdayField.isEmpty()
 						|| !cmbLocs.getSelectedItem().isPresent() || !cmbDocs.getSelectedItem().isPresent()) {
-					Notification.show("Warning", "Please fill out all required fields!", Notification.TYPE_ERROR_MESSAGE);
+					Notification.show("Warning", "Please fill out all required fields!", Notification.Type.ERROR_MESSAGE);
 				} else {
 					
 					patient.setFirstName(firstNameField.getValue());
@@ -106,13 +107,13 @@ public class PatientNewWindow extends Window {
 					if (doc.isPresent()) {
 						view.getSelectedDoctor(doc, patient);
 					} else {
-						Notification.show("Warning", "No Doctor was selected!", Notification.TYPE_ERROR_MESSAGE);
+						Notification.show("Warning", "No Doctor was selected!", Notification.Type.ERROR_MESSAGE);
 					}
 					Optional<String> clinic = cmbLocs.getSelectedItem();
 					if (clinic.isPresent()) {
 						view.getSelectedClinic(clinic, patient);
 					} else {
-						Notification.show("Warning", "No Clinic was selected!", Notification.TYPE_ERROR_MESSAGE);
+						Notification.show("Warning", "No Clinic was selected!", Notification.Type.ERROR_MESSAGE);
 					}
 					
 					view.setSelectedAddictions(addictionselect.getSelectedItems(), patient);
@@ -146,7 +147,7 @@ public class PatientNewWindow extends Window {
 				try {
 					Integer.parseInt(postCodeField.getValue());
 					
-					if(str.length() != 4) {
+					if (str.length() != 4) {
 						throw new NumberFormatException();
 					}
 					
@@ -158,7 +159,6 @@ public class PatientNewWindow extends Window {
 				}
 			}
 		});
-
 
 		Button btnCancel = new Button("Cancel", event -> this.close());
 

@@ -11,25 +11,23 @@ import javax.persistence.Table;
 
 /**
  * Doctor class
- * @author musaa1
- * @version 0.1
  */
 @Entity
 @Table(name="doctor")
 public class DoctorModel extends UserModel {
 
-	// list of patients of the doctor
-	// is mapped with the variable doctors in the class PatientModel
+	// List of patients of the doctor
+	// Is mapped with the variable doctors in the class PatientModel
 	@ManyToMany(mappedBy="doctors")
 	private List<PatientModel> patients;
 	
-	// list of the appointments of the doctor
-	// this is a many-to-many relation so we need a relation table
+	// List of the appointments of the doctor
+	// This is a many-to-many relation so we need a relation table
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "doctor")
 	private List<AppointmentModel> appointments;
 	
 	/**
-	 * getter of the patients
+	 * Getter for the patients
 	 * @return a list with the patients of the doctor
 	 */
 	public List<PatientModel> getPatients() {
@@ -37,7 +35,7 @@ public class DoctorModel extends UserModel {
 	}
 
 	/**
-	 * setter of the patients
+	 * Setter for the patients
 	 * @param patients of the doctor
 	 */
 	public void setPatients(List<PatientModel> patients) {
@@ -45,7 +43,7 @@ public class DoctorModel extends UserModel {
 	}
 
 	/**
-	 * getter of the appointments of the doctor
+	 * Getter for the appointments of the doctor
 	 * @return a list with the appointments of a the doctor
 	 */
 	public List<AppointmentModel> getAppointments() {
@@ -53,7 +51,7 @@ public class DoctorModel extends UserModel {
 	}
 
 	/**
-	 * setter of the appointments
+	 * Setter for the appointments
 	 * @param appointments of the doctor
 	 */
 	public void setAppointments(List<AppointmentModel> appointments) {

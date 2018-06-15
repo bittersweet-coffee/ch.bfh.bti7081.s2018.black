@@ -6,10 +6,8 @@ import ch.bfh.bti7081.s2018.black.pms.model.EntityModel;
 
 /**
  * Interface JpaService
- * @author musaa1
- * @version 1.0
  * Interface for the association with the package persistence
- * Here all defined all methods, wehre are implemented in JpaDataAccessObject
+ * Here all defined all methods, where are implemented in JpaDataAccessObject
  */
 public interface JpaService {
 	

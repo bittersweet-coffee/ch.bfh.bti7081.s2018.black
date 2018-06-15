@@ -11,8 +11,6 @@ import javax.persistence.Table;
 
 /**
  * Addiction class
- * @author musaa1
- * version 0.5
  * NamedEntityGraphs are the solution of the LazyInitializationException problem
  * This way can we access the entities in the database with the fetch type lazy
  */
@@ -20,25 +18,26 @@ import javax.persistence.Table;
 @Table(name="addiction")
 public class AddictionModel extends EntityModel {
 
-	// name of the addiction
+	// Name of the addiction
 	private String name;
 
-	// description of the addiction. size is set to 1000 characters
+	// Description of the addiction
+	// Size is set to 1000 characters
 	@Column(length=1000)
 	private String description;
 	
-	// list of symptoms of the addiction.
-	// is mapped with the variable addiction in the class SymptomModel
+	// List of symptoms of the addiction
+	// Is mapped with the variable addiction in the class SymptomModel
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "addiction")
 	private List<SymptomModel> symptoms;
 
-	// list of the clinics where the addiction is treaten
-	// is mapped with the variable addictions of the class AddictionModel
+	// List of the clinics where the addiction is treated
+	// Is mapped with the variable addictions of the class AddictionModel
     @ManyToMany(mappedBy="addictions")
 	private List<ClinicModel> clinics;
 	
-	// list of patients with the same addiction
-	// is mapped with the variable addictions in the class PatientModel
+	// List of patients with the same addiction
+	// Is mapped with the variable addictions in the class PatientModel
 	@ManyToMany(mappedBy="addictions")
 	private List<PatientModel> patients;
 
@@ -51,7 +50,7 @@ public class AddictionModel extends EntityModel {
 	}
 	
 	/**
-	 * setter for name
+	 * Setter for name
 	 * @param name of the addiction
 	 */
 	public void setName(String name) {
@@ -59,7 +58,7 @@ public class AddictionModel extends EntityModel {
 	}
 
 	/**
-	 * setter for description
+	 * Setter for description
 	 * @param description of the addiction
 	 */
 	public void setDescription(String description) {
@@ -67,7 +66,7 @@ public class AddictionModel extends EntityModel {
 	}
 
 	/**
-	 * getter for description
+	 * Getter for description
 	 * @return the description of the addiction
 	 */
 	public String getDescription() {
@@ -75,7 +74,7 @@ public class AddictionModel extends EntityModel {
 	}
 	
 	/**
-	 * getter for patients
+	 * Getter for patients
 	 * @return a list of patients with the addiction
 	 */
 	public List<PatientModel> getPatients() {
@@ -83,7 +82,7 @@ public class AddictionModel extends EntityModel {
 	}
 
 	/**
-	 * setter for patients
+	 * Setter for patients
 	 * @param patients with the addiction
 	 */
 	public void setPatients(List<PatientModel> patients) {
@@ -91,7 +90,7 @@ public class AddictionModel extends EntityModel {
 	}
 	
 	/**
-	 * getter for symptoms
+	 * Getter for symptoms
 	 * @return a list with the symptoms of the addiction
 	 */
 	public List<SymptomModel> getSymptoms() {
@@ -99,7 +98,7 @@ public class AddictionModel extends EntityModel {
 	}
 	
 	/**
-	 * setter for symptoms
+	 * Setter for symptoms
 	 * @param symptoms of the addiction
 	 */
 	public void setSymptoms(List<SymptomModel> symptoms) {
@@ -107,35 +106,36 @@ public class AddictionModel extends EntityModel {
 	}
 	
 	/**
-	 * getter of the String of a symptom
-	 * @return name of the symptom as String
+	 * Getter of the string of a symptom
+	 * @return name of the symptom as string
 	 */
 	public String getSymptomsAsString() {
 		String symptomString = "";
 		for (SymptomModel symptom : this.symptoms) {
 			symptomString = symptomString.concat("- " + symptom.getDescription() + "\n\n");
 		}
-		
-		if(symptomString.length() > 2) // cut the ending line feeds
+
+		// cut the ending line feeds
+		if (symptomString.length() > 2) {
 			return symptomString.substring(0, symptomString.length()-2);
-		else 
+		} else {
 			return symptomString;
+		}
 	}
 	
 	/**
-	 * getter of the clinics
-	 * @return List of clinics where the addiction can be cured
+	 * Getter of the clinics
+	 * @return list of clinics where the addiction can be cured
 	 */
 	public List<ClinicModel> getClinics() {
 		return this.clinics;
 	}
 	
 	/**
-	 * setter of clinics
+	 * Setter of clinics
 	 * @param clinics where the addiction can be cured
 	 */
 	public void setClinics(List<ClinicModel> clinics) {
 		this.clinics = clinics;
 	}
-	
 }

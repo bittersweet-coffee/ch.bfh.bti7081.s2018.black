@@ -15,7 +15,6 @@ import ch.bfh.bti7081.s2018.black.pms.view.ClinicViewImpl;
 /**
  * ClinicPresenter Class
  * Presenter Class used to manage data exchange between Models and Views as well as triggering database queries
- * @author supnic
  */
 public class ClinicPresenter implements ClinicView.ClinicViewListener{
 	
@@ -43,7 +42,6 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
 		this.clinicModelList.add(clinic);
 	}
 	
-	
 	/**
 	 * Method to return the actual clinic list
 	 */
@@ -51,32 +49,36 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
 		return this.clinicModelList;
 	}
 	
-	
 	/**
 	 * Method used to query the database and fill the ClinicModelList with all ClinicModels from the database
 	 */
 	private void fillClinicList() {
 		this.clinicModelList = JpaServicePresenter.findAll(ClinicModel.class);
-
      	
 		for (ClinicModel clinic : this.clinicModelList) {
      		this.clinicNameList.add(clinic.getName());
      	}
 	}
 
+	/**
+	 * Logic when the search button was clicked.
+	 * Gather information from the different resources and present them accordingly.
+	 * @param search term
+	 * @param search mode
+	 */
 	@Override
 	public List<String> searchButtonClicked(String searchTerm, String searchMode) {
 		
 		List<String> optionalClinic = new LinkedList<>();
 		
 		if (!searchTerm.isEmpty()) {
-			if(searchMode.equals("Clinic")) {
+			if (searchMode.equals("Clinic")) {
 				optionalClinic = this.clinicModelList.stream()
 						.filter(clinic -> clinic.getName().toLowerCase().contains(searchTerm.toLowerCase()))
 						.map(ClinicModel::getName)
 						.collect(Collectors.toList());
 				
-			} else if(searchMode.equals("Addiction")) {
+			} else if (searchMode.equals("Addiction")) {
 				
 				List<AddictionModel> addictionList = new LinkedList<>();
 				
@@ -89,7 +91,6 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
 						optionalClinic.add(clinic.getName());
 					}
 				}
-				
 			}
 				
 			return optionalClinic;
@@ -99,6 +100,10 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
 		}
 	}
 
+	/**
+	 * Logic when the selected list changed
+	 * @param clinic name
+	 */
 	@Override
 	public List<String> selectListChanged(String clinicName) {
 		Optional<ClinicModel> optionalClinic = this.clinicModelList.stream()
@@ -107,7 +112,7 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
 				
 			List<String> clinicDetails = new LinkedList<>();
 			
-			if(optionalClinic.isPresent()) {
+			if (optionalClinic.isPresent()) {
 				clinicDetails.add(optionalClinic.get().getPlace());
 				clinicDetails.add(String.valueOf(optionalClinic.get().getPostCode()));
 				clinicDetails.add(optionalClinic.get().getStreet());
@@ -134,7 +139,6 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
 	public void setupView(ClinicViewImpl clinicView) {
 		this.view = clinicView;
 		this.view.addListener(this);
-		
 	}
 
 	public static List<ClinicItem> getClinicNames() {
@@ -155,6 +159,5 @@ public class ClinicPresenter implements ClinicView.ClinicViewListener{
 				patient.setClinic(clinicModel);
 			}
 		}
-		
 	}
 }

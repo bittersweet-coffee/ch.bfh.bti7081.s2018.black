@@ -15,8 +15,8 @@ import ch.bfh.bti7081.s2018.black.pms.view.AddictionViewImpl;
 
 /**
  * AddictionPresenter Class
- * Presenter Class used to manage data exchange between Models and Views as well as triggering database queries
- * @author schaa4
+ * Presenter Class used to manage data exchange between Models and
+ * Views as well as triggering database queries.
  */
 public class AddictionPresenter implements AddictionView.AddictionViewListener {
 
@@ -28,7 +28,8 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 	
 	/**
 	 * Constructor for the AddictionPresenter
-	 * Used to register itself as a listener in the corresponding view as well as initializing the AddictionList
+	 * Used to register itself as a listener in the corresponding
+	 * view as well as initializing the AddictionList.
 	 */
 	public AddictionPresenter() {
 		this.addictModelList = new LinkedList<>();
@@ -45,7 +46,7 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 		Optional<AddictionModel> addictList = patient.getAddictions().stream()
 				.filter(a -> a.getId() == addict.getId())
 				.findFirst();
-		if(!addictList.isPresent()) {
+		if (!addictList.isPresent()) {
 			patient.getAddictions().add(addict);
 			JpaServicePresenter.update(patient);
 			return true;
@@ -54,7 +55,8 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 	}
 	
 	/**
-	 * Method used to query the database and fill the AddictionModelList with all AddictionModels from the database
+	 * Method used to query the database and fill the AddictionModelList
+	 * with all AddictionModels from the database.
 	 */
 	public void fillAddictionList() {
 		this.addictModelList = JpaServicePresenter.findAll(AddictionModel.class);
@@ -65,7 +67,8 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 	}
 	
 	/**
-	 * Method used to query the database and fill the PatientItemList with representations/mockObjects from the PatientModels
+	 * Method used to query the database and fill the PatientItemList with
+	 * representations/mockObjects from the PatientModels.
 	 */
 	private void fillPatientList() {
 		this.patientModelList = JpaServicePresenter.findAll(PatientModel.class);
@@ -76,6 +79,10 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
      	}
 	}
 
+	/**
+	 * Logic when the search button was clicked
+	 * @param search string
+	 */
 	@Override
 	public List<String> searchButtonClicked(String searchTerm) {
 		List<String> optionalAddict = this.addictModelList.stream()
@@ -86,18 +93,27 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 		return optionalAddict;
 	}
 	
+	/**
+	 * Logic when the allocate button was clicked
+	 * @param addiction name
+	 * @param patient item
+	 */
 	@Override
 	public boolean allocateButtonClicked(String addictionName, PatientItem patientItem) {
 		Optional<AddictionModel> optionalAddict = this.addictModelList.stream()
 				.filter(addict -> addict.getName().equals(addictionName))
 				.findFirst();
 		
-		if(optionalAddict.isPresent()) {
+		if (optionalAddict.isPresent()) {
 			return allocateAddictionToPatient(optionalAddict.get(), patientItem.getModel());
 		}
 		return false;
 	}
 	
+	/**
+	 * Logic when the select element in the list changed
+	 * @param addiction name
+	 */
 	@Override
 	public List<String> selectListChanged(String addictionName) {
 		Optional<AddictionModel> optionalAddict = this.addictModelList.stream()
@@ -106,7 +122,7 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 			
 		List<String> addictionDetails = new LinkedList<>();
 		
-		if(optionalAddict.isPresent()) {
+		if (optionalAddict.isPresent()) {
 			addictionDetails.add(optionalAddict.get().getDescription());
 			addictionDetails.add(optionalAddict.get().getSymptomsAsString());
 		} else {
@@ -117,23 +133,38 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 		return addictionDetails;
 	}
 	
+	/**
+	 * Setup the addict list
+	 * @return list of addicts
+	 */
 	@Override
 	public List<String> setupAddictList() {
 		return this.addictNameList;
 	}
 
+	/**
+	 * Setup the patient item list
+	 * @return patient item list
+	 */
 	@Override
 	public List<PatientItem> setupPatientItemList() {
 		this.fillPatientList();
 		return this.patientItemList;
 	}
 
+	/**
+	 * Setup the view
+	 * @param addictionView
+	 */
 	public void setupView(AddictionViewImpl addictionView) {
 		this.view = addictionView;
 		view.addListener(this);
-		
 	}
 
+	/**
+	 * Getter for the addiction items
+	 * @return addiction item list
+	 */
 	public static List<AddictionItem> getAddictionItems() {
 		List<AddictionModel> addictionModelList = JpaServicePresenter.findAll(AddictionModel.class);
 		List<AddictionItem> addictionItemList = new LinkedList<AddictionItem>();
@@ -145,6 +176,11 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 		return addictionItemList;
 	}
 
+	/**
+	 * Setter for the addiction to patients relation
+	 * @param selectedItems
+	 * @param patient
+	 */
 	public static void setAddictionsToPatient(Set<String> selectedItems, PatientItem patient) {
 		LinkedList<AddictionModel> addictionListAdd = new LinkedList<AddictionModel>();
 		List<AddictionModel> addictionModelList = JpaServicePresenter.findAll(AddictionModel.class);
@@ -157,5 +193,4 @@ public class AddictionPresenter implements AddictionView.AddictionViewListener {
 		}
 		patient.setAddictions(addictionListAdd);
 	}
-
 }

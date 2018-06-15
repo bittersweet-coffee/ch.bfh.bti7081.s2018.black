@@ -10,67 +10,65 @@ import javax.persistence.Transient;
 
 /**
  * Appointment class
- * @author toni
- * @version 0.2
+ * Represents the table schema of the database
  */
 @Entity
 @Table(name="appointment")
 public class AppointmentModel extends EntityModel{
 
-	// name of the appointment
+	// Name of the appointment
 	private String name;
 
-	// description of the appointment
+	// Description of the appointment
 	private String description;
 
-	// start of the appointment
+	// Start of the appointment
 	private LocalDateTime start;
 
-	// end of the appointment
+	// End of the appointment
 	private LocalDateTime end;
 	
-	// period of the appointment
-	//private String period;
-	
-	// date formatter. Is ignored by hibernate
+	// Date formatter, ignored by hibernate
 	@Transient
 	private DateTimeFormatter dateFormatter;
 	
-	// time formatter. Is ignored by hibernate
+	// Time formatter, ignored by hibernate
 	@Transient
 	private DateTimeFormatter timeFormatter;
 	
-	// list of patients with the same appointment
-	// is mapped with the variable appointments in the class PatientModel
+	// List of patients with the same appointment
+	// Is mapped with the variable appointments in the class PatientModel
 	@ManyToOne
 	@JoinColumn(name="patient_id")
 	private PatientModel patient;
 	
-	// list of doctors with the same appointment
-	// is mapped with the variable appointments in the class DoctorModel
+	// List of doctors with the same appointment
+	// Is mapped with the variable appointments in the class DoctorModel
 	@ManyToOne
 	@JoinColumn(name="doctor_id")
 	private DoctorModel doctor;
 	
-	// location where the appointment will take place
-	// location_id is the foreign key. Can not be null
+	// Location where the appointment will take place
+	// Location_id is the foreign key, can not be null
 	@ManyToOne
 	@JoinColumn(name="clinic_id", nullable=true)
 	private ClinicModel clinic;
 	
-	// Do we really need this constructor
 	public AppointmentModel() {
-		
 	}
 	
-	// Do we really need this constructor???
+	/**
+	 * Initialize an appointment with a predefined start and end date time
+	 * @param the start date time
+	 * @param the end date time
+	 */
 	public AppointmentModel(LocalDateTime start, LocalDateTime end) {
 		this.start = start;
 		this.end = end;
 	}
 
 	/**
-	 * getter of the name
+	 * Getter for the name
 	 * @return the name of the appointment
 	 */
 	public String getName() {
@@ -78,7 +76,7 @@ public class AppointmentModel extends EntityModel{
 	}
 
 	/**
-	 * setter of the name
+	 * Setter for the name
 	 * @param name of the appointment
 	 */
 	public void setName(String name) {
@@ -86,7 +84,7 @@ public class AppointmentModel extends EntityModel{
 	}
 	
 	/**
-	 * getter of the description
+	 * Getter for the description
 	 * @return the description of the appointment
 	 */
 	public String getDescription() {
@@ -94,7 +92,7 @@ public class AppointmentModel extends EntityModel{
 	}	
 
 	/**
-	 * setter of the description
+	 * Setter for the description
 	 * @param description of the appointment
 	 */
 	public void setDescription(String description) {
@@ -102,7 +100,7 @@ public class AppointmentModel extends EntityModel{
 	}
 
 	/**
-	 * getter of the start 
+	 * Getter for the start 
 	 * @return the start date time of the appointment
 	 */
 	public LocalDateTime getStart() {
@@ -110,7 +108,7 @@ public class AppointmentModel extends EntityModel{
 	}
 
 	/**
-	 * setter of the start
+	 * Setter for the start
 	 * @param start of the appointment
 	 */
 	public void setStart(LocalDateTime start) {
@@ -118,7 +116,7 @@ public class AppointmentModel extends EntityModel{
 	}
 
 	/**
-	 * getter of the end
+	 * Getter for the end
 	 * @return the end date time of the appointment
 	 */
 	public LocalDateTime getEnd() {
@@ -126,7 +124,7 @@ public class AppointmentModel extends EntityModel{
 	}
 
 	/**
-	 * setter of the end
+	 * Setter for the end
 	 * @param end of the appointment
 	 */
 	public void setEnd(LocalDateTime end) {
@@ -134,23 +132,7 @@ public class AppointmentModel extends EntityModel{
 	}
 
 	/**
-	 * getter of the period
-	 * @return the period of the appointment
-	 */
-	/*public String getPeriod() {
-		return this.period;
-	}
-
-	/**
-	 * setter of the period
-	 * @param period of the appointment
-	 */
-	/*public void setPeriod(String period) {
-		this.period = period;
-	}
-
-	/**
-	 * getter of the patients
+	 * Getter for the patients
 	 * @return a list of the patients with the same appointment
 	 */
 	public PatientModel getPatient() {
@@ -158,7 +140,7 @@ public class AppointmentModel extends EntityModel{
 	}
 
 	/**
-	 * setter of the patients
+	 * Setter for the patients
 	 * @param patients with the same appointment
 	 */
 	public void setPatient(PatientModel patient) {
@@ -166,7 +148,7 @@ public class AppointmentModel extends EntityModel{
 	}
 
 	/**
-	 * getter of the doctors
+	 * Getter for the doctors
 	 * @return a list of the doctors with the same appointment
 	 */
 	public DoctorModel getDoctor() {
@@ -174,7 +156,7 @@ public class AppointmentModel extends EntityModel{
 	}
 
 	/**
-	 * setter of the doctors
+	 * Setter for the doctors
 	 * @param doctors with the same appointment
 	 */
 	public void setDoctor(DoctorModel doctor) {
@@ -182,7 +164,7 @@ public class AppointmentModel extends EntityModel{
 	}
 
 	/**
-	 * getter of the location
+	 * Getter for the location
 	 * @return the location where the appointment takes place
 	 */
 	public ClinicModel getClinic() {
@@ -190,7 +172,7 @@ public class AppointmentModel extends EntityModel{
 	}
 
 	/**
-	 * setter of the location
+	 * Setter for the location
 	 * @param location where the appointment takes place
 	 */
 	public void setLocation(ClinicModel clinic) {

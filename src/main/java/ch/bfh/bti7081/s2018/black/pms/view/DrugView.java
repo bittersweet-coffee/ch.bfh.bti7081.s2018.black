@@ -8,16 +8,12 @@ import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 /**
  * DrugView Interface
  * View Interface used by the ViewImplementation
- * @author schaa4
- *
  */
 public interface DrugView {
 	
 	/**
 	 * DrugViewListener Interface
 	 * ViewListener Interface used by the Presenter Class
-	 * @author schaa4
-	 *
 	 */
 	public interface DrugViewListener {
 

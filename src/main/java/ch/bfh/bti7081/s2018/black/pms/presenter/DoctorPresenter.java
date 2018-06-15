@@ -8,8 +8,15 @@ import ch.bfh.bti7081.s2018.black.pms.model.DoctorItem;
 import ch.bfh.bti7081.s2018.black.pms.model.DoctorModel;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 
+/**
+ * Doctor presenter class
+ */
 public class DoctorPresenter {
 
+	/**
+	 * Getter for the doctor names
+	 * @return list of doctor items
+	 */
 	public static List<DoctorItem> getDoctorNames() {
 		List<DoctorModel> docModelList = JpaServicePresenter.findAll(DoctorModel.class);
 		List<DoctorItem> docItemList = new LinkedList<DoctorItem>();
@@ -21,6 +28,11 @@ public class DoctorPresenter {
 		return docItemList;
 	}
 
+	/**
+	 * Setup the doctor and its patient
+	 * @param doc
+	 * @param patient
+	 */
 	public static void setupDoctor(Optional<String> doc, PatientItem patient) {
 		LinkedList<DoctorModel> doctorModelListAdd = new LinkedList<DoctorModel>();
 		List<DoctorModel> docModelList = JpaServicePresenter.findAll(DoctorModel.class);
@@ -31,5 +43,4 @@ public class DoctorPresenter {
 				}
 		patient.setDoctors(doctorModelListAdd);
 	}
-
 }

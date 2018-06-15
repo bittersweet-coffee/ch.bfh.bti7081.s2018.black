@@ -10,45 +10,43 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
- * Location class
- * @author musaa1
- * @version 0.1
+ * Clinic class
  */
 @Entity
 @Table(name="clinic")
 public class ClinicModel extends EntityModel {
 
-	// name of the location
+	// Name of the location
 	private String name;
 	
-	// street of the location
+	// Street of the location
 	private String street;
 	
-	// post code of the location
+	// Post code of the location
 	@Column(name="`post_code`")
 	private int postCode;
 	
-	// place of the location
+	// Place of the location
 	private String place;
 	
-	// telephone number of the location
+	// Telephone number of the location
 	private String telephone;
 	
-	// email address of the location
+	// Email address of the location
 	private String email;
 	
-	// list of patients that are cured in the location
-	// is mapped with the variable location of the class PatientModel
+	// List of patients that are cured in the location
+	// Is mapped with the variable location of the class PatientModel
 	@OneToMany(mappedBy = "clinic")
 	private List<PatientModel> patients;
 	
-	// list of the appointments of the location
-	// is mapped with the variable location of the class AppointmentModel
+	// List of the appointments of the location
+	// Is mapped with the variable location of the class AppointmentModel
 	@OneToMany(mappedBy = "clinic")
 	private List<AppointmentModel> appointments;
 	
-	// list of the addictions that the clinic treats
-	// this is a many-to-many relation so we need a relation table
+	// List of the addictions that the clinic treats
+	// This is a many-to-many relation so we need a relation table
 	@ManyToMany
     @JoinTable(name="clinic_addiction",
         joinColumns=
@@ -58,7 +56,7 @@ public class ClinicModel extends EntityModel {
 	private List<AddictionModel> addictions;
 	
 	/**
-	 * getter of the name
+	 * Getter for the name
 	 * @return the name of the location
 	 */
 	public String getName() {
@@ -66,7 +64,7 @@ public class ClinicModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the name
+	 * Setter for the name
 	 * @param name of the location
 	 */
 	public void setName(String name) {
@@ -74,7 +72,7 @@ public class ClinicModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the street
+	 * Getter for the street
 	 * @return the street of the location
 	 */
 	public String getStreet() {
@@ -82,7 +80,7 @@ public class ClinicModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the street
+	 * Setter for the street
 	 * @param street of the location
 	 */
 	public void setStreet(String street) {
@@ -90,7 +88,7 @@ public class ClinicModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the post code
+	 * Getter for the post code
 	 * @return the post code of the location
 	 */
 	public int getPostCode() {
@@ -98,7 +96,7 @@ public class ClinicModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the post code
+	 * Setter for the post code
 	 * @param postCode of the location
 	 */
 	public void setPostCode(int postCode) {
@@ -106,7 +104,7 @@ public class ClinicModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the place
+	 * Getter for the place
 	 * @return the place of the location
 	 */
 	public String getPlace() {
@@ -114,7 +112,7 @@ public class ClinicModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the place
+	 * Setter for the place
 	 * @param place of the location
 	 */
 	public void setPlace(String place) {
@@ -122,7 +120,7 @@ public class ClinicModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the telephone number
+	 * Getter for the telephone number
 	 * @return the telephone number of the location
 	 */
 	public String getTelephone() {
@@ -130,7 +128,7 @@ public class ClinicModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the telephone number
+	 * Setter for the telephone number
 	 * @param telephone of the location
 	 */
 	public void setTelephone(String telephone) {
@@ -138,7 +136,7 @@ public class ClinicModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the email address
+	 * Getter for the email address
 	 * @return email address of the location
 	 */
 	public String getemail() {
@@ -146,7 +144,7 @@ public class ClinicModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the patients
+	 * Getter for the patients
 	 * @return a list of patients that are cured at the location
 	 */
 	public List<PatientModel> getPatients() {
@@ -154,7 +152,7 @@ public class ClinicModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the patients
+	 * Setter for the patients
 	 * @param patients of the location
 	 */
 	public void setPatients(List<PatientModel> patients) {
@@ -162,7 +160,7 @@ public class ClinicModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the appointments
+	 * Getter for the appointments
 	 * @return a list of the appointments of the location
 	 */
 	public List<AppointmentModel> getAppointments() {
@@ -170,7 +168,7 @@ public class ClinicModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the appointments
+	 * Setter for the appointments
 	 * @param appointments of the location
 	 */
 	public void setAppointments(List<AppointmentModel> appointments) {
@@ -178,15 +176,15 @@ public class ClinicModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the email address
+	 * Getter for the email address
 	 * @return the email address of the clinic
 	 */
 	public String getEmail() {
-		return email;
+		return this.email;
 	}
 
 	/**
-	 * setter of the email address
+	 * Setter for the email address
 	 * @param email address of the clinic
 	 */
 	public void setEmail(String email) {
@@ -194,31 +192,36 @@ public class ClinicModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the addictions
+	 * Getter for the addictions
 	 * @return the addictions that the clinic treats
 	 */
 	public List<AddictionModel> getAddictions() {
-		return addictions;
+		return this.addictions;
 	}
 
 	/**
-	 * setter of the addictions
+	 * Setter for the addictions
 	 * @param addictions that the clinic treats
 	 */
 	public void setAddictions(List<AddictionModel> addictions) {
 		this.addictions = addictions;
 	}
 	
+	/**
+	 * Getter for the addictions as strings
+	 * @return the addiction as string
+	 */
 	public String getAddictionsAsString() {
 		String addictString = "";
 		for (AddictionModel addict : this.addictions) {
 			addictString = addictString.concat("- " + addict.getName() + "\n\n");
 		}
-		
-		if(addictString.length() > 2) // cut the ending line feeds
+
+		// cut the ending line feeds
+		if (addictString.length() > 2) {
 			return addictString.substring(0, addictString.length()-2);
-		else 
+		} else  {
 			return addictString;
+		}
 	}
-	
 }

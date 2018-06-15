@@ -22,7 +22,6 @@ import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 /**
  * PatientOpenWindow Class
  * Used to display all important content of a patient record.
- * @author supnic
  */
 public class PatientOpenWindow extends Window {
 
@@ -87,7 +86,6 @@ public class PatientOpenWindow extends Window {
 		//txtClinic.setMaxLength(20);
 		txtClinic.setReadOnly(true);
 		txtClinic.setValue(this.patientItem.getClinic().getName());
-		
 		
 		//Layout to group all components
 		GridLayout tileGridPatient = new GridLayout(4,4);
@@ -156,8 +154,6 @@ public class PatientOpenWindow extends Window {
 		tileGridComment.addComponent(txtNewNote, 1, 0);
 		tileGridComment.addComponent(btnSaveNote, 0, 1);
 		
-		
-		
 		//Part to display all Addictions of the patient
 		List<AddictionModel> addicList = patientItem.getModel().getAddictions(); 
 		List<String> dataAddiction = new LinkedList<String>();
@@ -172,7 +168,6 @@ public class PatientOpenWindow extends Window {
     
 		GridLayout tileGridAddiction = new GridLayout(1,2);
 		tileGridAddiction.addComponent(lsAddiction, 0, 0);
-		
 		
 		//Part to display all Medications allocated to the patient
 		List<PatientDrugModel> dataMediObjects = patientItem.getModel().getDrugs();
@@ -192,7 +187,6 @@ public class PatientOpenWindow extends Window {
 		GridLayout tileGridMedication = new GridLayout(1,2);
 		tileGridMedication.addComponent(lsMedication, 0, 0);
 	
-		
 		//Part to display all the Doctors allocated to the patient
 		List<DoctorModel> docList = patientItem.getModel().getDoctors();
 		List<String> dataDoc = new LinkedList<String>();
@@ -222,7 +216,6 @@ public class PatientOpenWindow extends Window {
 		tileGrid.addComponent(vBoxRight, 1, 0);
 		
 		setContent(tileGrid);
-		
 		
 		btnSaveNote.addClickListener(click -> {
 			this.view.saveNoteButtonClicked(this.patientItem, txtNewNote.getValue());

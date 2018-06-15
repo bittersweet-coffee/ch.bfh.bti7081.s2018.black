@@ -7,16 +7,12 @@ import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 /**
  * AddictionView Interface
  * View Interface used by the ViewImplementation
- * @author schaa4
- *
  */
 public interface AddictionView {
 	
 	/**
 	 * AddictionViewListener Interface
 	 * ViewListener Interface used by the Presenter Class
-	 * @author schaa4
-	 *
 	 */
 	public interface AddictionViewListener {
 		

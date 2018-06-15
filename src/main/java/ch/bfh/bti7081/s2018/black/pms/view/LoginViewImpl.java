@@ -20,6 +20,9 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+/**
+ * LoginViewImpl
+ */
 public class LoginViewImpl extends CustomComponent implements View, LoginView {
 
 	public static final String NAME = "login";
@@ -48,6 +51,7 @@ public class LoginViewImpl extends CustomComponent implements View, LoginView {
 			for (LoginViewListener listener: listeners) {
 				this.login = listener.loginButtonClicked(usernameField.getValue(), passwordField.getValue());
 			}
+
 			if (!this.login) {
 				Notification.show("Login failed! Either the username or password was wrong.", Notification.Type.ERROR_MESSAGE);
 			}

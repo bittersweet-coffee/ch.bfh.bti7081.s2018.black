@@ -7,8 +7,6 @@ import javax.persistence.MappedSuperclass;
 
 /**
  * This class is the superclass of all entities objects
- * @author musaa1
- * @version 0.1
  */
 @MappedSuperclass
 public abstract class EntityModel {

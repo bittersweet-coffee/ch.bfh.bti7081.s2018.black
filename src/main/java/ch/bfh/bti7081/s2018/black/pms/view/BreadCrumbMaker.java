@@ -9,8 +9,6 @@ import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.Notification;
 
 /**
- * 
- * @author andrejica
  * Creates Breadcrumbs when the User navigates through the Application
  */
 public class BreadCrumbMaker {
@@ -22,7 +20,7 @@ public class BreadCrumbMaker {
 
 	private MenuBar breadcrumbs = new MenuBar();
 	
-	//Initialize the BreadCrumbs
+	// Initialize the BreadCrumbs
 	public BreadCrumbMaker(){
 		homeButton();
 		this.breadcrumbs.setVisible(false);
@@ -42,19 +40,18 @@ public class BreadCrumbMaker {
 	 * Returns the new breadcrumbs as MenuBar.
 	 */
 	public MenuBar visibleBreadcrumbs(){
-		try{
+		try {
 			//Checks whether there exists a Navigator to controll the crumbs
-			if(UI.getCurrent().getNavigator() != null){
+			if (UI.getCurrent().getNavigator() != null) {
 				String path = UI.getCurrent().getNavigator().getState();
-					if(path == null || path.equals("") || path.equals("login")){
+					if (path == null || path.equals("") || path.equals("login")) {
 						this.breadcrumbs.setVisible(false);
 						removeBreadcrumbs();
-					} 
-					else {
+					} else {
 						this.breadcrumbs.setVisible(true);
 					}
 			}
-		} catch (NullPointerException e){
+		} catch (NullPointerException e) {
 			Notification.show("Couldn't find correct path!");
 			logger.error(e);
 			Page.getCurrent().reload();
@@ -69,12 +66,11 @@ public class BreadCrumbMaker {
 	 * @param path
 	 * The path where the user is navigating
 	 */
-	public void makeCrumbs(String path){
+	public void makeCrumbs(String path) {
 		String lastPath = this.breadcrumbs.getItems().get(this.breadcrumbs.getSize()-1).getText();
 		//Check for duplicate crumbs
-		if(lastPath.substring(0, lastPath.length() - 2).equals(path)){
-		} 
-		else {
+		if (lastPath.substring(0, lastPath.length() - 2).equals(path)) {
+		} else {
 			MenuBar.Command breadcrumbCommand = new MenuBar.Command() {	
 				@Override
 				public void menuSelected(MenuItem selectedItem) {
@@ -88,7 +84,7 @@ public class BreadCrumbMaker {
 	/**
 	 * Creates command for the first Breadcrumb button when going back to Dashboard
 	 */
-	private void homeButton(){
+	private void homeButton() {
 			MenuBar.Command breadcrumbCommand = new MenuBar.Command() {	
 				@Override
 				public void menuSelected(MenuItem selectedItem) {
@@ -103,7 +99,7 @@ public class BreadCrumbMaker {
 	 * Removing all items from the Breadcrumbs MenuBar
 	 * and sets the default Breadcrumb 
 	 */
-	private void removeBreadcrumbs(){
+	private void removeBreadcrumbs() {
 		this.breadcrumbs.removeItems();
 		homeButton();
 	}
