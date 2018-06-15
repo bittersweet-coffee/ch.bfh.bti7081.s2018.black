@@ -32,6 +32,9 @@ import ch.bfh.bti7081.s2018.black.pms.presenter.AddictionPresenter;
 import ch.bfh.bti7081.s2018.black.pms.presenter.ClinicPresenter;
 import ch.bfh.bti7081.s2018.black.pms.presenter.DoctorPresenter;
 
+/**
+ * PatientViewImpl
+ */
 public class PatientViewImpl extends PmsCustomComponent implements View, PatientView {
 
 	public static final String NAME = "patient";

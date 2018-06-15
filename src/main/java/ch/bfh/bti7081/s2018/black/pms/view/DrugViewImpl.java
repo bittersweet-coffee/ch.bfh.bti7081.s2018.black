@@ -32,8 +32,6 @@ import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
 /**
  * DrugViewImpl Class
  * View Implementation of DrugView
- * @author schaa4
- *
  */
 public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 
@@ -254,7 +252,7 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
     
 		this.nativeDrug.addValueChangeListener(selected -> {
 			for (DrugViewListener listener: listeners) {
-        		if(this.nativeDrug.getSelectedItem().isPresent()) {
+        		if (this.nativeDrug.getSelectedItem().isPresent()) {
         			List<String> addictDetailList = listener.selectListChanged(this.nativeDrug.getSelectedItem().get());
         			
         			this.txtDrugName.setValue(selected.getValue());
@@ -262,7 +260,6 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
         			this.txtMeasure.setValue(addictDetailList.get(1));
         			this.txtDoseMin.setValue(addictDetailList.get(3) + " " + addictDetailList.get(2));
         			this.txtDoseMax.setValue(addictDetailList.get(4) + " " + addictDetailList.get(2));
-        			
         		}
 			}	
 			btnAddTo.setEnabled(true);
@@ -271,12 +268,12 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		btnAllocatePatient.addClickListener(click -> {
 			if (patientItemGrid.getSelectedItems().iterator().hasNext()) {
 				for (DrugViewListener listener: listeners) {
-					if(listener.isDouble(txtDose.getValue())) {
+					if (listener.isDouble(txtDose.getValue())) {
 						
 						Pair result = listener.allocateButtonClicked(nativeDrug.getSelectedItem().get(),
 		        				patientItemGrid.getSelectedItems().iterator().next(), Double.parseDouble(txtDose.getValue()));
 												
-						if(result.getResult()) {
+						if (result.getResult()) {
 							this.windowPatient.close();
 						} else {
 							Notification.show("Warning", result.getMessage(), Notification.TYPE_ERROR_MESSAGE);
@@ -310,8 +307,6 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 		txtSearch.addShortcutListener(enterSearchListener);
 		btnSearch.addShortcutListener(enterSearchListener);
 	}
-	
-
 
 	@Override
 	public void addListener(DrugViewListener listener) {
@@ -326,5 +321,4 @@ public class DrugViewImpl extends PmsCustomComponent implements View, DrugView {
 			this.patientItemList = listener.setupPatientItemList();
 		}
 	}
-
 }

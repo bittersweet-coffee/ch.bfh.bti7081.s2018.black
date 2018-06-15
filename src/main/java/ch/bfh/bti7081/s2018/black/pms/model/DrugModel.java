@@ -12,40 +12,38 @@ import javax.persistence.Table;
 
 /**
  * Drug class
- * @author musaa1
- * @version 0.1
  */
 @Entity
 @Table(name="drug")
 public class DrugModel extends EntityModel {
 	
-	// name of the drug
+	// Name of the drug
 	private String name;
 	
-	// description of the drug size is set to 1000 characters
+	// Description of the drug size is set to 1000 characters
 	@Column(length=1000)
 	private String description;
 	
-	// minimal Dose of the drug
+	// Minimal Dose of the drug
 	private Double minDose;
 	
-	// maximal Dose of the drug
+	// Maximal Dose of the drug
 	private Double maxDose;
 	
-	// measure of the drug
+	// Measure of the drug
 	@Enumerated(EnumType.STRING)
 	private Measurement measure;
 	
-	// unit of the drug
+	// Unit of the drug
 	@Enumerated(EnumType.STRING)
 	private Unit unit;
 	
-	// list of the patients that have to take the drug
-	// is mapped with the variable drugs of the class PatientModel
+	// List of the patients that have to take the drug
+	// Is mapped with the variable drugs of the class PatientModel
     @OneToMany(mappedBy="patient", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<PatientDrugModel> patients;
     
- // ENUM containing all possible measures for our drugs
+    // ENUM containing all possible measures for our drugs
  	private enum Measurement {
  		DOSE_INTEGER("Integer"), 
  		DOSE_DOUBLE("Double"),
@@ -54,21 +52,20 @@ public class DrugModel extends EntityModel {
  		private final String enumMeasure;
  		
  		/**
- 		 * Contructor for associating a String to each enum-entry
- 		 * @param enumMeasure String representing the name of the enum-entry
+ 		 * Contructor for associating a string to each enum entry
+ 		 * @param enumMeasure string representing the name of the enum entry
  		 */
  		Measurement(String enumMeasure) {
  			this.enumMeasure = enumMeasure;
  		}
  		
  		/**
- 		 * Getter for the enum-entry as String
- 		 * @return String representing the name of the enum-entry
+ 		 * Getter for the enum entry as string
+ 		 * @return String representing the name of the enum entry
  		 */
  		public String getMeasureString() {
  			return this.enumMeasure;
  		}
- 		
  	};
  	
  	// ENUM containing all possible units for our drugs
@@ -82,16 +79,16 @@ public class DrugModel extends EntityModel {
  		private final String enumUnit;
  		
  		/**
- 		 * Contructor for associating a String to each enum-entry
- 		 * @param enumMeasure String representing the name of the enum-entry
+ 		 * Contructor for associating a string to each enum entry
+ 		 * @param enumMeasure string representing the name of the enum entry
  		 */
  		Unit(String enumUnit) {
  			this.enumUnit = enumUnit;
  		}
  		
  		/**
- 		 * Getter for the enum-entry as String
- 		 * @return String representing the name of the enum-entry
+ 		 * Getter for the enum entry as string
+ 		 * @return string representing the name of the enum entry
  		 */
  		public String getUnitString() {
  			return this.enumUnit;
@@ -99,9 +96,9 @@ public class DrugModel extends EntityModel {
  	};
  	
  	/**
-	 * Method to check if the entered Dose has the correct Type and is in the Drugs Bounds
-	 * @param enteredDose Dose entered by the Doctor
-	 * @return Pair containing the result and its corresponding message
+	 * Method to check if the entered sose has the correct type and is in the drugs bounds
+	 * @param enteredDose dose entered by the doctor
+	 * @return pair containing the result and its corresponding message
 	 */
 	public Pair checkDose(Double enteredDose) {
 		
@@ -111,7 +108,7 @@ public class DrugModel extends EntityModel {
 		switch (this.measure) {
 		
 		case DOSE_INTEGER:
-			// Check whether enteredDose is an Integer
+			// Check whether enteredDose is an integer
 			if((enteredDose - Math.floor(enteredDose)) == 0) {
 				result.put(checker.getResult(), checker.getMessage());
 			} else {
@@ -120,7 +117,7 @@ public class DrugModel extends EntityModel {
 			break;
 			
 		case DOSE_HALVES:
-			// Check whether enteredDose is an Integer or Half	
+			// Check whether enteredDose is an integer or half	
 			if ((enteredDose - Math.floor(enteredDose) == 0) || (enteredDose % 1 == 0.5)) {
 				result.put(checker.getResult(), checker.getMessage());
 			} else {
@@ -129,15 +126,16 @@ public class DrugModel extends EntityModel {
 			break;
 			
 		case DOSE_DOUBLE:
-			// enteredDose has to be Double	
+			// enteredDose has to be double	
 			if(this.measure.equals(Measurement.DOSE_DOUBLE)) {
 				result.put(checker.getResult(), checker.getMessage());
 			} else {
-				result.put(false, "Entered Dose isn't an Integer!");
+				result.put(false, "Entered dose isn't an integer!");
 			};
 			break;
+
 		default:
-			result.put(false, "Oops, the selected Drug has no Measurement set!");
+			result.put(false, "Oops, the selected drug has no measurement set!");
 			break;
 		}
 		
@@ -145,22 +143,20 @@ public class DrugModel extends EntityModel {
 	}
 	
 	/**
-	 * Helper Method for checking Dose Bounds
-	 * @param enteredDose Dose entered by the Doctor
+	 * Helper method for checking dose bounds
+	 * @param enteredDose dose entered by the doctor
 	 * @return Pair containing the result and its corresponding message
 	 */
 	private Pair internalLimitCheck(Double enteredDose) {
-		
 		if ((enteredDose >= this.minDose) && (enteredDose <= this.maxDose)) {
 			return new Pair(true, "Success");
 		} else {
 			return new Pair(false, "The dose entered is not within the drug thresholds: \n" + "Min: " + this.minDose + " " + this.getUnit() + "\nMax: " + this.maxDose + " " + this.getUnit() + "\n");
 		}
-		
 	}
 	
 	 /**
-     * getter of the unit
+     * Getter for the unit
      * @return the unit specific to this drug
      */
 	public String getUnit() {
@@ -168,7 +164,7 @@ public class DrugModel extends EntityModel {
 	}
 	
     /**
-     * getter of the measurement
+     * Getter for the measurement
      * @return the measure specific to this drug
      */
     public String getMeasure() {
@@ -176,23 +172,23 @@ public class DrugModel extends EntityModel {
     }
     
 	/**
-	 * getter of the minimal Dose for this drug
-	 * @return minimal Dose for this drug
+	 * Getter for the minimal dose for this drug
+	 * @return minimal dose for this drug
 	 */
 	public Double getMinDose() {
 		return this.minDose;
 	}
 	
 	/**
-	 * getter of the maximal Dose for this drug
-	 * @return maximal Dose for this drug
+	 * Getter for the maximal dose for this drug
+	 * @return maximal dose for this drug
 	 */
 	public Double getMaxDose() {
 		return this.maxDose;
 	}
     
     /**
-     * getter of the name
+     * Getter for the name
      * @return the name of the drug
      */
 	public String getName() {
@@ -200,7 +196,7 @@ public class DrugModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the name
+	 * Setter for the name
 	 * @param name of the drug
 	 */
 	public void setName(String name) {
@@ -208,7 +204,7 @@ public class DrugModel extends EntityModel {
 	}
 	
     /**
-     * getter of the description
+     * Getter for the description
      * @return the description of the drug
      */
 	public String getDescription() {
@@ -216,16 +212,15 @@ public class DrugModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the description
+	 * Setter for the description
 	 * @param description of the drug
 	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-
 	/**
-	 * getter of the patients
+	 * Getter for the patients
 	 * @return a list of the patient that have to take the drug
 	 */
 	public List<PatientDrugModel> getPatients() {
@@ -233,7 +228,7 @@ public class DrugModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the patients
+	 * Setter for the patients
 	 * @param patients that have to take the drug
 	 */
 	public void setPatients(List<PatientDrugModel> patients) {

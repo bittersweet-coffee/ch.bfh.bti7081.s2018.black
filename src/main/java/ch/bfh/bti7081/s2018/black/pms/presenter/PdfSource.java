@@ -31,8 +31,6 @@ import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 /**
  * PdfSource Class
  * Creates a patient report
- * @author schaa4
- *
  */
 public class PdfSource implements StreamSource {
 	
@@ -54,7 +52,7 @@ public class PdfSource implements StreamSource {
     	patientModel = JpaServicePresenter.findAll(PatientModel.class).stream().filter(p -> p.getId() == patientItem.getId()).findFirst().get();
     	ArrayList<AppointmentModel> appointmentModel;
 		
-    	if(patientItem.getModel().getAppointments() != null) {
+    	if (patientItem.getModel().getAppointments() != null) {
 			appointmentModel = new ArrayList<>(patientItem.getModel().getAppointments());
 		} else {
 			appointmentModel = new ArrayList<>();
@@ -73,7 +71,7 @@ public class PdfSource implements StreamSource {
         float [] pointColumnWidths = {100F, 200F};       
         Table addresstable = new Table(pointColumnWidths);
         
-        // define and add addresstable to document
+        // Define and add address table to document
         addCell(addresstable, "Firstname:", true);
         addCell(addresstable, patientModel.getFirstname(), false);
         addCell(addresstable, "Lastname:", true);
@@ -84,7 +82,7 @@ public class PdfSource implements StreamSource {
         addCell(addresstable, String.valueOf(patientModel.getPostCode()), false);   
         doc.add(addresstable);
         
-        // add all addiction of the patient to the document
+        // Add all addiction of the patient to the document
         Paragraph pAddiction = new Paragraph("Addictions:");
         pAddiction.setBold();
         List lAddiction = new List();
@@ -94,12 +92,12 @@ public class PdfSource implements StreamSource {
         doc.add(pAddiction);
         doc.add(lAddiction);
         
-        // add all drugs of the patient to the document
+        // Add all drugs of the patient to the document
         Paragraph pDrugs = new Paragraph("Drugs:");
         pDrugs.setBold();
         List lDrugs = new List();
        
-        if(patientModel.getDrugs() != null) {
+        if (patientModel.getDrugs() != null) {
         	for (PatientDrugModel dm : patientModel.getDrugs()) {
                 lDrugs.add(dm.getDrug().getName() + ", Dose: " + dm.getDose() + dm.getDrug().getUnit());
     		}
@@ -108,7 +106,7 @@ public class PdfSource implements StreamSource {
         doc.add(pDrugs);
         doc.add(lDrugs);
         
-        // add the doctor of the patient to the document
+        // Add the doctor of the patient to the document
         Paragraph pDoctor = new Paragraph("Doctors:");
         pDoctor.setBold();
         List lDoctors = new List();
@@ -118,7 +116,7 @@ public class PdfSource implements StreamSource {
         doc.add(pDoctor);
         doc.add(lDoctors);
         
-        // add all appointments of the patient to the document
+        // Add all appointments of the patient to the document
         Paragraph pAppointment = new Paragraph("Appointments:");
         pAppointment.setBold();
         float [] pcWidthsAppointment = {100F, 200F, 100F, 100F, 100F};       
@@ -134,16 +132,16 @@ public class PdfSource implements StreamSource {
             addCell(appoointmentTable, am.getDescription(), false);
             addCell(appoointmentTable, am.getStart().format(formatter), false);
             addCell(appoointmentTable, am.getEnd().format(formatter), false);
-            if(am.getDoctor() != null) {
+            if (am.getDoctor() != null) {
             	addCell(appoointmentTable, am.getDoctor().getFirstname() + " " + am.getDoctor().getLastname(), false);
-            }else {
+            } else {
             	addCell(appoointmentTable, "", false);
             }
 		}
         doc.add(pAppointment);
         doc.add(appoointmentTable);
         
-        // define and add image to document
+        // Define and add image to document
         String imFile = new File("").getAbsolutePath() + RELATIVE_PATH_IMAGE;       
         ImageData data = ImageDataFactory.create(imFile);        
         Image image = new Image(data); 
@@ -165,7 +163,7 @@ public class PdfSource implements StreamSource {
     	Cell cAp1 = new Cell();                        
         cAp1.add(text);                              
         cAp1.setBorder(Border.NO_BORDER);
-        if(bolt) {
+        if (bolt) {
         	cAp1.setBold();
         }
         table.addCell(cAp1);
@@ -178,5 +176,4 @@ public class PdfSource implements StreamSource {
     public InputStream getStream() {
         return new ByteArrayInputStream(bof.toByteArray());
     }
-
 }

@@ -18,8 +18,6 @@ import ch.bfh.bti7081.s2018.black.pms.view.DrugViewImpl;
 /**
  * DrugPresenter Class
  * Presenter Class used to manage data exchange between Models and Views as well as triggering database queries
- * @author schaa4
- *
  */
 public class DrugPresenter implements DrugView.DrugViewListener {
 	
@@ -57,7 +55,7 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 				   .filter(d -> d.getDrug().getId() == drug.getId())
 				   .findFirst();
 		
-		if(drugList.isPresent()) {
+		if (drugList.isPresent()) {
 			return false;
 		} else {
 			return true;
@@ -76,12 +74,11 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 		model.setPatient(patient);
 		model.setDrug(drug);
 		model.setDose(dose);
-		if(patient.getDrugs() == null) {
+		if (patient.getDrugs() == null) {
 			List<PatientDrugModel> list = new LinkedList<>();
 			list.add(model);
 			patient.setDrugs(list);
-		}
-		else {
+		} else {
 			patient.getDrugs().add(model);
 		}
 		drug.getPatients().add(model);
@@ -98,11 +95,11 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 		for (DrugModel drug : this.drugModelList) {
      		this.drugNameList.add(drug.getName());
      	}
-		
 	}
 	
 	/**
-	 * Method used to query the database and fill the PatientItemList with representations/mockObjects from the PatientModels
+	 * Method used to query the database and fill the PatientItemList with
+	 * representations/mockObjects from the PatientModels.
 	 */
 	private void fillPatientList() {
 		this.patientModelList = JpaServicePresenter.findAll(PatientModel.class);
@@ -131,15 +128,15 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 		
 		Pair result = new Pair();
 		
-		if(optionalDrug.isPresent()) {
+		if (optionalDrug.isPresent()) {
 			
 			result = optionalDrug.get().checkDose(dose);
 			
-			// check whether the patient has already allocated the selected drug 
+			// Check whether the patient has already allocated the selected drug 
 			if (checkAllocation(optionalDrug.get(), patientItem.getModel())) {
 				
 				// Check if dose is within DoseBounds
-				if(result.getResult()) {
+				if (result.getResult()) {
 					allocateDrugToPatient(optionalDrug.get(), patientItem.getModel(), dose);
 					
 					// Drug has been successfully allocated to the patient
@@ -164,10 +161,9 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 			
 		List<String> drugDetails = new LinkedList<>();
 		
-		if(optionalDrug.isPresent()) {
+		if (optionalDrug.isPresent()) {
 			drugDetails.add(optionalDrug.get().getDescription());
 			drugDetails.add(optionalDrug.get().getMeasure());
-			//drugDetails.add(optionalDrug.get().getUnit());
 			drugDetails.add("ml");
 			drugDetails.add(optionalDrug.get().getMinDose().toString());
 			drugDetails.add(optionalDrug.get().getMaxDose().toString());
@@ -194,16 +190,16 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 
 	@Override
 	public boolean isDouble(String str) {
-		  try{
+		  try {
 			// try to parse entered Dose to Double
 		    Double.parseDouble(str);
 		    
 		    // No exception thrown to this point, so it is Double-parsable
 		    // Check if entered number has less than 7 decimal places
-		    if(str.contains(".")) {
+		    if (str.contains(".")) {
 		    	String[] splitted = str.split("\\.");
 		    	
-		    	if(splitted[1].length() < 6) {
+		    	if (splitted[1].length() < 6) {
 		    		return true;
 		    	} else {
 		    		return false;
@@ -221,6 +217,5 @@ public class DrugPresenter implements DrugView.DrugViewListener {
 	public void setupView(DrugViewImpl drugView) {
 		this.view = drugView;
 		view.addListener(this);
-		
 	}
 }

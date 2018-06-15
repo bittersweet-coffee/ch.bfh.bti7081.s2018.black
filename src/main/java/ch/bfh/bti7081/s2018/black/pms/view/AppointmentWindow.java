@@ -20,10 +20,9 @@ import com.vaadin.ui.Window;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
 import ch.bfh.bti7081.s2018.black.pms.model.DoctorItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
+
 /**
  * AppointmentWindow Class
- * @author bielc1
- *
  */
 public class AppointmentWindow extends Window {
 	
@@ -121,13 +120,13 @@ public class AppointmentWindow extends Window {
 		comboBoxPatient = new ComboBox<>();
 		comboBoxPatient.setDataProvider(patientProvider);
 		comboBoxPatient.setItemCaptionGenerator(PatientItem::getFullName);
-		if(appointmentItem.getAppointment().getPatientItem() != null) {
+		if (appointmentItem.getAppointment().getPatientItem() != null) {
 			comboBoxPatient.setSelectedItem(appointmentItem.getAppointment().getPatientItem());
 		}
 		comboBoxDoctor = new ComboBox<>();
 		comboBoxDoctor.setDataProvider(doctorProvider);
 		comboBoxDoctor.setItemCaptionGenerator(DoctorItem::getFullName);
-		if(appointmentItem.getAppointment().getDoctorItem() != null) {
+		if (appointmentItem.getAppointment().getDoctorItem() != null) {
 			comboBoxDoctor.setSelectedItem(appointmentItem.getAppointment().getDoctorItem());
 		}
 		

@@ -1,24 +1,21 @@
 package ch.bfh.bti7081.s2018.black.pms.view;
 
-
 import java.util.List;
 
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentDataProvider;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
 import ch.bfh.bti7081.s2018.black.pms.model.DoctorItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
+
 /**
  * AgendaView Interface
  * View Interface used by the ViewImplementation
- * @author bielc1
- *
  */
 public interface AgendaView {
+
 	/**
 	 * AgendaViewListener Interface
 	 * ViewListener Interface used by the Presenter Class
-	 * @author beilc1
-	 *
 	 */
 	public interface AgendaViewListener {
 		/**

@@ -1,3 +1,4 @@
+/* The password is 'test' */
 INSERT INTO doctor (firstname, lastname, username, passwordhash) VALUES ('Antonio', 'Musardo', 'musardoa', '$2a$10$r6Mkf90C3vnL33aME6oR9uAuWUzjfjbQCCBdVkGsBEBor2DzZEjJ6')
 INSERT INTO doctor (firstname, lastname, username, passwordhash) VALUES ('Nicola', 'Schlup', 'schlupn', '$2a$10$r6Mkf90C3vnL33aME6oR9uAuWUzjfjbQCCBdVkGsBEBor2DzZEjJ6')
 INSERT INTO doctor (firstname, lastname, username, passwordhash) VALUES ('Cedric', 'Bielmann', 'bielmannc', '$2a$10$r6Mkf90C3vnL33aME6oR9uAuWUzjfjbQCCBdVkGsBEBor2DzZEjJ6')

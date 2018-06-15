@@ -16,42 +16,40 @@ import javax.persistence.Table;
 
 /**
  * Patient class
- * @author musaa1
- * @version 0.1
  */
 @Entity
 @Table(name="patient")
 public class PatientModel extends EntityModel {
 	
-	// firstname of the patient. Can not be null
+	// Firstname of the patient. Can not be null
 	@Column(nullable=false)
 	private String firstname;
 	
-	// lastname of the patient. Can not be null
+	// Lastname of the patient. Can not be null
 	@Column(nullable=false)
 	private String lastname;
 	
-	// street of the place where the patient lives
+	// Street of the place where the patient lives
 	private String street;
 	
-	// post code of the place where the patient lives
+	// Post code of the place where the patient lives
 	@Column(name="post_code")
 	private int postCode;
 	
-	// birthday of the patient
+	// Birthday of the patient
 	@Column(columnDefinition = "DATE")
 	private LocalDate birthday;
 	
-	// telephone number of the patient
+	// Telephone number of the patient
 	private String telephone;
 	
-	// list of the drugs that the patient needs
-	// this is a many-to-many relation so we need a relation table
+	// List of the drugs that the patient needs
+	// This is a many-to-many relation so we need a relation table
 	@OneToMany(mappedBy="drug", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<PatientDrugModel> drugs;
 	
-	// list of the addictions that the patient has
-	// this is a many-to-many relation so we need a relation table
+	// List of the addictions that the patient has
+	// This is a many-to-many relation so we need a relation table
 	@ManyToMany
     @JoinTable(name="patient_addiction",
         joinColumns=
@@ -60,8 +58,8 @@ public class PatientModel extends EntityModel {
             @JoinColumn(name="addiction_id", referencedColumnName="id"))
 	private List<AddictionModel> addictions;
 	
-	// list of the doctors that a patient has
-	// this is a many-to-many relation so we need a relation table
+	// List of the doctors that a patient has
+	// This is a many-to-many relation so we need a relation table
 	@ManyToMany
     @JoinTable(name="patient_doctor",
         joinColumns=
@@ -70,24 +68,24 @@ public class PatientModel extends EntityModel {
             @JoinColumn(name="doctor_id", referencedColumnName="id"))
 	private List<DoctorModel> doctors;
 	
-	// list of the appointments of the patient
-	// this is a many-to-many relation so we need a relation table
+	// List of the appointments of the patient
+	// This is a many-to-many relation so we need a relation table
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "patient")
 	private List<AppointmentModel> appointments;
 	
-	// list of notes of the patient.
-	// is mapped with the variable patient in the class NoticeModel
+	// List of notes of the patient.
+	// Is mapped with the variable patient in the class NoticeModel
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "patient")
 	private List<NoticeModel> notes;
 	
-	// location of the patient
-	// location_id is the foreign key. Can not be null
+	// Location of the patient
+	// Location_id is the foreign key. Can not be null
 	@ManyToOne
 	@JoinColumn(name="clinic_id", nullable=false)
 	private ClinicModel clinic;
 
 	/**
-	 * getter of the first name
+	 * Getter for the first name
 	 * @return the first name of the patient
 	 */
 	public String getFirstname() {
@@ -95,7 +93,7 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the first name
+	 * Setter for the first name
 	 * @param firstname	of the patient
 	 */
 	public void setFirstname(String firstname) {
@@ -103,7 +101,7 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the last name
+	 * Getter for the last name
 	 * @return the last name of the patient
 	 */
 	public String getLastname() {
@@ -111,7 +109,7 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the last name
+	 * Setter for the last name
 	 * @param lastname of the patient
 	 */
 	public void setLastname(String lastname) {
@@ -119,7 +117,7 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the street
+	 * Getter for the street
 	 * @return the street of the patient
 	 */
 	public String getStreet() {
@@ -127,7 +125,7 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the street
+	 * Setter for the street
 	 * @param street of the patient
 	 */
 	public void setStreet(String street) {
@@ -135,7 +133,7 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the post code
+	 * Getter for the post code
 	 * @return the post code from the patient
 	 */
 	public int getPostCode() {
@@ -143,7 +141,7 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the post code
+	 * Setter for the post code
 	 * @param postCode of the patient
 	 */
 	public void setPostCode(int postCode) {
@@ -151,7 +149,7 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the birthday
+	 * Getter for the birthday
 	 * @return the birthday of the patient
 	 */
 	public LocalDate getBirthday() {
@@ -159,7 +157,7 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the birthday
+	 * Setter for the birthday
 	 * @param birthday of the patient
 	 */
 	public void setBirthday(LocalDate birthday) {
@@ -167,7 +165,7 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the telephone number
+	 * Getter for the telephone number
 	 * @return the telephone number of the patient
 	 */
 	public String getTelephone() {
@@ -175,7 +173,7 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the telephone number
+	 * Setter for the telephone number
 	 * @param telephone of the patient
 	 */
 	public void setTelephone(String telephone) {
@@ -183,7 +181,7 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the drugs
+	 * Getter for the drugs
 	 * @return a list of the drugs that the patient has to take
 	 */
 	public List<PatientDrugModel> getDrugs() {
@@ -191,7 +189,7 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the drugs
+	 * Setter for the drugs
 	 * @param drugs that the patient has to take
 	 */
 	public void setDrugs(List<PatientDrugModel> drugs) {
@@ -199,7 +197,7 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the addictions
+	 * Getter for the addictions
 	 * @return a list of the addiction that the patient has
 	 */
 	public List<AddictionModel> getAddictions() {
@@ -207,7 +205,7 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the addictions
+	 * Setter for the addictions
 	 * @param addictions that the patient has
 	 */
 	public void setAddictions(List<AddictionModel> addictions) {
@@ -215,7 +213,7 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the doctors
+	 * Getter for the doctors
 	 * @return a list of the doctors of the patient
 	 */
 	public List<DoctorModel> getDoctors() {
@@ -223,7 +221,7 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the doctors
+	 * Setter for the doctors
 	 * @param doctors of the patient
 	 */
 	public void setDoctors(List<DoctorModel> doctors) {
@@ -231,7 +229,7 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the appointments
+	 * Getter for the appointments
 	 * @return a list of the appointments that the patient has
 	 */
 	public List<AppointmentModel> getAppointments() {
@@ -239,7 +237,7 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the appointments
+	 * Setter for the appointments
 	 * @param appointments of the patient
 	 */
 	public void setAppointments(List<AppointmentModel> appointments) {
@@ -247,7 +245,7 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the location
+	 * Getter for the location
 	 * @return the location where the patient gets cured
 	 */
 	public ClinicModel getClinic() {
@@ -255,7 +253,7 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * seeter of the location
+	 * Setter for the location
 	 * @param location where the patient gets cured
 	 */
 	public void setClinic(ClinicModel clinic) {
@@ -263,7 +261,7 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the notes
+	 * Getter for the notes
 	 * @return a list with the notes of the patient
 	 */
 	public List<NoticeModel> getNotes() {
@@ -271,7 +269,7 @@ public class PatientModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the notes
+	 * Setter for the notes
 	 * @param notes of the patient
 	 */
 	public void setNotes(List<NoticeModel> notes) {

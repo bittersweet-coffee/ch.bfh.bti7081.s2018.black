@@ -31,8 +31,6 @@ import ch.bfh.bti7081.s2018.black.pms.presenter.PdfSource;
 /**
  * ReportViewImpl Class
  * View Implementation of ReportView
- * @author bielc1
- *
  */
 public class ReportViewImpl extends PmsCustomComponent implements View, ReportView {
 
@@ -173,5 +171,4 @@ public class ReportViewImpl extends PmsCustomComponent implements View, ReportVi
 	public void addListener(ReportViewListener listener) {
 		this.listeners.add(listener);		
 	}
-
 }

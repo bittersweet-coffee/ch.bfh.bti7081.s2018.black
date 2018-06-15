@@ -7,8 +7,6 @@ import javax.persistence.Table;
 
 /**
  * PatientDrugModel class
- * @author musaa1
- * @version 1.0
  * This class is needed because the relationship table patient_drug needs
  * an extra attribute dose
  */
@@ -16,21 +14,21 @@ import javax.persistence.Table;
 @Table(name="patient_drug")
 public class PatientDrugModel extends EntityModel {
 
-	// patient in a relationship with a drug
+	// Patient in a relationship with a drug
 	@ManyToOne
 	@JoinColumn(name="patient_id")
 	private PatientModel patient;
 	
-	// drug in a relationship with a patient
+	// Drug in a relationship with a patient
 	@ManyToOne
 	@JoinColumn(name="drug_id")
 	private DrugModel drug;
 	
-	// subscribed dose of the drug
+	// Subscribed dose of the drug
 	private Double dose;
 
 	/**
-	 * getter of the patient in a relationship
+	 * Getter for the patient in a relationship
 	 * @return the patient
 	 */
 	public PatientModel getPatient() {
@@ -38,7 +36,7 @@ public class PatientDrugModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the patient
+	 * Setter for the patient
 	 * @param patient that is in a relationship with a drug
 	 */
 	public void setPatient(PatientModel patient) {
@@ -46,7 +44,7 @@ public class PatientDrugModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the drug in a relationship
+	 * Getter for the drug in a relationship
 	 * @return a drug
 	 */
 	public DrugModel getDrug() {
@@ -54,7 +52,7 @@ public class PatientDrugModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the durg
+	 * Setter for the drug
 	 * @param drug that is in a relationship with a patient
 	 */
 	public void setDrug(DrugModel drug) {
@@ -62,7 +60,7 @@ public class PatientDrugModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the dose
+	 * Getter for the dose
 	 * @return the subscribed dose of the drug
 	 */
 	public Double getDose() {
@@ -70,7 +68,7 @@ public class PatientDrugModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the dose
+	 * Setter for the dose
 	 * @param dose that the patient has get subscribed
 	 */
 	public void setDose(Double dose) {

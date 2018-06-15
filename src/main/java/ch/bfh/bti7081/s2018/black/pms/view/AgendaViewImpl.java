@@ -1,6 +1,7 @@
 package ch.bfh.bti7081.s2018.black.pms.view;
 
 import java.util.ArrayList;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,22 +19,21 @@ import ch.bfh.bti7081.s2018.black.pms.model.AppointmentDataProvider;
 import ch.bfh.bti7081.s2018.black.pms.model.AppointmentItem;
 import ch.bfh.bti7081.s2018.black.pms.model.DoctorItem;
 import ch.bfh.bti7081.s2018.black.pms.model.PatientItem;
+
 /**
  * AgendaViewImpl Class
  * View Implementation of AgendaView
- * @author bielc1
- *
  */
 public class AgendaViewImpl extends PmsCustomComponent implements View, AgendaView {
 
-	// identifier used for displaying the correct URL
+	// Identifier used for displaying the correct URL
 	public static final String NAME = "agenda";
 
 	// List containing all listeners for this object (mostly the corresponding Presenter Class)
 	private List<AgendaViewListener> listeners = new ArrayList<AgendaViewListener>();
 	
-	//Vaadin Calendar is for visualizing items in a calendar. 
-	//Calendar items can be visualized in the variable length view depending on the start and end dates. 
+	// Vaadin Calendar is for visualizing items in a calendar. 
+	// Calendar items can be visualized in the variable length view depending on the start and end dates. 
 	Calendar<AppointmentItem> cal = new Calendar<>();
 	
 	// List containing Mock Objects for the PatientModel
@@ -48,6 +48,7 @@ public class AgendaViewImpl extends PmsCustomComponent implements View, AgendaVi
 	public AgendaViewImpl() {
 		super();
 	}
+
 	/**
 	 * Called before the view is shown on screen. 
 	 * The event object contains information about parameters used when showing the view,
@@ -57,7 +58,6 @@ public class AgendaViewImpl extends PmsCustomComponent implements View, AgendaVi
 		super.bC.makeCrumbs(AgendaViewImpl.NAME);
 		super.bC.visibleBreadcrumbs();
 		super.menuBar.getItems().get(1).setText((String) VaadinSession.getCurrent().getAttribute("username"));
-		//cal.setWidth(super.contentPanel.getWidth(), super.contentPanel.getWidthUnits());
 		cal.setWidth("1200px");
 		addCalendarEventListeners();
 		this.patientItemList = new LinkedList<>();
@@ -68,7 +68,6 @@ public class AgendaViewImpl extends PmsCustomComponent implements View, AgendaVi
 		super.contentPanel.setContent(cal);
 	}
 	
-
 	/**
 	 * RangeSelectEvent is sent when day or time cells are drag-marked with mouse.
 	 * @param event an event object containing information about the selected range
@@ -131,13 +130,15 @@ public class AgendaViewImpl extends PmsCustomComponent implements View, AgendaVi
     }
 	
 	public void saveAppointment(AppointmentItem appointmentItem) {
-		for (AgendaViewListener listener: listeners)
+		for (AgendaViewListener listener: listeners) {
 			listener.saveAppointment(appointmentItem);
+		}
 	}
 	
 	public void deleteAppointment(AppointmentItem appointmentItem) {
-		for (AgendaViewListener listener: listeners)
+		for (AgendaViewListener listener: listeners) {
 			listener.deleteAppointment(appointmentItem);
+		}
 	}
 
 	@Override

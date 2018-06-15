@@ -34,10 +34,20 @@ import ch.bfh.bti7081.s2018.black.pms.view.*;
 
 // Custom browser tab title
 @Title("PMS")
+
+/**
+ * Main entry point for the whole application. PMS heavily
+ * uses MVP and JPA.
+ */
 public class Main extends UI {
 	
 	final static Logger logger = Logger.getLogger(Main.class);
 	
+	/**
+	 * Main entry point of VAADIN. Initialize all VAADIN
+	 * components and PMS application.
+	 * @param vaadinRequest The VaadinRequest
+	 */
     @Override
     protected void init(VaadinRequest vaadinRequest) {
     	logger.info("Initializing PMS");
@@ -47,7 +57,7 @@ public class Main extends UI {
     	Navigator navigator = new Navigator(this, this);
     	navigator.addView(LoginViewImpl.NAME, loginView);
 
-    	// TODO: This should actually create an instance of *View and not *ViewImpl to be independent of VAADIN
+    	// Initialize all views
     	AddictionViewImpl addictionView = new AddictionViewImpl();
     	AgendaViewImpl agendaView = new AgendaViewImpl();
     	ClinicViewImpl clinicView = new ClinicViewImpl();
@@ -56,6 +66,7 @@ public class Main extends UI {
     	PatientViewImpl patientView = new PatientViewImpl();
     	ReportViewImpl reportView = new ReportViewImpl();
     	
+    	// Initialize presenters and connect them with their specific views
     	AgendaPresenter ap = new AgendaPresenter();
     	ap.setupView(agendaView);
     	AddictionPresenter ad = new AddictionPresenter();
@@ -71,7 +82,7 @@ public class Main extends UI {
     	DrugPresenter dp = new DrugPresenter();
     	dp.setupView(drugView);
     	
-
+    	// Setup navigator to allow proper navigation
     	navigator.addView(DashboardViewImpl.NAME, dashboardView);
     	navigator.addView(AddictionViewImpl.NAME, addictionView);
     	navigator.addView(AgendaViewImpl.NAME, agendaView);
@@ -81,9 +92,13 @@ public class Main extends UI {
     	navigator.addView(ReportViewImpl.NAME, reportView);
     	logger.info("Finished initializing PMS");
     	
+    	// Navigate to the login page when opening PMS for the first time
     	navigator.navigateTo("login");
     }
 
+    /**
+     * MainServlet class to interact with the java application on a lower level.
+     */
     @WebServlet(urlPatterns = "/*", name = "MainServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = Main.class, productionMode = false)
     public static class MainServlet extends VaadinServlet {

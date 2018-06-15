@@ -8,8 +8,12 @@ import org.vaadin.addon.calendar.item.BasicItem;
 
 import com.vaadin.icons.VaadinIcons;
 
+/**
+ * Appointment item class
+ */
 public class AppointmentItem extends BasicItem {
 
+	// Appointment
 	private final Appointment appointment;
 	
 	public AppointmentItem(Appointment appointment) {
@@ -25,6 +29,10 @@ public class AppointmentItem extends BasicItem {
         setEnd(ZonedDateTime.of(appointment.getEnd(), ZoneId.systemDefault()));
 	}
 	
+	/**
+	 * Some magic happens here.
+	 * Only the best applications contain some magic. :)
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -33,6 +41,9 @@ public class AppointmentItem extends BasicItem {
 		return result;
 	}
 
+	/**
+	 * Comparison method
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -55,35 +66,58 @@ public class AppointmentItem extends BasicItem {
 		return true;
 	}
 
+	/**
+	 * Getter for the appointment
+	 * @return the appointment
+	 */
 	public Appointment getAppointment() {
 		return this.appointment;
 	}
 	
+	/**
+	 * Setter for the end date time
+	 * @param the end date time
+	 */
 	@Override
 	public void setEnd(ZonedDateTime end) {
 		appointment.setEnd(end.toLocalDateTime());
 		super.setEnd(end);
 	}
 
+	/**
+	 * Setter for the start date time
+	 * @param the start date time
+	 */
 	@Override
 	public void setStart(ZonedDateTime start) {
 		appointment.setStart(start.toLocalDateTime());
 		super.setStart(start);
 	}
 	
+	/**
+	 * Getter for the formatted date caption
+	 * @return formatted date caption
+	 */
 	@Override
     public String getDateCaptionFormat() {
-        //return CalendarItem.RANGE_TIME;
         return VaadinIcons.CLOCK.getHtml()+" %s<br>" +
                VaadinIcons.ARROW_CIRCLE_RIGHT_O.getHtml()+" %s";
 	}
 	
+	/**
+	 * Setter for the caption
+	 * @param the caption
+	 */
 	@Override
 	public void setCaption(String caption) {
 		appointment.setTitle(caption);
 		super.setCaption(caption);
 	}
 	
+	/**
+	 * Setter for the description
+	 * @param the description
+	 */
 	@Override
 	public void setDescription(String description) {
 		appointment.setDescription(description);

@@ -9,6 +9,9 @@ import ch.bfh.bti7081.s2018.black.pms.model.PatientModel;
 import ch.bfh.bti7081.s2018.black.pms.view.PatientView;
 import ch.bfh.bti7081.s2018.black.pms.view.PatientViewImpl;
 
+/**
+ * Patient presenter
+ */
 public class PatientPresenter implements PatientView.PatientViewListener {
 
 	private PatientView view;
@@ -71,10 +74,8 @@ public class PatientPresenter implements PatientView.PatientViewListener {
 		return patientNotes;
 	}
 
-
 	public void setupView(PatientViewImpl patientView) {
 		this.view = patientView;
 		this.view.addListener(this);
-		
 	}
 }

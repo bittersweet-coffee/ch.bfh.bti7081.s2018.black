@@ -6,6 +6,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+/**
+ * Notice class
+ */
 @Entity
 @Table(name="notice")
 public class NoticeModel extends EntityModel {
@@ -19,15 +22,15 @@ public class NoticeModel extends EntityModel {
 	private PatientModel patient;
 	
 	/**
-	 * getter of the note
-	 * @return the note as String
+	 * Getter for the note
+	 * @return the note as string
 	 */
 	public String getNote() {
 		return this.note;
 	}
 
 	/**
-	 * setter of the note
+	 * Setter for the note
 	 * @param note of the object
 	 */
 	public void setNote(String note) {
@@ -35,7 +38,7 @@ public class NoticeModel extends EntityModel {
 	}
 
 	/**
-	 * getter of the patient
+	 * Getter for the patient
 	 * @return the patient that has the note
 	 */
 	public PatientModel getPatient() {
@@ -43,7 +46,7 @@ public class NoticeModel extends EntityModel {
 	}
 
 	/**
-	 * setter of the patient
+	 * Setter for the patient
 	 * @param patient that has the note
 	 */
 	public void setPatient(PatientModel patient) {

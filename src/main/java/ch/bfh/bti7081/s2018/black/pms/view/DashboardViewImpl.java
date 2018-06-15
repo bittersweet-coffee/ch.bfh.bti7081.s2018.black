@@ -9,6 +9,9 @@ import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.UI;
 
+/**
+ * Dashboard View Impl
+ */
 public class DashboardViewImpl extends PmsCustomComponent implements View, DashboardView {
 	
 	public static final String NAME = "";

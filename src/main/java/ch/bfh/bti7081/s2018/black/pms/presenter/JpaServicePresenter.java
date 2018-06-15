@@ -8,8 +8,6 @@ import ch.bfh.bti7081.s2018.black.pms.persistence.JpaUtility;
 
 /**
  * class JpaServicePresenter
- * @author musaa1
- * @version 1.0
  * This class interacts with the JpaService interface. This class
  * is needed from all Presenter classes to have access to the database
  */

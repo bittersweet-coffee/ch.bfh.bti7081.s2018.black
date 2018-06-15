@@ -11,7 +11,6 @@ import ch.bfh.bti7081.s2018.black.pms.view.ReportViewImpl;
 /**
  * ReportPresenter Class
  * Presenter Class used to manage data exchange between Models and Views as well as triggering database queries
- * @author bielc1
  */
 public class ReportPresenter implements ReportView.ReportViewListener {
 	
@@ -33,6 +32,7 @@ public class ReportPresenter implements ReportView.ReportViewListener {
 		this.fillPatientList();
 		return this.patientItemList;
 	}
+
 	/**
 	 * Method used to query the database and fill the PatientModelList with all PatienModels from the database
 	 */
@@ -49,5 +49,4 @@ public class ReportPresenter implements ReportView.ReportViewListener {
 		this.view = reportView;
 		this.view.addListener(this);
 	}
-
 }

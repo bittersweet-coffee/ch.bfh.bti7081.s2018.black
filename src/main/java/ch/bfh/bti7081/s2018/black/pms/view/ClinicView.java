@@ -5,16 +5,12 @@ import java.util.List;
 /**
  * ClinicView Interface
  * View Interface used by the ViewImplementation
- * @author supnic
- *
  */
 public interface ClinicView {
 	
 	/**
 	 * ClinicViewListener Interface
 	 * ViewListener Interface used by the Presenter Class
-	 * @author supnic
-	 *
 	 */
 	public interface ClinicViewListener {
 		
